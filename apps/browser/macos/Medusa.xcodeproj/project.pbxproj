@@ -12,24 +12,24 @@
 		514201522437B4B40078DB4F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 514201512437B4B40078DB4F /* Assets.xcassets */; };
 		6AFA04B3BADCFAB2D5E0529A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B616A5F60952076D0F8358 /* AppDelegate.swift */; };
 		793DD2DF8D4FBD44ADF01157 /* BrowserWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCA23360FAE34CDF7FD998D /* BrowserWindow.swift */; };
-		8BCF4D4113B3117AB0BC70B7 /* libPods-Ardia-macOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C1D4F94ED9B4A4D62FC468D0 /* libPods-Ardia-macOS.a */; };
+		8BCF4D4113B3117AB0BC70B7 /* libPods-Medusa-macOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C1D4F94ED9B4A4D62FC468D0 /* libPods-Medusa-macOS.a */; };
 		8F617A53519DD1FCC02CBCA4 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE21821D6B4527B7E023B602 /* main.swift */; };
 		9C21C633DCE93A2C521A0862 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BFBFB605DF6F35370DCDEB9 /* ExpoModulesProvider.swift */; };
-		EB6C4E3A222E6D1BF85AB612 /* Ardia.sdef in Resources */ = {isa = PBXBuildFile; fileRef = 4F6F34DACD396890604E4F3F /* Ardia.sdef */; };
+		EB6C4E3A222E6D1BF85AB612 /* Medusa.sdef in Resources */ = {isa = PBXBuildFile; fileRef = 4F6F34DACD396890604E4F3F /* Medusa.sdef */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		3E0CAE61008516DE07A12694 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = ../PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		4F6F34DACD396890604E4F3F /* Ardia.sdef */ = {isa = PBXFileReference; includeInIndex = 1; path = Ardia.sdef; sourceTree = "<group>"; };
-		514201492437B4B30078DB4F /* Ardia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Ardia.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4F6F34DACD396890604E4F3F /* Medusa.sdef */ = {isa = PBXFileReference; includeInIndex = 1; path = Medusa.sdef; sourceTree = "<group>"; };
+		514201492437B4B30078DB4F /* Medusa.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Medusa.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		514201512437B4B40078DB4F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		514201562437B4B40078DB4F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		514201592437B4B40078DB4F /* Ardia.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Ardia.entitlements; sourceTree = "<group>"; };
-		6BFBFB605DF6F35370DCDEB9 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-Ardia-macOS/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
-		B061BE5464342E57C82A2F6C /* Pods-Ardia-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ardia-macOS.debug.xcconfig"; path = "Target Support Files/Pods-Ardia-macOS/Pods-Ardia-macOS.debug.xcconfig"; sourceTree = "<group>"; };
+		514201592437B4B40078DB4F /* Medusa.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Medusa.entitlements; sourceTree = "<group>"; };
+		6BFBFB605DF6F35370DCDEB9 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-Medusa-macOS/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
+		B061BE5464342E57C82A2F6C /* Pods-Medusa-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Medusa-macOS.debug.xcconfig"; path = "Target Support Files/Pods-Medusa-macOS/Pods-Medusa-macOS.debug.xcconfig"; sourceTree = "<group>"; };
 		B5B616A5F60952076D0F8358 /* AppDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		C1D4F94ED9B4A4D62FC468D0 /* libPods-Ardia-macOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Ardia-macOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		C35C3DFDC1BA58B94EE6A74C /* Pods-Ardia-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ardia-macOS.release.xcconfig"; path = "Target Support Files/Pods-Ardia-macOS/Pods-Ardia-macOS.release.xcconfig"; sourceTree = "<group>"; };
+		C1D4F94ED9B4A4D62FC468D0 /* libPods-Medusa-macOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Medusa-macOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C35C3DFDC1BA58B94EE6A74C /* Pods-Medusa-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Medusa-macOS.release.xcconfig"; path = "Target Support Files/Pods-Medusa-macOS/Pods-Medusa-macOS.release.xcconfig"; sourceTree = "<group>"; };
 		DE21821D6B4527B7E023B602 /* main.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		E9A15241E979C9B4F4BB79D8 /* DisableFusebox.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = DisableFusebox.mm; sourceTree = "<group>"; };
 		ECCA23360FAE34CDF7FD998D /* BrowserWindow.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BrowserWindow.swift; sourceTree = "<group>"; };
@@ -40,7 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8BCF4D4113B3117AB0BC70B7 /* libPods-Ardia-macOS.a in Frameworks */,
+				8BCF4D4113B3117AB0BC70B7 /* libPods-Medusa-macOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -50,8 +50,8 @@
 		11FF021B77ACE608B6D2428B /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				B061BE5464342E57C82A2F6C /* Pods-Ardia-macOS.debug.xcconfig */,
-				C35C3DFDC1BA58B94EE6A74C /* Pods-Ardia-macOS.release.xcconfig */,
+				B061BE5464342E57C82A2F6C /* Pods-Medusa-macOS.debug.xcconfig */,
+				C35C3DFDC1BA58B94EE6A74C /* Pods-Medusa-macOS.release.xcconfig */,
 			);
 			name = Pods;
 			path = Pods;
@@ -60,7 +60,7 @@
 		27646AD03C986CEF4FD163EE /* ExpoModulesProviders */ = {
 			isa = PBXGroup;
 			children = (
-				69261366C3F16EDB6AB60D58 /* Ardia-macOS */,
+				69261366C3F16EDB6AB60D58 /* Medusa-macOS */,
 			);
 			name = ExpoModulesProviders;
 			sourceTree = "<group>";
@@ -68,39 +68,39 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				C1D4F94ED9B4A4D62FC468D0 /* libPods-Ardia-macOS.a */,
+				C1D4F94ED9B4A4D62FC468D0 /* libPods-Medusa-macOS.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		5142014A2437B4B30078DB4F /* Ardia-macOS */ = {
+		5142014A2437B4B30078DB4F /* Medusa-macOS */ = {
 			isa = PBXGroup;
 			children = (
 				514201512437B4B40078DB4F /* Assets.xcassets */,
 				514201562437B4B40078DB4F /* Info.plist */,
-				514201592437B4B40078DB4F /* Ardia.entitlements */,
+				514201592437B4B40078DB4F /* Medusa.entitlements */,
 				DE21821D6B4527B7E023B602 /* main.swift */,
 				B5B616A5F60952076D0F8358 /* AppDelegate.swift */,
 				ECCA23360FAE34CDF7FD998D /* BrowserWindow.swift */,
 				3E0CAE61008516DE07A12694 /* PrivacyInfo.xcprivacy */,
 				E9A15241E979C9B4F4BB79D8 /* DisableFusebox.mm */,
-				4F6F34DACD396890604E4F3F /* Ardia.sdef */,
+				4F6F34DACD396890604E4F3F /* Medusa.sdef */,
 			);
-			path = "Ardia-macOS";
+			path = "Medusa-macOS";
 			sourceTree = "<group>";
 		};
-		69261366C3F16EDB6AB60D58 /* Ardia-macOS */ = {
+		69261366C3F16EDB6AB60D58 /* Medusa-macOS */ = {
 			isa = PBXGroup;
 			children = (
 				6BFBFB605DF6F35370DCDEB9 /* ExpoModulesProvider.swift */,
 			);
-			name = "Ardia-macOS";
+			name = "Medusa-macOS";
 			sourceTree = "<group>";
 		};
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				5142014A2437B4B30078DB4F /* Ardia-macOS */,
+				5142014A2437B4B30078DB4F /* Medusa-macOS */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				11FF021B77ACE608B6D2428B /* Pods */,
@@ -114,7 +114,7 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				514201492437B4B30078DB4F /* Ardia.app */,
+				514201492437B4B30078DB4F /* Medusa.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -122,9 +122,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		514201482437B4B30078DB4F /* Ardia-macOS */ = {
+		514201482437B4B30078DB4F /* Medusa-macOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5142015A2437B4B40078DB4F /* Build configuration list for PBXNativeTarget "Ardia-macOS" */;
+			buildConfigurationList = 5142015A2437B4B40078DB4F /* Build configuration list for PBXNativeTarget "Medusa-macOS" */;
 			buildPhases = (
 				1A938104A937498D81B3BD3B /* [CP] Check Pods Manifest.lock */,
 				8CEEFC6E2691476FEA5FE73B /* [Expo] Configure project */,
@@ -141,9 +141,9 @@
 			);
 			dependencies = (
 			);
-			name = "Ardia-macOS";
-			productName = Ardia;
-			productReference = 514201492437B4B30078DB4F /* Ardia.app */;
+			name = "Medusa-macOS";
+			productName = Medusa;
+			productReference = 514201492437B4B30078DB4F /* Medusa.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -161,7 +161,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Ardia" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Medusa" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -174,7 +174,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				514201482437B4B30078DB4F /* Ardia-macOS */,
+				514201482437B4B30078DB4F /* Medusa-macOS */,
 			);
 		};
 /* End PBXProject section */
@@ -186,7 +186,7 @@
 			files = (
 				514201522437B4B40078DB4F /* Assets.xcassets in Resources */,
 				2FF0A6F31D6FB76878E63C5F /* PrivacyInfo.xcprivacy in Resources */,
-				EB6C4E3A222E6D1BF85AB612 /* Ardia.sdef in Resources */,
+				EB6C4E3A222E6D1BF85AB612 /* Medusa.sdef in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -208,7 +208,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Ardia-macOS-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Medusa-macOS-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -221,7 +221,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Ardia-macOS/Pods-Ardia-macOS-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-Medusa-macOS/Pods-Medusa-macOS-frameworks.sh",
 				"${PODS_ROOT}/Sparkle/Sparkle.framework",
 				"${PODS_ROOT}/hermes-engine/destroot/Library/Frameworks/macosx/hermes.framework",
 			);
@@ -232,7 +232,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Ardia-macOS/Pods-Ardia-macOS-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Medusa-macOS/Pods-Medusa-macOS-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		381D8A6E24576A4E00465D17 /* Bundle React Native code and images */ = {
@@ -264,18 +264,18 @@
 			inputPaths = (
 				"$(SRCROOT)/.xcode.env",
 				"$(SRCROOT)/.xcode.env.local",
-				"$(SRCROOT)/Ardia-macOS/Ardia.entitlements",
-				"$(SRCROOT)/Pods/Target Support Files/Pods-Ardia-macOS/expo-configure-project.sh",
+				"$(SRCROOT)/Medusa-macOS/Medusa.entitlements",
+				"$(SRCROOT)/Pods/Target Support Files/Pods-Medusa-macOS/expo-configure-project.sh",
 			);
 			name = "[Expo] Configure project";
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(SRCROOT)/Pods/Target Support Files/Pods-Ardia-macOS/ExpoModulesProvider.swift",
+				"$(SRCROOT)/Pods/Target Support Files/Pods-Medusa-macOS/ExpoModulesProvider.swift",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-Ardia-macOS/expo-configure-project.sh\"\n";
+			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-Medusa-macOS/expo-configure-project.sh\"\n";
 		};
 		C3F0EB5E2E9A4B1D00CEF001 /* Stage ArdiaCore framework */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -322,7 +322,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Ardia-macOS/Pods-Ardia-macOS-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-Medusa-macOS/Pods-Medusa-macOS-resources.sh",
 				"${PODS_ROOT}/../../../../packages/ardiacore/ios/page_script.js",
 				"${PODS_CONFIGURATION_BUILD_DIR}/EXConstants/EXConstants.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/EXConstants/ExpoConstants_privacy.bundle",
@@ -347,7 +347,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Ardia-macOS/Pods-Ardia-macOS-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Medusa-macOS/Pods-Medusa-macOS-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -370,13 +370,13 @@
 /* Begin XCBuildConfiguration section */
 		5142015B2437B4B40078DB4F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B061BE5464342E57C82A2F6C /* Pods-Ardia-macOS.debug.xcconfig */;
+			baseConfigurationReference = B061BE5464342E57C82A2F6C /* Pods-Medusa-macOS.debug.xcconfig */;
 			buildSettings = {
 				ARCHS = arm64;
 				ARDIACORE_STAGE_DIR = "$(OBJROOT)/ArdiaCoreFramework";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = "Ardia-macOS/Ardia.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "Medusa-macOS/Medusa.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 53;
@@ -384,7 +384,7 @@
 				DEVELOPMENT_TEAM = U5L5T3NGVV;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				INFOPLIST_FILE = "Ardia-macOS/Info.plist";
+				INFOPLIST_FILE = "Medusa-macOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = "0.2.38-nightly.6";
@@ -395,8 +395,8 @@
 					"\"$(ARDIACORE_STAGE_DIR)/Chromium Framework.framework/Chromium Framework\"",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ardia.browser;
-				PRODUCT_NAME = Ardia;
+				PRODUCT_BUNDLE_IDENTIFIER = com.medusa.browser;
+				PRODUCT_NAME = Medusa;
 				SDKROOT = macosx;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -405,13 +405,13 @@
 		};
 		5142015C2437B4B40078DB4F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C35C3DFDC1BA58B94EE6A74C /* Pods-Ardia-macOS.release.xcconfig */;
+			baseConfigurationReference = C35C3DFDC1BA58B94EE6A74C /* Pods-Medusa-macOS.release.xcconfig */;
 			buildSettings = {
 				ARCHS = arm64;
 				ARDIACORE_STAGE_DIR = "$(OBJROOT)/ArdiaCoreFramework";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = "Ardia-macOS/Ardia.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "Medusa-macOS/Medusa.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 53;
@@ -419,7 +419,7 @@
 				DEVELOPMENT_TEAM = U5L5T3NGVV;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				INFOPLIST_FILE = "Ardia-macOS/Info.plist";
+				INFOPLIST_FILE = "Medusa-macOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = "0.2.38-nightly.6";
@@ -430,8 +430,8 @@
 					"\"$(ARDIACORE_STAGE_DIR)/Chromium Framework.framework/Chromium Framework\"",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ardia.browser;
-				PRODUCT_NAME = Ardia;
+				PRODUCT_BUNDLE_IDENTIFIER = com.medusa.browser;
+				PRODUCT_NAME = Medusa;
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
 			};
@@ -558,7 +558,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		5142015A2437B4B40078DB4F /* Build configuration list for PBXNativeTarget "Ardia-macOS" */ = {
+		5142015A2437B4B40078DB4F /* Build configuration list for PBXNativeTarget "Medusa-macOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5142015B2437B4B40078DB4F /* Debug */,
@@ -567,7 +567,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Ardia" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Medusa" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
