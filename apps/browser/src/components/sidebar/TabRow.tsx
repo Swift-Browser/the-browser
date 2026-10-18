@@ -1,4 +1,4 @@
-import { ActivitySpinner, ContextMenuArea, FadeLabel, MouseArea, Surface, Symbol } from "@ardia/shell";
+import { ActivitySpinner, ContextMenuArea, FadeLabel, MouseArea, Surface, Symbol } from "@medusa/shell";
 import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { Animated, Pressable, TextInput, View, type GestureResponderEvent } from "react-native";
 import { closeTab, toggleMute } from "../../lib/actions";

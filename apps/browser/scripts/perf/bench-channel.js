@@ -1,5 +1,5 @@
-import * as shell from "@ardia/shell";
-import { readDocument, writeDocument } from "@ardia/shell";
+import * as shell from "@medusa/shell";
+import { readDocument, writeDocument } from "@medusa/shell";
 import * as actions from "../../src/lib/actions";
 import { runCommand } from "../../src/lib/commands";
 import { webviews } from "../../src/lib/webviews";

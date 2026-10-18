@@ -8,7 +8,7 @@ import {
   setAsDefaultBrowser,
   setLaunchAtLogin,
   Symbol,
-} from "@ardia/shell";
+} from "@medusa/shell";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { PROFILE_COLORS, themeFor, useTheme } from "../../lib/theme";

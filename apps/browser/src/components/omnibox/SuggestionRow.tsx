@@ -1,5 +1,5 @@
-import { displayUrl, type Suggestion } from "@ardia/core";
-import { Symbol } from "@ardia/shell";
+import { displayUrl, type Suggestion } from "@medusa/core";
+import { Symbol } from "@medusa/shell";
 import { memo } from "react";
 import { Pressable, Text, View } from "react-native";
 import { useTheme } from "../../lib/theme";

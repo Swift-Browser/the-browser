@@ -1,4 +1,4 @@
-import { showMenu, Surface, Symbol, type MenuItem } from "@ardia/shell";
+import { showMenu, Surface, Symbol, type MenuItem } from "@medusa/shell";
 import { type ReactNode } from "react";
 import { Pressable, StyleSheet, Text, TextInput, View, type StyleProp, type ViewStyle } from "react-native";
 import { hex, useTheme, type Theme } from "../../lib/theme";

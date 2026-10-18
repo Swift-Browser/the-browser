@@ -1,5 +1,5 @@
-import { engineInfo } from "@ardia/ardiacore";
-import { launchEnvironment, readDocument, systemInfo, writeDocument, type SystemInfo } from "@ardia/shell";
+import { engineInfo } from "@medusa/ardiacore";
+import { launchEnvironment, readDocument, systemInfo, writeDocument, type SystemInfo } from "@medusa/shell";
 import { create } from "zustand";
 import { DEV_SEND_ENV, LOGS_URL, MAX_BODY_BYTES } from "./config";
 import { EVENTS_SCOPE, eventRecord, LOGS_SCOPE, logRecord, logsRequest, outcome, type OtlpLogRecord, type QueuedEvent } from "./otlp";

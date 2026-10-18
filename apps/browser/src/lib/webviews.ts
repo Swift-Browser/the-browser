@@ -1,4 +1,4 @@
-import type { WebViewHandle } from "@ardia/ardiacore";
+import type { WebViewHandle } from "@medusa/ardiacore";
 
 export const webviews = new Map<string, WebViewHandle>();
 

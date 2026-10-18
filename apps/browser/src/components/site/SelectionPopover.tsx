@@ -1,4 +1,4 @@
-import { Surface, Symbol, VisualEffect } from "@ardia/shell";
+import { Surface, Symbol, VisualEffect } from "@medusa/shell";
 import { useEffect, useRef, useState } from "react";
 import { Animated, Easing, Pressable, StyleSheet, Text, View } from "react-native";
 import { hex, useTheme } from "../../lib/theme";

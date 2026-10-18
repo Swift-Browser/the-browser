@@ -8,9 +8,9 @@ import {
   type SiteSettingType,
   type SiteSettingValue,
   type SiteSettings,
-} from "@ardia/ardiacore";
-import { cleanUrl, displayHost } from "@ardia/core";
-import { confirm, copyText, showMenu, Symbol } from "@ardia/shell";
+} from "@medusa/ardiacore";
+import { cleanUrl, displayHost } from "@medusa/core";
+import { confirm, copyText, showMenu, Symbol } from "@medusa/shell";
 import { useEffect, useRef, useState } from "react";
 import { Text, View } from "react-native";
 import { useTheme } from "../../lib/theme";

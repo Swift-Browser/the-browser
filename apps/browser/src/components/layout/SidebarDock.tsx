@@ -1,4 +1,4 @@
-import { onWindowEvent, setTrafficLightsCenter, Surface, watchLeftEdge } from "@ardia/shell";
+import { onWindowEvent, setTrafficLightsCenter, Surface, watchLeftEdge } from "@medusa/shell";
 import { useEffect, useLayoutEffect, useMemo, useRef, type ReactNode } from "react";
 import { AccessibilityInfo, Animated, Easing, StyleSheet, View } from "react-native";
 import { useShallow } from "zustand/react/shallow";

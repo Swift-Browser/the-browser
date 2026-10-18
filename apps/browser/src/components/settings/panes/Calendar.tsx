@@ -1,4 +1,4 @@
-import type { SystemCalendar } from "@ardia/shell";
+import type { SystemCalendar } from "@medusa/shell";
 import { Linking, Text, View } from "react-native";
 import { useTheme } from "../../../lib/theme";
 import { connectCalendar, setCalendarHidden, useCalendar } from "../../../live/calendar";

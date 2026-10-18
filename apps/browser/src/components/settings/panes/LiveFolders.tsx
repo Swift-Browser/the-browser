@@ -1,4 +1,4 @@
-import { copyText, focusWindow } from "@ardia/shell";
+import { copyText, focusWindow } from "@medusa/shell";
 import { useEffect, useState, type ReactNode } from "react";
 import { Text, View } from "react-native";
 import { useShallow } from "zustand/react/shallow";

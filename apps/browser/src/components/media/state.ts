@@ -1,4 +1,4 @@
-import type { DisplayMediaRequest, MediaCommand, NowPlaying, PictureInPictureState } from "@ardia/ardiacore";
+import type { DisplayMediaRequest, MediaCommand, NowPlaying, PictureInPictureState } from "@medusa/ardiacore";
 import { useEffect, useState } from "react";
 import { create } from "zustand";
 import { webviews } from "../../lib/webviews";

@@ -1,4 +1,4 @@
-import type { SearchScope } from "@ardia/core";
+import type { SearchScope } from "@medusa/core";
 
 export type BarSnapshot = {
   typed: string;

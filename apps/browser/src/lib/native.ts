@@ -1,4 +1,4 @@
-import { onDownload, releaseProfile } from "@ardia/ardiacore";
+import { onDownload, releaseProfile } from "@medusa/ardiacore";
 import {
   closeWindow,
   isDarkAppearance,
@@ -14,7 +14,7 @@ import {
   windowIds,
   type MenuBookmark,
   type MenuState,
-} from "@ardia/shell";
+} from "@medusa/shell";
 import { Appearance } from "react-native";
 import { folderChildren, isBookmarked } from "../store/bookmarks";
 import { useBrowser, type BrowserState } from "../store/browser";

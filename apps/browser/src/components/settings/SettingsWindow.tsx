@@ -1,4 +1,4 @@
-import { Symbol, VisualEffect, WindowDragRegion } from "@ardia/shell";
+import { Symbol, VisualEffect, WindowDragRegion } from "@medusa/shell";
 import { useEffect, type ReactNode } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useTheme } from "../../lib/theme";

@@ -1,9 +1,9 @@
-import type { AppEvent, CommandEvent, ConfirmOptions, InlineWrite, PromptOptions, SystemInfo, WindowEvent } from "@ardia-real/shell";
+import type { AppEvent, CommandEvent, ConfirmOptions, InlineWrite, PromptOptions, SystemInfo, WindowEvent } from "@medusa-real/shell";
 import { unstable_batchedUpdates } from "react-dom";
 import { emitNativeEvent, provideNativeModule } from "./expo-modules-core";
 import { NATIVE_CHANGE } from "./react-native";
 
-export * from "@ardia-real/shell";
+export * from "@medusa-real/shell";
 export { Symbol } from "./web/Symbol";
 export { ActivitySpinner } from "./web/motion/ActivitySpinner";
 export {

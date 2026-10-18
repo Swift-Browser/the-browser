@@ -11,7 +11,7 @@ import {
   updaterState,
   type UpdateChannel,
   type UpdaterState,
-} from "@ardia/shell";
+} from "@medusa/shell";
 import { useEffect, useState } from "react";
 import { AppState, Text, View } from "react-native";
 import { useTheme } from "../../../lib/theme";
@@ -20,7 +20,7 @@ import { SHARING_COPY } from "../../../telemetry/copy";
 import { Button, Group, PopUp, Row, SectionHeader, Toggle, useFormColors } from "../controls";
 import { openImport } from "../windows";
 
-const APP = "Ardia";
+const APP = "Medusa";
 
 export function GeneralPane() {
   const settings = useBrowser((s) => s.settings);
@@ -55,14 +55,14 @@ export function GeneralPane() {
           title="Open links from other apps in"
           description={
             settings.openLinksInLittleArdia
-              ? `A link from Discord, Slack or Mail opens in Little Ardia, a small window of its own. ⌘O moves it into ${APP}; closing it throws it away.`
+              ? `A link from Discord, Slack or Mail opens in Little Medusa, a small window of its own. ⌘O moves it into ${APP}; closing it throws it away.`
               : `A link from Discord, Slack or Mail opens as a new tab in the ${APP} window you used last.`
           }
         >
           <PopUp
             value={settings.openLinksInLittleArdia ? "small" : "tab"}
             options={[
-              { value: "small", title: "Little Ardia" },
+              { value: "small", title: "Little Medusa" },
               { value: "tab", title: "A new tab" },
             ]}
             onChange={(v) => update({ openLinksInLittleArdia: v === "small" })}
@@ -146,20 +146,6 @@ function UpdatesSection() {
             onChange={(v) => set({ automaticDownloads: v })}
           />
         </Row>
-        {state.channel && (
-          <Row title="Update channel" description="Nightly gets every fix first. Switching back to Stable never downgrades.">
-            <PopUp
-              value={state.channel}
-              options={[
-                { value: "stable", title: "Stable" },
-                { value: "nightly", title: "Nightly" },
-              ]}
-              disabled={!ready}
-              onChange={(channel) => set({ channel })}
-              minWidth={190}
-            />
-          </Row>
-        )}
         <Row title={`${APP} ${state.displayVersion ?? state.version}`} description={ready ? lastCheck : undefined}>
           <Button title="Check Now" disabled={ready && (!state.canCheck || state.sessionInProgress)} onPress={() => void checkForUpdates().finally(refresh)} />
         </Row>

@@ -1,4 +1,4 @@
-import { MouseArea, Symbol } from "@ardia/shell";
+import { MouseArea, Symbol } from "@medusa/shell";
 import { useEffect, useMemo } from "react";
 import { Pressable, Text, View } from "react-native";
 import { useTheme } from "../../lib/theme";

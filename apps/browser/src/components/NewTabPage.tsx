@@ -1,6 +1,6 @@
-import { PowerUp } from "@ardia/shaders";
+import { PowerUp } from "@medusa/shaders";
 import { useEffect, useState } from "react";
-import { Surface } from "@ardia/shell";
+import { Surface } from "@medusa/shell";
 import { AccessibilityInfo, Animated, StyleSheet, View } from "react-native";
 import { hex, layout, useTheme } from "../lib/theme";
 import { springParams } from "./layout/swipeMotion";

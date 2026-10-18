@@ -1,7 +1,7 @@
 import "./styles.css";
 import { createRoot } from "react-dom/client";
 import { unstable_batchedUpdates } from "react-native";
-import { emitCommand } from "@ardia/shell";
+import { emitCommand } from "@medusa/shell";
 import { WindowRoot } from "../../browser/src/App";
 import { startNativeSync } from "../../browser/src/lib/native";
 import { startTabPages } from "../../browser/src/lib/tabPages";

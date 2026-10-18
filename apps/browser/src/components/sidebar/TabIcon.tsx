@@ -1,4 +1,4 @@
-import { Symbol } from "@ardia/shell";
+import { Symbol } from "@medusa/shell";
 import { memo } from "react";
 import { Text, View } from "react-native";
 import { useIsSleeping } from "../../lib/tabLifecycle";

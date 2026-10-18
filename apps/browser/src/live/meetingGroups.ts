@@ -1,4 +1,4 @@
-import { confirm } from "@ardia/shell";
+import { confirm } from "@medusa/shell";
 import { useBrowser, type BrowserState } from "../store/browser";
 import { changedIds } from "../store/changes";
 import { activeTabId } from "../store/model";

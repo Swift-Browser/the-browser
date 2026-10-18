@@ -10,8 +10,8 @@ import {
   watchExtensionActions,
   webStoreExtensionId,
   type TabsRequest,
-} from "@ardia/ardiacore";
-import { killSwitchEnvironment } from "@ardia/shell";
+} from "@medusa/ardiacore";
+import { killSwitchEnvironment } from "@medusa/shell";
 import { AppState } from "react-native";
 import { openWindow } from "../../lib/actions";
 import { webviews } from "../../lib/webviews";

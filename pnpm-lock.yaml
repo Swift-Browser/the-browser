@@ -21,22 +21,22 @@ importers:
 
   apps/browser:
     dependencies:
-      '@ardia/ardiacore':
+      '@medusa/ardiacore':
         specifier: workspace:*
         version: link:../../packages/ardiacore
-      '@ardia/core':
+      '@medusa/core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@ardia/import':
+      '@medusa/import':
         specifier: workspace:*
         version: link:../../packages/import
-      '@ardia/shaders':
+      '@medusa/shaders':
         specifier: workspace:*
         version: link:../../packages/shaders
-      '@ardia/shell':
+      '@medusa/shell':
         specifier: workspace:*
         version: link:../../packages/shell
-      '@ardia/sync':
+      '@medusa/sync':
         specifier: workspace:*
         version: link:../../packages/sync
       expo:
@@ -88,22 +88,22 @@ importers:
 
   apps/demo:
     dependencies:
-      '@ardia/ardiacore':
+      '@medusa/ardiacore':
         specifier: workspace:*
         version: link:../../packages/ardiacore
-      '@ardia/core':
+      '@medusa/core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@ardia/import':
+      '@medusa/import':
         specifier: workspace:*
         version: link:../../packages/import
-      '@ardia/shaders':
+      '@medusa/shaders':
         specifier: workspace:*
         version: link:../../packages/shaders
-      '@ardia/shell':
+      '@medusa/shell':
         specifier: workspace:*
         version: link:../../packages/shell
-      '@ardia/sync':
+      '@medusa/sync':
         specifier: workspace:*
         version: link:../../packages/sync
       lucide-react:
@@ -167,7 +167,7 @@ importers:
 
   packages/ardiacore:
     dependencies:
-      '@ardia/core':
+      '@medusa/core':
         specifier: workspace:*
         version: link:../core
 

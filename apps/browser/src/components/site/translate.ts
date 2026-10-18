@@ -1,4 +1,4 @@
-import { translation } from "@ardia/shell";
+import { translation } from "@medusa/shell";
 import { create } from "zustand";
 import { webviews } from "../../lib/webviews";
 import { useBrowser } from "../../store/browser";

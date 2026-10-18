@@ -1,4 +1,4 @@
-import { appUrlOrigin, displayHost, urlForDisplay } from "@ardia/core";
+import { appUrlOrigin, displayHost, urlForDisplay } from "@medusa/core";
 import type { ReactNode } from "react";
 import { Text, View } from "react-native";
 import { useTheme } from "../../lib/theme";

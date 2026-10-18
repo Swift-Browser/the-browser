@@ -1,5 +1,5 @@
-import { addHistoryVisits, onHistoryChanged, queryHistory, watchHistory, type EngineHistoryEntry, type HistoryChange } from "@ardia/ardiacore";
-import { readDocument, removeDocument } from "@ardia/shell";
+import { addHistoryVisits, onHistoryChanged, queryHistory, watchHistory, type EngineHistoryEntry, type HistoryChange } from "@medusa/ardiacore";
+import { readDocument, removeDocument } from "@medusa/shell";
 import { useBrowser, type BrowserState } from "../store/browser";
 import { afterFirstWindow } from "./afterFirstWindow";
 import { MAX_HISTORY, MAX_VISIT_TIMES } from "../store/history";

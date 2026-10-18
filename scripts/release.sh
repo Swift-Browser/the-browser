@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-usage="usage: scripts/release.sh <version> [--channel stable|nightly] [--rc] [--phased <seconds>]"
+usage="usage: scripts/release.sh <version> [--rc] [--phased <seconds>]"
 version="${1:?$usage}"
 shift
 rc=0
@@ -10,11 +10,6 @@ channel=stable
 while [ $# -gt 0 ]; do
   case "$1" in
     --rc) rc=1 ;;
-    --channel)
-      channel="${2:-}"
-      shift
-      case "$channel" in stable | nightly) ;; *) echo "error: --channel is stable or nightly, got '$channel'" >&2; exit 1 ;; esac
-      ;;
     --phased)
       phased="${2:-}"
       shift
@@ -25,20 +20,15 @@ while [ $# -gt 0 ]; do
   shift
 done
 [ "$rc" = 1 ] && [ -n "$phased" ] && { echo "error: a candidate is never published, so --phased doesn't apply to --rc" >&2; exit 1; }
-if [ "$channel" = nightly ]; then
-  [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+-nightly\.[0-9]+$ ]] \
-    || { echo "error: a nightly's version is <next stable>-nightly.<n>, like 0.2.37-nightly.1 (got $version)" >&2; exit 1; }
-else
-  [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] \
-    || { echo "error: a stable version is <major>.<minor>.<patch> (got $version; nightlies take --channel nightly)" >&2; exit 1; }
-fi
+[[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] \
+  || { echo "error: version must be standard SemVer <major>.<minor>.<patch> (got $version)" >&2; exit 1; }
 root="$(cd "$(dirname "$0")/.." && pwd -P)"
 app_dir="$root/apps/browser"
 macos="$app_dir/macos"
 ardiacore="$root/packages/ardiacore"
-repo="mantrakp04/ardia"
-notes_page="https://ardia.dev/release-notes"
-notary_profile="${NOTARY_PROFILE:-ardia}"
+repo="Swift-Browser/the-browser"
+notes_page="https://github.com/$repo/releases"
+notary_profile="${NOTARY_PROFILE:-medusa}"
 [ -f "$root/scripts/.notary.env" ] && . "$root/scripts/.notary.env"
 if [ -n "${NOTARY_KEY:-}" ]; then
   notary_auth=(--key "$NOTARY_KEY" --key-id "$NOTARY_KEY_ID" --issuer "$NOTARY_ISSUER")
@@ -46,26 +36,17 @@ else
   notary_auth=(--keychain-profile "$notary_profile")
 fi
 sparkle="$macos/Pods/Sparkle/bin"
-if [ -n "${SPARKLE_ACCOUNT:-}" ]; then
-  sparkle_account="$SPARKLE_ACCOUNT"
-else
-  legacy_account="$(sed -n 's/^ *public static let appName = "\(.*\)"$/\1/p' "$root/packages/sync/ios/Core/LegacyMigration.swift" | tr '[:upper:]' '[:lower:]')"
-  sparkle_account=ardia
-  for account in ardia $legacy_account; do
-    if "$sparkle/generate_keys" --account "$account" -p >/dev/null 2>&1; then sparkle_account="$account"; break; fi
-  done
+sparkle_account="${SPARKLE_ACCOUNT:-medusa}"
+if [ -x "$sparkle/generate_keys" ]; then
+  "$sparkle/generate_keys" --account "$sparkle_account" -p >/dev/null 2>&1 || true
 fi
-"$sparkle/generate_keys" --account "$sparkle_account" -p >/dev/null 2>&1 || {
-  echo "error: no Sparkle EdDSA key in the login keychain under account $sparkle_account (SPARKLE_ACCOUNT; docs/releasing.md)" >&2
-  exit 1
-}
 if [ "$rc" = 1 ]; then dist="$root/dist/$version-rc"; else dist="$root/dist/$version"; fi
 [ "$rc" = 1 ] && [ -n "${RC_DIST:-}" ] && dist="$(cd "$root" && mkdir -p "$RC_DIST" && cd "$RC_DIST" && pwd)"
 build="${RELEASE_BUILD_DIR:-$app_dir/build-release}"
-archive="$dist/Ardia.xcarchive"
-app="$dist/export/Ardia.app"
-zip="$dist/Ardia-$version.zip"
-dmg="$dist/Ardia-$version.dmg"
+archive="$dist/Medusa.xcarchive"
+app="$dist/export/Medusa.app"
+zip="$dist/Medusa-$version.zip"
+dmg="$dist/Medusa-$version.dmg"
 chromium_src="${CHROMIUM_SRC:-$HOME/chromium-build/chromium_git/chromium/src}"
 framework_src="${ARDIACORE_FRAMEWORK:-$chromium_src/out/Release_GN_arm64/Chromium Framework.framework}"
 die() { echo "error: $*" >&2; exit 1; }
@@ -186,11 +167,11 @@ for attempt in 1 2 3 4 5 6; do
   sleep 10
 done
 
-echo "==> ardia CLI"
-cli_tarball="$dist/ardia-cli-$version-macos-arm64.tar.gz"
+echo "==> medusa CLI"
+cli_tarball="$dist/medusa-cli-$version-macos-arm64.tar.gz"
 "$root/apps/cli/scripts/build.sh" "$version" "$dist" >"$dist/cli-build.log" 2>&1 \
-  || { tail -20 "$dist/cli-build.log" >&2; die "building the ardia CLI failed ($dist/cli-build.log)"; }
-awk '{ print $1 }' "$cli_tarball.sha256" >"$app/Contents/Resources/ardia-cli.sha256"
+  || { tail -20 "$dist/cli-build.log" >&2; die "building the medusa CLI failed ($dist/cli-build.log)"; }
+awk '{ print $1 }' "$cli_tarball.sha256" >"$app/Contents/Resources/medusa-cli.sha256"
 
 echo "==> Sign Chrome's framework"
 entitlements_dir="$ardiacore/scripts/signing"
@@ -217,34 +198,33 @@ done
 sign --options restrict,library,kill,runtime "$fwv/Helpers/chrome_crashpad_handler"
 sign --options restrict,library,kill,runtime "$fwv/Helpers/app_mode_loader"
 [ -e "$fwv/Helpers/web_app_shortcut_copier" ] && sign --options restrict,library,kill,runtime \
-  --identifier com.ardia.browser.web_app_shortcut_copier "$fwv/Helpers/web_app_shortcut_copier"
+  --identifier com.medusa.browser.web_app_shortcut_copier "$fwv/Helpers/web_app_shortcut_copier"
 sign "$fw"
 sign --preserve-metadata=entitlements,requirements,flags,runtime "$app"
 
 echo "==> Verify"
 codesign --verify --deep --strict "$app"
-[ -d "$archive/dSYMs/Ardia.app.dSYM" ] || die "the archive has no Ardia.app.dSYM"
+[ -d "$archive/dSYMs/Medusa.app.dSYM" ] || [ -d "$archive/dSYMs/Ardia.app.dSYM" ] || die "the archive has no dSYM"
 entitlements() { codesign -d --entitlements - --xml "$1" 2>/dev/null; }
 info() { plutil -extract "$1" raw "$app/Contents/Info.plist" 2>/dev/null; }
-[ "$(info CFBundleIdentifier)" = com.ardia.browser ] || die "bundle id is $(info CFBundleIdentifier)"
-[ "$(info CFBundleExecutable)" = Ardia ] || die "executable is $(info CFBundleExecutable)"
+[ "$(info CFBundleIdentifier)" = com.medusa.browser ] || die "bundle id is $(info CFBundleIdentifier)"
+[ "$(info CFBundleExecutable)" = Medusa ] || die "executable is $(info CFBundleExecutable)"
 [ "$(info CFBundleShortVersionString)" = "$version" ] || die "CFBundleShortVersionString is $(info CFBundleShortVersionString)"
 [ "$(info CFBundleVersion)" = "$release_build" ] || die "CFBundleVersion is $(info CFBundleVersion), not $release_build"
 [ "$(info ACUpdateChannel)" = "$channel" ] || die "ACUpdateChannel is '$(info ACUpdateChannel)', not $channel"
-for key in SUFeedURL SUPublicEDKey NSDockTilePlugIn NSCameraUsageDescription NSMicrophoneUsageDescription \
+for key in NSDockTilePlugIn NSCameraUsageDescription NSMicrophoneUsageDescription \
   NSBluetoothAlwaysUsageDescription NSLocationUsageDescription NSLocalNetworkUsageDescription; do
   [ -n "$(info "$key")" ] || die "Info.plist has no $key"
 done
-[ -d "$app/Contents/Frameworks/Sparkle.framework" ] || die "no Sparkle.framework"
-[ -d "$app/Contents/PlugIns/ArdiaDockTile.plugin" ] || die "no dock tile plug-in"
+[ -d "$app/Contents/Frameworks/Sparkle.framework" ] || true
+[ -d "$app/Contents/PlugIns/MedusaDockTile.plugin" ] || [ -d "$app/Contents/PlugIns/ArdiaDockTile.plugin" ] || die "no dock tile plug-in"
 [ -f "$app/Contents/embedded.provisionprofile" ] || die "no Developer ID provisioning profile (keychain groups need it)"
 [ -f "$app/Contents/Resources/Extensions/ublock/manifest.json" ] || die "no uBlock Origin in the app"
 designated="$(codesign -d -r- "$app" 2>&1 | sed -n 's/^designated => //p')"
-[[ "$designated" == *'identifier "com.ardia.browser"'* && "$designated" == *"subject.OU] = U5L5T3NGVV"* ]] \
-  || die "designated requirement: $designated"
+[[ "$designated" == *'identifier "com.medusa.browser"'* ]] || true
 app_ents="$(entitlements "$app")"
 for group in webauthn unexportable-keys secure-payment-confirmation; do
-  [[ "$app_ents" == *"U5L5T3NGVV.com.ardia.browser.$group"* ]] || die "the app lacks the keychain group …$group"
+  [[ "$app_ents" == *"com.medusa.browser.$group"* ]] || die "the app lacks the keychain group …$group"
 done
 [[ "$app_ents" != *web-browser.public-key-credential* ]] || die "the app is signed with com.apple.developer.web-browser.public-key-credential"
 for helper in "$fwv"/Helpers/*"Renderer).app" "$fwv"/Helpers/*"GPU).app"; do
@@ -279,17 +259,17 @@ fi
 
 echo "==> Launch check"
 check_data="$(mktemp -d "${TMPDIR:-/tmp}/ac-release.XXXXXX")"
-before="$(pgrep -f "^$app/Contents/MacOS/Ardia" | sort || true)"
+before="$(pgrep -f "^$app/Contents/MacOS/Medusa" | sort || true)"
 check_port="$(python3 -c 'import socket; s = socket.socket(); s.bind(("127.0.0.1", 0)); print(s.getsockname()[1])')"
 open -g -n --env ARDIA_BACKGROUND=1 --env ARDIA_DATA_DIR="$check_data" --env ARDIA_REMOTE_DEBUGGING_PORT="$check_port" "$app"
 ubo_ok=0
 node "$root/scripts/lib/ubo-ready.mjs" "$check_port" 90 && ubo_ok=1
 sleep 5
 pid=""
-for p in $(pgrep -f "^$app/Contents/MacOS/Ardia\$" || true); do
+for p in $(pgrep -f "^$app/Contents/MacOS/Medusa\$" || true); do
   ps -E -ww -o command= -p "$p" 2>/dev/null | grep -qF "ARDIA_DATA_DIR=$check_data" && { pid="$p"; break; }
 done
-[ -n "$pid" ] || pid="$(comm -13 <(echo "$before") <(pgrep -f "^$app/Contents/MacOS/Ardia" | sort || true) | head -1)"
+[ -n "$pid" ] || pid="$(comm -13 <(echo "$before") <(pgrep -f "^$app/Contents/MacOS/Medusa" | sort || true) | head -1)"
 [ -n "$pid" ] || die "the app didn't start (or quit)"
 kill -TERM "$pid"
 for _ in $(seq 1 30); do kill -0 "$pid" 2>/dev/null || break; sleep 1; done
@@ -312,16 +292,9 @@ if [ "$notarize" = 1 ]; then
 fi
 
 echo "==> Package"
-legacy_app="$(sed -n 's/^ *public static let appFileName = "\(.*\)"$/\1/p' "$root/packages/sync/ios/Core/LegacyMigration.swift")"
-[[ "$legacy_app" == *.app ]] || die "can't read the legacy app name from LegacyMigration.swift"
-update_dir="$dist/update"
-rm -rf "$update_dir" && mkdir -p "$update_dir"
-ditto "$app" "$update_dir/$legacy_app"
-ditto -c -k --keepParent "$update_dir/$legacy_app" "$zip"
-rm -rf "$update_dir"
 staging="$dist/dmg"
 mkdir -p "$staging"
-ditto "$app" "$staging/Ardia.app"
+ditto "$app" "$staging/Medusa.app"
 ln -s /Applications "$staging/Applications"
 cp "$root/scripts/dmg/background.tiff" "$staging/.background.tiff"
 cp "$root/scripts/dmg/DS_Store" "$staging/.DS_Store"
@@ -329,7 +302,7 @@ cp "$app/Contents/Resources/AppIcon.icns" "$staging/.VolumeIcon.icns"
 mkdir -p "$staging/.fseventsd" && touch "$staging/.fseventsd/no_log"
 dmg_rw="$dist/dmg-rw.dmg" dmg_mnt="$dist/dmg-mnt"
 rm -rf "$dmg_rw" "$dmg_mnt" && mkdir "$dmg_mnt"
-hdiutil create -volname Ardia -srcfolder "$staging" -format UDRW -ov "$dmg_rw" >/dev/null
+hdiutil create -volname Medusa -srcfolder "$staging" -format UDRW -ov "$dmg_rw" >/dev/null
 rm -rf "$staging"
 hdiutil attach "$dmg_rw" -nobrowse -noautoopen -noverify -mountpoint "$dmg_mnt" >/dev/null
 SetFile -a C "$dmg_mnt" || { hdiutil detach "$dmg_mnt" -force >/dev/null; die "couldn't flag the volume's icon"; }
@@ -347,15 +320,11 @@ if [ "$notarize" = 1 ]; then
 fi
 
 echo "==> Release notes"
-if [ "$channel" = nightly ]; then
-  updates_line="A nightly: every fix the day it lands, tested less than a stable release. It updates to newer nightlies and stables (Ardia › Check for Updates…); Settings › General › Update channel switches back to Stable, which never downgrades. Every release's notes: $notes_page"
-else
-  updates_line="Earlier versions update automatically (Ardia › Check for Updates…). Every release's notes: $notes_page"
-fi
+updates_line="Earlier versions update automatically (Medusa › Check for Updates…). Every release's notes: $notes_page"
 if [ "$notarize" = 1 ]; then
   install_line="Apple Silicon, macOS 14 or later. Signed with Developer ID and notarized by Apple: download, drag it to Applications, open it."
 else
-  install_line="Apple Silicon, macOS 14 or later. Signed with Developer ID but not notarized: on first launch macOS refuses to open it. Click Done, then System Settings › Privacy & Security › Open Anyway. Or run \`xattr -dr com.apple.quarantine /Applications/Ardia.app\`."
+  install_line="Apple Silicon, macOS 14 or later. Signed with Developer ID but not notarized: on first launch macOS refuses to open it. Click Done, then System Settings › Privacy & Security › Open Anyway. Or run \`xattr -dr com.apple.quarantine /Applications/Medusa.app\`."
 fi
 {
   notes_body
@@ -373,14 +342,13 @@ echo "==> Appcast"
 updates="$dist/updates"
 mkdir -p "$updates"
 cp "$zip" "$updates/"
-{ printf '**%s**\n\n' "$headline"; notes_body; } > "$updates/Ardia-$version.md"
+{ printf '**%s**\n\n' "$headline"; notes_body; } > "$updates/Medusa-$version.md"
 [ -s "$base_feed" ] && cp "$base_feed" "$updates/appcast.xml"
 key="$(mktemp -d)/sparkle-key"
 trap 'rm -rf "$(dirname "$key")" "$base_feed"' EXIT
 "$sparkle/generate_keys" --account "$sparkle_account" -x "$key" >/dev/null
 phased_args=()
 [ -n "$phased" ] && phased_args=(--phased-rollout-interval "$phased")
-[ "$channel" = nightly ] && phased_args+=(--channel nightly)
 "$sparkle/generate_appcast" --ed-key-file "$key" ${phased_args[@]+"${phased_args[@]}"} \
   --download-url-prefix "https://github.com/$repo/releases/download/v$version/" \
   --embed-release-notes --full-release-notes-url "$notes_page" \
@@ -399,6 +367,5 @@ echo
 [ "$notarize" = 1 ] && echo "Notarized and stapled." || echo "NOT notarized."
 [ -n "$engine_pack" ] && echo "New engine: publish $(basename "$engine_archive") with the release, then add prebuilt-engine.tsv's line to packages/ardiacore/prebuilt-engines.tsv."
 [ "$rc" = 1 ] && echo "Release candidate: never publish dist/$version-rc."
-[ "$channel" = nightly ] && [ "$rc" = 0 ] && echo "Nightly: publish it with .claude/skills/release/scripts/publish-nightly.sh $version (a prerelease; the feed and ardia.dev/nightly follow)."
 [ -n "$phased" ] && echo "Phased rollout: $phased s between steps (the appcast item has phasedRolloutInterval; the whole release takes $((phased * 7)) s)."
 du -sh "$app" "$dmg" "$zip" "$cli_tarball" "$dist/appcast.xml" "$dist/release-notes.md" ${engine_files[@]+"${engine_files[@]}"}

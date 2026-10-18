@@ -1,4 +1,4 @@
-import { openWindow } from "@ardia/shell";
+import { openWindow } from "@medusa/shell";
 import { create } from "zustand";
 
 export const SETTINGS_WINDOW_ID = "settings";

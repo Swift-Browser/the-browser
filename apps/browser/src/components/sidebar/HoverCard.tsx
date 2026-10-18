@@ -1,7 +1,7 @@
-import { FadeLabel, Surface, Symbol } from "@ardia/shell";
+import { FadeLabel, Surface, Symbol } from "@medusa/shell";
 import { useLayoutEffect, useState } from "react";
 import { Pressable, Text, View } from "react-native";
-import { displayUrl } from "@ardia/core";
+import { displayUrl } from "@medusa/core";
 import { hex, useTheme } from "../../lib/theme";
 import { useBrowser } from "../../store/browser";
 import { useIsBookmarked } from "../../store/hooks";

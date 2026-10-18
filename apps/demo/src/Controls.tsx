@@ -1,5 +1,5 @@
-import type { BrowserCommand } from "@ardia-real/shell";
-import { emitCommand } from "@ardia/shell";
+import type { BrowserCommand } from "@medusa-real/shell";
+import { emitCommand } from "@medusa/shell";
 import { useMemo } from "react";
 import { noteScroll } from "../../browser/src/components/layout/toolbarAutoHide";
 import { useBrowser, type BrowserState } from "../../browser/src/store/browser";

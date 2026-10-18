@@ -1,5 +1,5 @@
-import { resolveInput } from "@ardia/core";
-import { Surface } from "@ardia/shell";
+import { resolveInput } from "@medusa/core";
+import { Surface } from "@medusa/shell";
 import { useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { hex, useTheme } from "../../lib/theme";

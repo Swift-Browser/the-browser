@@ -1,4 +1,4 @@
-import { engineInfo, listComponents, WIDEVINE_COMPONENT_ID, type EngineComponent, type EngineInfo } from "@ardia/ardiacore";
+import { engineInfo, listComponents, WIDEVINE_COMPONENT_ID, type EngineComponent, type EngineInfo } from "@medusa/ardiacore";
 import { useEffect, useState } from "react";
 import { Text, View } from "react-native";
 import { describeCliInstall, installCliInBackground, useCli } from "../../../lib/cliControl";

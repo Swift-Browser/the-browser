@@ -1,5 +1,5 @@
-import { engineHost, type SearchEngine } from "@ardia/core";
-import { Symbol } from "@ardia/shell";
+import { engineHost, type SearchEngine } from "@medusa/core";
+import { Symbol } from "@medusa/shell";
 import { useState } from "react";
 import { Text, View } from "react-native";
 import { useTheme } from "../../../lib/theme";

@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { buildSuggestions } from "@ardia/core";
+import { buildSuggestions } from "@medusa/core";
 import { acceptsCompletion, completionToWrite, fieldChange, withoutFirst } from "./inline.ts";
 
 const now = Date.UTC(2026, 8, 25);

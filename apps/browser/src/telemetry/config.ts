@@ -1,5 +1,5 @@
-export const LOGS_URL = "https://ardia.dev/otel/v1/logs";
+export const LOGS_URL = "";
 
 export const MAX_BODY_BYTES = 500_000;
 
-export const DEV_SEND_ENV = "ARDIA_TELEMETRY";
+export const DEV_SEND_ENV = "MEDUSA_TELEMETRY";

@@ -1,4 +1,4 @@
-import { appUrlOrigin, displayHost } from "@ardia/core";
+import { appUrlOrigin, displayHost } from "@medusa/core";
 import type { BrowserState } from "./browser";
 import { DEFAULT_PROFILE_ID } from "./settings";
 import type { BrowserWindow, Profile, Tab, TabLive, TabSnapshot } from "./types";

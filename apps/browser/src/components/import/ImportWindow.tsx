@@ -1,5 +1,5 @@
-import type { BrowserProfile, BrowserSource, DiaAutomationStatus, DiaTabsResult, ImportedExtension, ImportKind, ImportResult, SpaceSummary } from "@ardia/import";
-import { closeWindow, confirm, Symbol, VisualEffect, WindowDragRegion } from "@ardia/shell";
+import type { BrowserProfile, BrowserSource, DiaAutomationStatus, DiaTabsResult, ImportedExtension, ImportKind, ImportResult, SpaceSummary } from "@medusa/import";
+import { closeWindow, confirm, Symbol, VisualEffect, WindowDragRegion } from "@medusa/shell";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { ActivityIndicator, Animated, AppState, Easing, Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useTheme } from "../../lib/theme";

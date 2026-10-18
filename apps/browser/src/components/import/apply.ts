@@ -1,5 +1,5 @@
-import { savePassword } from "@ardia/ardiacore";
-import type { BookmarkNode as ImportedNode, Credential, DiaTabsProfile, ImportedTab, ImportKind, ImportResult, SafariExport, SpaceSuggestion } from "@ardia/import";
+import { savePassword } from "@medusa/ardiacore";
+import type { BookmarkNode as ImportedNode, Credential, DiaTabsProfile, ImportedTab, ImportKind, ImportResult, SafariExport, SpaceSuggestion } from "@medusa/import";
 import type { BookmarkDraft } from "../../store/bookmarks";
 import { useBrowser } from "../../store/browser";
 import { engineProfile, isIncognitoProfile } from "../../store/model";

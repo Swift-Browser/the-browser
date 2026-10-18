@@ -1,4 +1,4 @@
-import { prompt, Surface } from "@ardia/shell";
+import { prompt, Surface } from "@medusa/shell";
 import { useEffect, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { hex, layout, useTheme } from "../../lib/theme";

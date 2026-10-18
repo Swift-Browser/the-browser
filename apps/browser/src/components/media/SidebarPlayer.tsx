@@ -1,4 +1,4 @@
-import { FadeLabel, Surface, Symbol } from "@ardia/shell";
+import { FadeLabel, Surface, Symbol } from "@medusa/shell";
 import { useShallow } from "zustand/react/shallow";
 import { useRef, type ComponentProps } from "react";
 import { Image, Pressable, View } from "react-native";

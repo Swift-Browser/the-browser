@@ -1,5 +1,5 @@
-import { WindowBackdrop } from "@ardia/shaders";
-import { Surface, Symbol, VisualEffect } from "@ardia/shell";
+import { WindowBackdrop } from "@medusa/shaders";
+import { Surface, Symbol, VisualEffect } from "@medusa/shell";
 import { useEffect, useRef, useState } from "react";
 import { AccessibilityInfo, Animated, Easing, Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { hex, PROFILE_COLORS, useTheme } from "../../lib/theme";

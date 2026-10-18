@@ -1,6 +1,6 @@
-import { breadcrumb } from "@ardia/core";
-import { WindowBackdrop } from "@ardia/shaders";
-import { ContextMenuArea, FadeLabel, setTrafficLightsCenter, Symbol, WindowDragRegion } from "@ardia/shell";
+import { breadcrumb } from "@medusa/core";
+import { WindowBackdrop } from "@medusa/shaders";
+import { ContextMenuArea, FadeLabel, setTrafficLightsCenter, Symbol, WindowDragRegion } from "@medusa/shell";
 import { useEffect, useRef, useState } from "react";
 import { Animated, Easing, Pressable, StyleSheet, Text, View } from "react-native";
 import { useTheme } from "../../lib/theme";

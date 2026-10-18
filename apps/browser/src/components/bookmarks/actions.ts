@@ -1,4 +1,4 @@
-import { confirm } from "@ardia/shell";
+import { confirm } from "@medusa/shell";
 import { create } from "zustand";
 import { focus, openWindow } from "../../lib/actions";
 import { folderLinks } from "../../store/bookmarks";

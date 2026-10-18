@@ -1,7 +1,7 @@
 # ArdiaCore parity: the app's engine API on ArdiaCore
 
 **The owner chose a full cutover (2026-10-01):** the next release ships ArdiaCore only, and CEF's native side leaves
-the repo. The JS API (once `packages/cef/src`, now `packages/ardiacore/src`, imported as `@ardia/ardiacore`) doesn't
+the repo. The JS API (once `packages/cef/src`, now `packages/ardiacore/src`, imported as `@medusa/ardiacore`) doesn't
 change: `packages/ardiacore` registers the same Expo modules and view names (`ArdiaCEF`, `ArdiaExtensions`,
 `ArdiaSwipe`, `ArdiaChromeUI`) with the same signatures. The cutover lands as a short series of commits on main: the ArdiaCore project becomes
 `apps/browser/macos` (C1), CEF's native side goes (C2), production data in place with a one-shot migration of

@@ -1,5 +1,5 @@
-import * as shell from "@ardia/shell";
-import { readDocument, writeDocument } from "@ardia/shell";
+import * as shell from "@medusa/shell";
+import { readDocument, writeDocument } from "@medusa/shell";
 import { omniboxDrivers } from "../components/omnibox/devDriver";
 import { pagesDrivers } from "../components/pages/devDrivers";
 import { usePages } from "../components/layout/pageState";

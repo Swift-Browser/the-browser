@@ -1,4 +1,4 @@
-import { routeLinkTabs } from "@ardia/ardiacore";
+import { routeLinkTabs } from "@medusa/ardiacore";
 import { focus, openWindow } from "../../lib/actions";
 import { routedLinks, type RoutedLinks } from "../../lib/linkRoutes";
 import { runsJavaScript } from "../../lib/scriptUrls";

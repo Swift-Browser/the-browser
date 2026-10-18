@@ -1,4 +1,4 @@
-import { killSwitchEnvironment } from "@ardia/shell";
+import { killSwitchEnvironment } from "@medusa/shell";
 
 type Unsubscribe = () => void;
 

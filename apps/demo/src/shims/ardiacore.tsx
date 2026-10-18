@@ -1,8 +1,8 @@
-import type { FaviconImage } from "@ardia-real/ardiacore";
+import type { FaviconImage } from "@medusa-real/ardiacore";
 import { faviconFor } from "../pages";
 import { provideNativeModule } from "./expo-modules-core";
 
-export * from "@ardia-real/ardiacore";
+export * from "@medusa-real/ardiacore";
 export { devPagerState, pagerState, selectPager, stepPager, SwipeArea, switchPager } from "./web/Pager";
 export { WebView } from "./web/WebView";
 

@@ -1,5 +1,5 @@
-import { displayUrl, fuzzyScore } from "@ardia/core";
-import { FadeLabel, Surface, Symbol } from "@ardia/shell";
+import { displayUrl, fuzzyScore } from "@medusa/core";
+import { FadeLabel, Surface, Symbol } from "@medusa/shell";
 import { useMemo, useRef, useState } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import { switchToTab } from "../../lib/actions";

@@ -1,4 +1,4 @@
-import type { NativePagerConfig, PagerSnapshot, PagerStateEvent } from "@ardia-real/ardiacore";
+import type { NativePagerConfig, PagerSnapshot, PagerStateEvent } from "@medusa-real/ardiacore";
 
 const TRACKING_SCALE = 0.5;
 const RUBBER_DIMENSION = 255;

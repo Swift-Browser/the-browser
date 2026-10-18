@@ -1,4 +1,4 @@
-import { onWindowEvent } from "@ardia/shell";
+import { onWindowEvent } from "@medusa/shell";
 import { everySlowly } from "../lib/slowTimers";
 import { useBrowser } from "../store/browser";
 import { activeTabId, viewTabIds } from "../store/model";

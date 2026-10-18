@@ -1,5 +1,5 @@
-import { inputIdleSeconds, trimEngineMemory } from "@ardia/ardiacore";
-import { killSwitchEnvironment } from "@ardia/shell";
+import { inputIdleSeconds, trimEngineMemory } from "@medusa/ardiacore";
+import { killSwitchEnvironment } from "@medusa/shell";
 import { useBrowser } from "../store/browser";
 import { isQuitting } from "./native";
 

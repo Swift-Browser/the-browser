@@ -1,4 +1,4 @@
-import type { SearchScope } from "@ardia/core";
+import type { SearchScope } from "@medusa/core";
 import { Text, View } from "react-native";
 import { useTheme } from "../../lib/theme";
 import { Favicon } from "../primitives";

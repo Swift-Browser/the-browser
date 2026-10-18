@@ -1,4 +1,4 @@
-import { Symbol } from "@ardia/shell";
+import { Symbol } from "@medusa/shell";
 import { useEffect, useRef, useState } from "react";
 import { Animated, Image, Pressable, Text, View, type GestureResponderEvent, type TextStyle } from "react-native";
 import { toggleMute } from "../../lib/actions";

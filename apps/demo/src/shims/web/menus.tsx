@@ -1,5 +1,5 @@
 import { useEffect, useState, useSyncExternalStore } from "react";
-import type { MenuItem } from "@ardia-real/shell";
+import type { MenuItem } from "@medusa-real/shell";
 import { useBrowser } from "../../../../browser/src/store/browser";
 import { Symbol } from "./Symbol";
 

@@ -1,11 +1,11 @@
-import type * as ImportApi from "@ardia/import";
+import type * as ImportApi from "@medusa/import";
 
 let api: typeof ImportApi | null | undefined;
 
 export function importModule(): typeof ImportApi | null {
   if (api === undefined) {
     try {
-      api = require("@ardia/import") as typeof ImportApi;
+      api = require("@medusa/import") as typeof ImportApi;
     } catch {
       api = null;
     }

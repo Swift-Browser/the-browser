@@ -1,4 +1,4 @@
-import { breadcrumb } from "@ardia/core";
+import { breadcrumb } from "@medusa/core";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { AccessibilityInfo, Animated, Easing, Pressable, StyleSheet, Text, View, type ViewStyle } from "react-native";
 import { layout, useTheme } from "../lib/theme";

@@ -1,4 +1,4 @@
-import { updaterState } from "@ardia/shell";
+import { updaterState } from "@medusa/shell";
 import { afterFirstWindow } from "./afterFirstWindow";
 import { refreshSwitches } from "./killSwitches";
 

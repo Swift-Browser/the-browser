@@ -6,8 +6,8 @@ import {
   prompt,
   setAppearance,
   type CommandEvent,
-} from "@ardia/shell";
-import { markdownLink } from "@ardia/core";
+} from "@medusa/shell";
+import { markdownLink } from "@medusa/core";
 import { useBrowser } from "../store/browser";
 import { activeTabId, bookmarkProfileId, resolveWindowId } from "../store/model";
 import {

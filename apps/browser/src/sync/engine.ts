@@ -1,4 +1,4 @@
-import { readDocument, saveDocument, writeDocument } from "@ardia/shell";
+import { readDocument, saveDocument, writeDocument } from "@medusa/shell";
 import {
   Clock,
   emptyScope,
@@ -13,7 +13,7 @@ import {
   type LogFile,
   type PhraseResult,
   type ScopeState,
-} from "@ardia/sync";
+} from "@medusa/sync";
 import { create } from "zustand";
 import { useBrowser } from "../store/browser";
 import { fromLegacy } from "../legacy";

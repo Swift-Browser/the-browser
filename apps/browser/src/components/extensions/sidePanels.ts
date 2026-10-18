@@ -1,4 +1,4 @@
-import { extensionSidePanelUrl } from "@ardia/ardiacore";
+import { extensionSidePanelUrl } from "@medusa/ardiacore";
 import { useBrowser } from "../../store/browser";
 import { activeBrowserId, extensionProfile, isPrivate, pageProfile, shownIn, useExtensions } from "./store";
 

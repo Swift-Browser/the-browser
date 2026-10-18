@@ -1,4 +1,4 @@
-import { toAppUrl, toEngineUrl } from "@ardia/core";
+import { toAppUrl, toEngineUrl } from "@medusa/core";
 import { requireNativeViewManager } from "expo-modules-core";
 import { forwardRef, useImperativeHandle, useRef } from "react";
 import type { NativeSyntheticEvent, ViewProps } from "react-native";

@@ -1,5 +1,5 @@
-import { showMenu, Symbol } from "@ardia/shell";
-import { SyncNative, type FolderInfo } from "@ardia/sync";
+import { showMenu, Symbol } from "@medusa/shell";
+import { SyncNative, type FolderInfo } from "@medusa/sync";
 import { useEffect, useState } from "react";
 import { Linking, Text, View } from "react-native";
 import { useTheme } from "../../../lib/theme";

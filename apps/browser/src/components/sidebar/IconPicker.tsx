@@ -1,4 +1,4 @@
-import { Surface, Symbol } from "@ardia/shell";
+import { Surface, Symbol } from "@medusa/shell";
 import { useMemo, useState } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import { hex, useTheme } from "../../lib/theme";

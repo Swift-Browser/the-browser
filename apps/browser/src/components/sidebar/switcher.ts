@@ -1,4 +1,4 @@
-import { restartSwitcherPointer, setSwitcherCapture, switcherPointerMoved } from "@ardia/shell";
+import { restartSwitcherPointer, setSwitcherCapture, switcherPointerMoved } from "@medusa/shell";
 import { useBrowser } from "../../store/browser";
 import { recentTabIds } from "../../store/organize";
 import { setSidebarUi, sidebarUi } from "./state";

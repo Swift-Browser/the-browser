@@ -1,5 +1,5 @@
 {
-  "name": "@ardia/import",
+  "name": "@medusa/import",
   "version": "0.0.0",
   "private": true,
   "description": "Import bookmarks, history, tabs, passwords and Arc spaces from other browsers",

@@ -1,4 +1,4 @@
-import { cancelShortcutRecording, menuShortcuts, recordShortcut, Symbol, type MenuShortcut } from "@ardia/shell";
+import { cancelShortcutRecording, menuShortcuts, recordShortcut, Symbol, type MenuShortcut } from "@medusa/shell";
 import { useEffect, useMemo, useState } from "react";
 import { Pressable, Text, View } from "react-native";
 import { useTheme } from "../../../lib/theme";

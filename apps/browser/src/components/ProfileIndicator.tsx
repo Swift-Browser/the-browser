@@ -1,4 +1,4 @@
-import { Symbol, showMenu, type MenuItem } from "@ardia/shell";
+import { Symbol, showMenu, type MenuItem } from "@medusa/shell";
 import { Pressable, Text, View } from "react-native";
 import { createProfile, switchProfile } from "../lib/actions";
 import { PROFILE_COLORS, profileNameColor, useTheme } from "../lib/theme";

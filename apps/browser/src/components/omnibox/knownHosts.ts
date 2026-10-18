@@ -1,4 +1,4 @@
-import { hostOf } from "@ardia/core";
+import { hostOf } from "@medusa/core";
 import type { BrowserState } from "../../store/browser";
 import type { HistoryEntry } from "../../store/types";
 

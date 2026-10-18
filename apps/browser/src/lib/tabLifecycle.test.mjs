@@ -6,7 +6,7 @@ globalThis.__DEV__ = false;
 
 const ardiacore = new URL("../test-native-stub.mjs", import.meta.url).href;
 const stubs = {
-  "@ardia/ardiacore": `export * from ${JSON.stringify(ardiacore)};
+  "@medusa/ardiacore": `export * from ${JSON.stringify(ardiacore)};
     export const listTasks = async () => [];
     export const onSystemState = () => ({ remove() {} });
     export const systemState = async () => null;

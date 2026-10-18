@@ -1,4 +1,4 @@
-import { launchEnvironment, readDocument, stopIntroMusic, writeDocument } from "@ardia/shell";
+import { launchEnvironment, readDocument, stopIntroMusic, writeDocument } from "@medusa/shell";
 import { create } from "zustand";
 import { useBrowser } from "../../store/browser";
 import { resolveWindowId } from "../../store/model";

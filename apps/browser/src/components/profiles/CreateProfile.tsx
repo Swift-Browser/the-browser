@@ -1,4 +1,4 @@
-import { Symbol } from "@ardia/shell";
+import { Symbol } from "@medusa/shell";
 import { useMemo, useState } from "react";
 import { Pressable, Text, View } from "react-native";
 import { create } from "zustand";

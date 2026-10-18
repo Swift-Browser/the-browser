@@ -1,4 +1,4 @@
-import type { ActionState, ExtensionInstallPrompt, ExtensionPackage, InstalledExtension } from "@ardia/ardiacore";
+import type { ActionState, ExtensionInstallPrompt, ExtensionPackage, InstalledExtension } from "@medusa/ardiacore";
 import { useMemo } from "react";
 import { create } from "zustand";
 import { useBrowser, type BrowserState } from "../../store/browser";

@@ -1,4 +1,4 @@
-import { Surface, VisualEffect, WindowDragRegion } from "@ardia/shell";
+import { Surface, VisualEffect, WindowDragRegion } from "@medusa/shell";
 import { useEffect, useRef, useState } from "react";
 import { Animated, Easing, StyleSheet, View } from "react-native";
 import { hex } from "../../lib/theme";

@@ -1,4 +1,4 @@
-import { dropTabReveals, revealOffered, revealTab } from "@ardia/ardiacore";
+import { dropTabReveals, revealOffered, revealTab } from "@medusa/ardiacore";
 import { useMedia } from "../components/media/state";
 import { pageOf } from "../components/layout/pageState";
 import { useToolbarAutoHide } from "../components/layout/toolbarAutoHide";

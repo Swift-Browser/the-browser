@@ -1,4 +1,4 @@
-import { launchEnvironment, readDocument, systemInfo, writeDocument } from "@ardia/shell";
+import { launchEnvironment, readDocument, systemInfo, writeDocument } from "@medusa/shell";
 import { create } from "zustand";
 
 export type ReleaseNotes = {

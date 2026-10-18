@@ -1,5 +1,5 @@
-import { cleanUrl } from "@ardia/core";
-import { confirm, ContextMenuArea, copyText, MouseArea, showMenu, Symbol } from "@ardia/shell";
+import { cleanUrl } from "@medusa/core";
+import { confirm, ContextMenuArea, copyText, MouseArea, showMenu, Symbol } from "@medusa/shell";
 import { memo, type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { type LayoutChangeEvent, type NativeScrollEvent, type NativeSyntheticEvent, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { markHoverProps } from "../../lib/hoverShift";

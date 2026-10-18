@@ -9,7 +9,7 @@ import {
   type EngineInput,
   type ExtensionSearchEngine,
   type SearchEngine,
-} from "@ardia/core";
+} from "@medusa/core";
 import type { StateCreator } from "zustand";
 import type { BrowserState } from "./browser";
 

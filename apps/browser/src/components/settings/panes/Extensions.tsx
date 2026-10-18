@@ -1,4 +1,4 @@
-import { reloadExtension, type InstalledExtension } from "@ardia/ardiacore";
+import { reloadExtension, type InstalledExtension } from "@medusa/ardiacore";
 import { useEffect, useState } from "react";
 import { Image, Text, View } from "react-native";
 import { useTheme } from "../../../lib/theme";

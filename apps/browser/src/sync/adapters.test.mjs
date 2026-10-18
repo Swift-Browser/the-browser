@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 const { useBrowser } = await import("../store/browser.ts");
 const model = await import("../store/model.ts");
-const { Clock, emptyScope, syncScope } = await import("@ardia/sync");
+const { Clock, emptyScope, syncScope } = await import("@medusa/sync");
 const adapters = await import("./adapters.ts");
 const stub = await import("../test-native-stub.mjs");
 

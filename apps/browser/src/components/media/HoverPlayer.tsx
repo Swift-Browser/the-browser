@@ -1,4 +1,4 @@
-import { Surface } from "@ardia/shell";
+import { Surface } from "@medusa/shell";
 import { hex, layout, useTheme } from "../../lib/theme";
 import { useBrowser } from "../../store/browser";
 import { clickTab } from "../sidebar/actions";

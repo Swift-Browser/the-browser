@@ -1,4 +1,4 @@
-import type { SwipeEvent, SwipeStep } from "@ardia-real/ardiacore";
+import type { SwipeEvent, SwipeStep } from "@medusa-real/ardiacore";
 import type { Pager, PagerArea, PagerInput } from "./pager";
 
 const START_DISTANCE = 4;

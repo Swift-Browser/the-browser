@@ -5,8 +5,8 @@ import {
   refreshDeviceChooser,
   selectDevice,
   type DeviceChooser as Chooser,
-} from "@ardia/ardiacore";
-import { Symbol } from "@ardia/shell";
+} from "@medusa/ardiacore";
+import { Symbol } from "@medusa/shell";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, Pressable, ScrollView, Text, View } from "react-native";
 import { create } from "zustand";

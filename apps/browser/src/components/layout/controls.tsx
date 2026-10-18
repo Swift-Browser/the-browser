@@ -1,4 +1,4 @@
-import { ContextMenuArea, Surface, Symbol, VisualEffect, type SymbolProps } from "@ardia/shell";
+import { ContextMenuArea, Surface, Symbol, VisualEffect, type SymbolProps } from "@medusa/shell";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Animated, Easing, Pressable, ScrollView, StyleSheet, Text, View, type GestureResponderEvent, type ViewStyle } from "react-native";
 import { hex, useTheme } from "../../lib/theme";

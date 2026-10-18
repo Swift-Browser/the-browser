@@ -1,4 +1,4 @@
-import { devCrash } from "@ardia/shell";
+import { devCrash } from "@medusa/shell";
 import { createElement } from "react";
 import { devState, flush, requestLog, setSharing, useTelemetry } from "./client";
 import { captureException, installErrorReporting, reportNativeCrashes } from "./errors";

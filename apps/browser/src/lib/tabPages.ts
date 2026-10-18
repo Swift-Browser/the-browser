@@ -1,4 +1,4 @@
-import { claimLaunchTab, prepareTabTransfer, releaseTabTransfer } from "@ardia/ardiacore";
+import { claimLaunchTab, prepareTabTransfer, releaseTabTransfer } from "@medusa/ardiacore";
 import { isInternalTab } from "../components/pages/urls";
 import { useBrowser } from "../store/browser";
 import { changedIds } from "../store/changes";

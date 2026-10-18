@@ -1,5 +1,5 @@
-import { displayHost } from "@ardia/core";
-import { Symbol, type SymbolProps } from "@ardia/shell";
+import { displayHost } from "@medusa/core";
+import { Symbol, type SymbolProps } from "@medusa/shell";
 import { memo, useState } from "react";
 import { Image, Pressable, Text, View, type ViewStyle } from "react-native";
 import { markHoverProps } from "../lib/hoverShift";

@@ -1,4 +1,4 @@
-import { completeInline } from "@ardia/shell";
+import { completeInline } from "@medusa/shell";
 import { useLayoutEffect, useRef, useState, type RefObject } from "react";
 import { findNodeHandle, type TextInput } from "react-native";
 import { acceptsCompletion, completionToWrite, fieldChange, withoutFirst, type EditContext, type FieldChange, type Inline, type PendingInline, type Selection } from "./inline";

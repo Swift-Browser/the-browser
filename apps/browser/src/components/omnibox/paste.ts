@@ -1,5 +1,5 @@
-import { classifyPaste, cleanUrl, searchUrl, type PasteAction } from "@ardia/core";
-import { copyText, showMenu, type MenuItem } from "@ardia/shell";
+import { classifyPaste, cleanUrl, searchUrl, type PasteAction } from "@medusa/core";
+import { copyText, showMenu, type MenuItem } from "@medusa/shell";
 import { NativeModules } from "react-native";
 import { useBrowser } from "../../store/browser";
 import { defaultSearchEngine } from "../../store/settings";

@@ -1,4 +1,4 @@
-import { beginTracing, endTracing, engineInfo, isTracing, openTaskManager } from "@ardia/ardiacore";
+import { beginTracing, endTracing, engineInfo, isTracing, openTaskManager } from "@medusa/ardiacore";
 import {
   confirm,
   copyText,
@@ -19,7 +19,7 @@ import {
   type CommandEvent,
   type ScriptCommand,
   type ScriptState,
-} from "@ardia/shell";
+} from "@medusa/shell";
 import { maybeStartOnboarding, openVideoTour, startOnboarding, startToolTour } from "../components/onboarding";
 import { onboardingCompletedAt, useOnboarding } from "../components/onboarding/state";
 import { trackAppVersion } from "../components/ntp/releaseNotes";

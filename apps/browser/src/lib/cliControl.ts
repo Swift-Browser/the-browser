@@ -1,5 +1,5 @@
-import { cliControlStatus, onCliControlChanged, setCliActiveTab, setCliControl, type CliControlStatus } from "@ardia/ardiacore";
-import { installCli, installedCliVersion, onCliInstallLine, readDocument, systemInfo, writeDocument, type CliInstallResult } from "@ardia/shell";
+import { cliControlStatus, onCliControlChanged, setCliActiveTab, setCliControl, type CliControlStatus } from "@medusa/ardiacore";
+import { installCli, installedCliVersion, onCliInstallLine, readDocument, systemInfo, writeDocument, type CliInstallResult } from "@medusa/shell";
 import { create } from "zustand";
 import { useBrowser, type BrowserState } from "../store/browser";
 import { activeTabId } from "../store/model";

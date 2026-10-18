@@ -1,4 +1,4 @@
-import type { BrowserCommand, MenuEntry } from "@ardia/shell";
+import type { BrowserCommand, MenuEntry } from "@medusa/shell";
 import { useBrowser, type BrowserState } from "../../store/browser";
 import { activeTabId, plural } from "../../store/model";
 import { awayFromPin, groupOf, selectedTabIds } from "../../store/organize";

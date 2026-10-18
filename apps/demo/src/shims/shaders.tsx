@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { View } from "react-native";
-import type { PowerUpProps, WindowBackdropProps } from "@ardia-real/shaders";
+import type { PowerUpProps, WindowBackdropProps } from "@medusa-real/shaders";
 import { useBrowser } from "../../../browser/src/store/browser";
 import { prefersReducedMotion } from "./web/gl/clock";
 import { parseHex } from "./web/gl/colors";
@@ -11,7 +11,7 @@ import { backdropUniforms, HALO, haloUniforms, POWER_UP, powerUpPalette, powerUp
 import { BackdropFallback, HaloFallback, PowerUpFallback } from "./web/gl/fallbacks";
 import { Vibrancy } from "./web/gl/Vibrancy";
 
-export * from "@ardia-real/shaders";
+export * from "@medusa-real/shaders";
 
 const FRAME = 1 / 60;
 

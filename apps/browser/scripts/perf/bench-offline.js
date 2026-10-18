@@ -1,4 +1,4 @@
-import { readDocument } from "@ardia/shell";
+import { readDocument } from "@medusa/shell";
 
 const real = globalThis.fetch;
 const blocked = [];

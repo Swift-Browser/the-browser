@@ -1,5 +1,5 @@
-import { addHistoryVisits, deleteHistoryUrls, deletePassword, savePassword } from "@ardia/ardiacore";
-import { assignPositions, SyncNative, type Adapter, type Extraction, type SavedLogin } from "@ardia/sync";
+import { addHistoryVisits, deleteHistoryUrls, deletePassword, savePassword } from "@medusa/ardiacore";
+import { assignPositions, SyncNative, type Adapter, type Extraction, type SavedLogin } from "@medusa/sync";
 import { bookmarkUuidFor, ensureRoots, isBookmarkUuid } from "../store/bookmarks";
 import { MAX_HISTORY, MAX_VISIT_TIMES } from "../store/history";
 import { useBrowser, type BrowserState } from "../store/browser";

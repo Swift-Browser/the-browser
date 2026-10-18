@@ -1,4 +1,4 @@
-import { systemInfo } from "@ardia/shell";
+import { systemInfo } from "@medusa/shell";
 import { openUrls } from "./actions";
 
 function releaseNotesUrl(version = systemInfo().appVersion): string | null {

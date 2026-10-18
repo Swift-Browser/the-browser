@@ -1,5 +1,5 @@
-import { cleanUrl } from "@ardia/core";
-import { ContextMenuArea, copyText, MouseArea, prompt, showMenu, Symbol, type MenuItem } from "@ardia/shell";
+import { cleanUrl } from "@medusa/core";
+import { ContextMenuArea, copyText, MouseArea, prompt, showMenu, Symbol, type MenuItem } from "@medusa/shell";
 import { memo, useMemo, useRef, useState } from "react";
 import { Animated, PanResponder, Pressable, StyleSheet, Text, View, type LayoutRectangle } from "react-native";
 import { useTheme } from "../../lib/theme";

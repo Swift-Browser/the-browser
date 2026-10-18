@@ -1,4 +1,4 @@
-# @ardia/import
+# @medusa/import
 
 Imports another browser's data into Ardia. The native code lives in `ios/`; `ios/Core/` is plain Swift with no
 Expo dependency, so `Package.swift` builds and tests it on its own. `src/index.ts` is the typed JS wrapper and the UI
@@ -47,7 +47,7 @@ Shared code: `Model.swift` (`ImportKind`, `ImportResult` and the other result ty
    (`engine/chromium/src/chrome/browser/ardia/ac_cookies.cc`, `ac_autofill.cc`).
 5. `apps/browser/src/components/import/ImportWindow.tsx` is the wizard: choose, then profiles, then unlock, then
    progress, then done. `apply.ts` writes the JS-side kinds into the store (bookmarks, history, tabs, Arc spaces,
-   Dia profiles) and saves passwords with `savePassword` (`@ardia/ardiacore`). For cookies and autofill it calls
+   Dia profiles) and saves passwords with `savePassword` (`@medusa/ardiacore`). For cookies and autofill it calls
    `importNative`, which calls `writeImported`. `module.ts` loads the package lazily.
 
 ## Secrets and the Keychain
@@ -66,7 +66,7 @@ Shared code: `Model.swift` (`ImportKind`, `ImportResult` and the other result ty
 
 ## Fixtures
 
-`pnpm --filter @ardia/import fixtures` runs `fixtures/generate.py`, which wipes `fixtures/home/` and
+`pnpm --filter @medusa/import fixtures` runs `fixtures/generate.py`, which wipes `fixtures/home/` and
 `fixtures/misc/` and rebuilds everything below deterministically. The test secrets are in `fixtures/secrets.json`.
 `fixtures/dia/` and `fixtures/extensions/` are written by hand. Don't open the Firefox `places.sqlite` with the
 sqlite3 CLI: it checkpoints the WAL the tests depend on.
@@ -88,9 +88,9 @@ sqlite3 CLI: it checkpoints the WAL the tests depend on.
 
 | What | Command |
 |---|---|
-| Swift tests (`tests/`, against `fixtures/`) | `pnpm --filter @ardia/import test` (`swift test`, scratch path in `$TMPDIR`) |
-| Rebuild fixtures | `pnpm --filter @ardia/import fixtures` |
-| Typecheck the JS wrapper | `pnpm --filter @ardia/import typecheck` |
+| Swift tests (`tests/`, against `fixtures/`) | `pnpm --filter @medusa/import test` (`swift test`, scratch path in `$TMPDIR`) |
+| Rebuild fixtures | `pnpm --filter @medusa/import fixtures` |
+| Typecheck the JS wrapper | `pnpm --filter @medusa/import typecheck` |
 | End to end in a hidden Debug instance (cookies, addresses, cards) | `node packages/import/scripts/e2e.mjs <Ardia.app> <scratch dir>` (`--help`) |
 | Run one script in that instance (`e2e.mjs --keep`) | `scripts/agent/ac eval <scratch dir>/data '<js>'` |
 
@@ -114,7 +114,7 @@ sqlite3 CLI: it checkpoints the WAL the tests depend on.
 3. Write the reader in `ios/Core/<Source><Kind>.swift`. Read SQLite through `SQLiteSnapshot`, check `cancellation`,
    and throw `ImportError`. Then add its `(kind, family)` case in `Importer.importData`.
 4. Add a fixture: a `build_*` function in `fixtures/generate.py`, or a branch of an existing one. Run
-   `pnpm --filter @ardia/import fixtures` and write a test in `tests/`.
+   `pnpm --filter @medusa/import fixtures` and write a test in `tests/`.
 5. Apply it in the app. Add the kind to `KINDS` (and `ENCRYPTED` if it's encrypted) in `ImportWindow.tsx`, and write
    it in `apply.ts`. A secret kind goes through `ImportWriter` and a new engine call instead.
 6. Run `test`, `typecheck` and `pnpm -w typecheck`. For anything that reaches the engine, also run `scripts/e2e.mjs`

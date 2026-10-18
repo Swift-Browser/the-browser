@@ -1,5 +1,5 @@
-import { toAppUrl, urlForDisplay } from "@ardia/core";
-import { Surface, Symbol } from "@ardia/shell";
+import { toAppUrl, urlForDisplay } from "@medusa/core";
+import { Surface, Symbol } from "@medusa/shell";
 import { useEffect, useRef, useState } from "react";
 import { Animated, Easing, StyleSheet, Text, View } from "react-native";
 import { hex, useTheme } from "../../lib/theme";

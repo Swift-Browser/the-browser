@@ -1,4 +1,4 @@
-import { onAppEvent, onWindowEvent, postNotification, removeNotifications } from "@ardia/shell";
+import { onAppEvent, onWindowEvent, postNotification, removeNotifications } from "@medusa/shell";
 import { create } from "zustand";
 import { useBrowser } from "../store/browser";
 import { useCalendar } from "./calendar";

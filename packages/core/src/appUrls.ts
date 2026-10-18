@@ -1,6 +1,6 @@
-const APP_SCHEME = "ardia";
+const APP_SCHEME = "medusa";
 
-const APP_PREFIX = /^(view-source:)?ardia:(?:\/\/)?/i;
+const APP_PREFIX = /^(view-source:)?medusa:(?:\/\/)?/i;
 const ENGINE_PREFIX = /^(view-source:)?chrome:(?:\/\/)?/i;
 const ABOUT_PAGE = /^about:(blank|srcdoc)([?#]|$)/i;
 const ABOUT_ALIAS = /^about:([a-z][a-z0-9-]*)/i;
@@ -29,7 +29,7 @@ export function toEngineUrl(url: string): string {
   return parts?.host ? `${parts.viewSource}chrome://${parts.host}${parts.rest}` : url;
 }
 
-const isAppUrl = (url: string | null | undefined) => !!url && /^ardia:\/\/[^/?#]/i.test(url);
+const isAppUrl = (url: string | null | undefined) => !!url && /^medusa:\/\/[^/?#]/i.test(url);
 
 function appUrlParts(url: string): { host: string; path: string; query: string; hash: string } | null {
   if (!isAppUrl(url)) return null;

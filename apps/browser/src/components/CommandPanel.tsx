@@ -1,4 +1,4 @@
-import { OutsidePressArea, Surface } from "@ardia/shell";
+import { OutsidePressArea, Surface } from "@medusa/shell";
 import { useEffect, useRef, useState, type ComponentProps, type ReactNode } from "react";
 import { AccessibilityInfo, Animated, Easing, View, type LayoutChangeEvent } from "react-native";
 import { hex, useTheme } from "../lib/theme";

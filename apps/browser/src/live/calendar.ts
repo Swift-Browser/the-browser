@@ -8,7 +8,7 @@ import {
   systemCalendars,
   type CalendarAuthorization,
   type SystemCalendar,
-} from "@ardia/shell";
+} from "@medusa/shell";
 import { useEffect, useState } from "react";
 import { create } from "zustand";
 import { everySlowly } from "../lib/slowTimers";

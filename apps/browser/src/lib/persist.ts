@@ -1,5 +1,5 @@
-import { cancelDownload, type Download } from "@ardia/ardiacore";
-import { readDocument, writeDocument } from "@ardia/shell";
+import { cancelDownload, type Download } from "@medusa/ardiacore";
+import { readDocument, writeDocument } from "@medusa/shell";
 import { useBrowser, type BrowserState, type HydrateData } from "../store/browser";
 import { inPinnedContainer, isIncognitoProfile, newId, privateSession, snapshotTab } from "../store/model";
 import { earlyLaunchTabOn, launchTab, linkProfile, type LaunchTab } from "../store/launchTab";

@@ -1,7 +1,7 @@
-import { FadeLabel, Surface } from "@ardia/shell";
+import { FadeLabel, Surface } from "@medusa/shell";
 import { useEffect } from "react";
 import { Pressable, Text, View } from "react-native";
-import { displayUrl } from "@ardia/core";
+import { displayUrl } from "@medusa/core";
 import { hex, useTheme } from "../../lib/theme";
 import { useBrowser } from "../../store/browser";
 import { tabTitle } from "./actions";

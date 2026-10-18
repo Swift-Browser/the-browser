@@ -1,4 +1,4 @@
-import { BUILT_IN_ENGINES, calculate } from "@ardia/core";
+import { BUILT_IN_ENGINES, calculate } from "@medusa/core";
 import table from "./suggestions.json";
 
 const LIMIT = 10;

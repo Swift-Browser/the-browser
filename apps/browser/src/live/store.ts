@@ -1,4 +1,4 @@
-import { readDocument, writeDocument } from "@ardia/shell";
+import { readDocument, writeDocument } from "@medusa/shell";
 import { create } from "zustand";
 import type { CompletedItem, CompletionState, FolderStatus, LiveAccount, LiveFolder, LiveFolderKind, LiveItem, LiveSourceId } from "./types";
 

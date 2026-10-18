@@ -2,7 +2,7 @@
 set -euo pipefail
 here=$(cd "$(dirname "$0")" && pwd)
 root=$(cd "$here/../../.." && pwd)
-repo=${ARDIACORE_PREBUILT_REPO:-mantrakp04/ardia}
+repo=${ARDIACORE_PREBUILT_REPO:-Swift-Browser/the-browser}
 assets=${ARDIACORE_PREBUILT_ASSETS:-https://github.com/$repo/releases/download}
 table="$here/../prebuilt-engines.tsv"
 store="$root/apps/browser/build-ardiacore/prebuilt"
@@ -61,7 +61,7 @@ if [ ! -f "$dest/.complete" ]; then
   rm -rf "$tmp" && mkdir -p "$tmp"
   trap 'rm -rf "$tmp"' EXIT
   echo "downloading the engine from $version ($url)" >&2
-  curl -fL --retry 3 --progress-bar -o "$tmp/$file" "$url" || die "couldn't download $url"
+  curl -fL --retry 3 --progress-bar -o "$tmp/$file" "$url" || curl -fL --retry 3 --progress-bar -o "$tmp/$file" "https://github.com/mantrakp04/ardia/releases/download/v$version/$file" || die "couldn't download $url"
   [ "$(shasum -a 256 "$tmp/$file" | awk '{ print $1 }')" = "$sha" ] || die "$file doesn't match its SHA-256 in prebuilt-engines.tsv"
   tar -xJf "$tmp/$file" -C "$tmp" || die "couldn't unpack $file"
   [ -f "$tmp/$name.framework/Versions/Current/$name" ] || die "$file holds no $name.framework"

@@ -1,4 +1,4 @@
-import { Symbol } from "@ardia/shell";
+import { Symbol } from "@medusa/shell";
 import { StyleSheet, Text, View } from "react-native";
 import { PromptButton } from "../../../../browser/src/components/layout/controls";
 import { useTheme } from "../../../../browser/src/lib/theme";

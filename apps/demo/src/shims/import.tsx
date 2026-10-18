@@ -1,1 +1,1 @@
-export * from "@ardia-real/import";
+export * from "@medusa-real/import";

@@ -1,4 +1,4 @@
-import { WebView, type OpenWindowRequest } from "@ardia/ardiacore";
+import { WebView, type OpenWindowRequest } from "@medusa/ardiacore";
 import { memo, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Animated, StyleSheet, View } from "react-native";
 import { useShallow } from "zustand/react/shallow";

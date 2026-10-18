@@ -1,4 +1,4 @@
-import { confirm, onWindowEvent } from "@ardia/shell";
+import { confirm, onWindowEvent } from "@medusa/shell";
 import { useBrowser } from "../store/browser";
 import { inPinnedContainer, plural, profileFor } from "../store/model";
 

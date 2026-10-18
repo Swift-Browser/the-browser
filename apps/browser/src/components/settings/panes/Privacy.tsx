@@ -20,8 +20,8 @@ import {
   type SiteSettings,
   type SiteSettingType,
   type SiteSettingValue,
-} from "@ardia/ardiacore";
-import { confirm } from "@ardia/shell";
+} from "@medusa/ardiacore";
+import { confirm } from "@medusa/shell";
 import { useEffect, useState } from "react";
 import { Image, ScrollView, Text, View } from "react-native";
 import { useTheme } from "../../../lib/theme";

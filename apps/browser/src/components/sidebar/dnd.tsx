@@ -1,4 +1,4 @@
-import { hapticTick } from "@ardia/shell";
+import { hapticTick } from "@medusa/shell";
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { Animated, Easing, PanResponder, type ScrollView, type View } from "react-native";
 import { create, useStore } from "zustand";

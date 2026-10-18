@@ -1,6 +1,6 @@
-import { setSearchEngineName } from "@ardia/ardiacore";
-import { chooseTextFragment, cleanUrl, searchUrl, withTextFragment, type SelectionContext } from "@ardia/core";
-import { copyText } from "@ardia/shell";
+import { setSearchEngineName } from "@medusa/ardiacore";
+import { chooseTextFragment, cleanUrl, searchUrl, withTextFragment, type SelectionContext } from "@medusa/core";
+import { copyText } from "@medusa/shell";
 import { create } from "zustand";
 import { webviews } from "../../lib/webviews";
 import { useBrowser } from "../../store/browser";

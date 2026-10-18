@@ -1,4 +1,4 @@
-import { FadeLabel } from "@ardia/shell";
+import { FadeLabel } from "@medusa/shell";
 import { useEffect, useRef } from "react";
 import { Animated, Easing, Pressable, Text, View } from "react-native";
 import { useTheme } from "../../lib/theme";

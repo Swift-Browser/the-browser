@@ -26,12 +26,12 @@
 set -eu
 umask 022
 
-repo=mantrakp04/ardia
+repo=Swift-Browser/the-browser
 asset_suffix=-macos-arm64.tar.gz
 version_pattern='^[0-9]{1,4}\.[0-9]{1,4}\.[0-9]{1,4}(-[a-z]{1,16}\.[0-9]{1,4})?$'
-cli_home=${ARDIA_CLI_HOME:-$HOME/Library/Application Support/Ardia/CLI}
+cli_home=${MEDUSA_CLI_HOME:-${ARDIA_CLI_HOME:-$HOME/Library/Application Support/Medusa/CLI}}
 default_bin_dir=$HOME/.local/bin
-bin_dir=${ARDIA_CLI_BIN_DIR:-$default_bin_dir}
+bin_dir=${MEDUSA_CLI_BIN_DIR:-${ARDIA_CLI_BIN_DIR:-$default_bin_dir}}
 version=
 pinned_sha=
 uninstall=0

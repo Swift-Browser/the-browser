@@ -95,7 +95,7 @@ don't re-render every tab.
 - Dialogs / native side effects go through lib/actions.ts (`closeTab`, `switchToTab`, `moveTabToProfile`,
   `moveTabToWindow`, `createProfile`, `deleteProfile`, `openWindow`).
 - Menu commands: lib/commands.ts (JS) + packages/shell/ios/Menus.swift (native menu bar).
-- Tests: `pnpm --filter @ardia/browser test` (`docs/testing.md`).
+- Tests: `pnpm --filter @medusa/browser test` (`docs/testing.md`).
 
 ## Native events (lib/nativeEvents.ts)
 Every native→JS call is its own task, and React Native commits after each, so a page's reports used to cost a commit
@@ -122,7 +122,7 @@ the active one, pins (and groups, once the engine reports them). JS never writes
 caused a report: it sends commands with ids, the engine commits them in Chrome, and every change comes back as one
 ordered transaction that names its cause. There are no echo windows, timers or "was that us" flags.
 
-**The engine contract** (`@ardia/ardiacore`; ArdiaCore implements it in `packages/ardiacore/ios/ArdiaCoreTabStrip.mm`):
+**The engine contract** (`@medusa/ardiacore`; ArdiaCore implements it in `packages/ardiacore/ios/ArdiaCoreTabStrip.mm`):
 - `sendTabStripCommand(command): number` sends a command and returns its id (unique for the app's lifetime, also
   across JS reloads). Commands:
   - `{ op: "activate", strip, key }`: make that tab the strip's active tab.

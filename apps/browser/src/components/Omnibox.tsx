@@ -1,5 +1,5 @@
-import { displayUrl, resolveInput, searchUrl, scopedSearchUrl, type SearchScope, type Suggestion } from "@ardia/core";
-import { ContextMenuArea, Symbol, copyText, pickFiles, showMenu, startDictation } from "@ardia/shell";
+import { displayUrl, resolveInput, searchUrl, scopedSearchUrl, type SearchScope, type Suggestion } from "@medusa/core";
+import { ContextMenuArea, Symbol, copyText, pickFiles, showMenu, startDictation } from "@medusa/shell";
 import { memo, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
 import { useTheme } from "../lib/theme";

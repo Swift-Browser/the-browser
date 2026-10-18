@@ -5,15 +5,15 @@ of its time in `swift test`'s first build. Each package also runs its own:
 
 | Package | Command | Cases |
 | --- | --- | --- |
-| `apps/browser` | `pnpm --filter @ardia/browser test` | 228 |
-| `packages/core` | `pnpm --filter @ardia/core test` | 32 |
-| `packages/sync` | `pnpm --filter @ardia/sync test` (`swift test`, `node --test`, then the rename's launch migration end to end, `scripts/legacy-migration-e2e.mjs`) | 38 + 8 |
-| `packages/import` | `pnpm --filter @ardia/import test` (`swift test`) | 26 |
-| `packages/ardiacore` | `pnpm --filter @ardia/ardiacore test` (`tests/pip-zoom.test.cc`, compiled with `clang++`) | 1 program |
+| `apps/browser` | `pnpm --filter @medusa/browser test` | 228 |
+| `packages/core` | `pnpm --filter @medusa/core test` | 32 |
+| `packages/sync` | `pnpm --filter @medusa/sync test` (`swift test`, `node --test`, then the rename's launch migration end to end, `scripts/legacy-migration-e2e.mjs`) | 38 + 8 |
+| `packages/import` | `pnpm --filter @medusa/import test` (`swift test`) | 26 |
+| `packages/ardiacore` | `pnpm --filter @medusa/ardiacore test` (`tests/pip-zoom.test.cc`, compiled with `clang++`) | 1 program |
 | `extras/raycast-ardia` | `node --test extras/raycast-ardia/src/scripts.test.ts` | 1 |
 
-`apps/browser` runs its TypeScript under plain Node: `src/test-loader.mjs` maps `@ardia/shell`,
-`@ardia/ardiacore` and `expo-modules-core` to `src/test-native-stub.mjs`. One file:
+`apps/browser` runs its TypeScript under plain Node: `src/test-loader.mjs` maps `@medusa/shell`,
+`@medusa/ardiacore` and `expo-modules-core` to `src/test-native-stub.mjs`. One file:
 `node --no-warnings --import ./src/test-loader.mjs --test src/store/tabs.test.mjs` (from `apps/browser`).
 
 End-to-end checks need a built app and are run by hand. Each runs hidden instances through `scripts/lib/instance.mjs`

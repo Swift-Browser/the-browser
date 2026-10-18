@@ -11,8 +11,8 @@ import {
   setAutofillSettings,
   type SavedAddress,
   type SavedCard,
-} from "@ardia/ardiacore";
-import { confirm, copyText, Symbol } from "@ardia/shell";
+} from "@medusa/ardiacore";
+import { confirm, copyText, Symbol } from "@medusa/shell";
 import { useEffect, useState } from "react";
 import { Text, View } from "react-native";
 import { useTheme } from "../../../lib/theme";

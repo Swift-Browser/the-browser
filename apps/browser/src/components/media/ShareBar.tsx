@@ -1,5 +1,5 @@
-import { changeCaptureSource, stopCapture } from "@ardia/ardiacore";
-import { Symbol } from "@ardia/shell";
+import { changeCaptureSource, stopCapture } from "@medusa/ardiacore";
+import { Symbol } from "@medusa/shell";
 import { useEffect, useRef } from "react";
 import { Animated, Easing, Text, View } from "react-native";
 import { useTheme } from "../../lib/theme";

@@ -1,4 +1,4 @@
-import { ContextMenuArea, DockSelection, MouseArea, Surface, Symbol } from "@ardia/shell";
+import { ContextMenuArea, DockSelection, MouseArea, Surface, Symbol } from "@medusa/shell";
 import { Fragment, memo, useEffect, useMemo, useRef } from "react";
 import { Animated, Pressable, StyleSheet, View } from "react-native";
 import { closeTab } from "../../lib/actions";

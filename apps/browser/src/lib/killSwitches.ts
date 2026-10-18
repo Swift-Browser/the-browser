@@ -1,4 +1,4 @@
-import { killSwitchEnvironment, readDocument, writeDocument } from "@ardia/shell";
+import { killSwitchEnvironment, readDocument, writeDocument } from "@medusa/shell";
 
 type SwitchDef = {
   about: string;

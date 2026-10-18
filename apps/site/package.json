@@ -1,5 +1,5 @@
 {
-  "name": "@ardia/site",
+  "name": "@medusa/site",
   "private": true,
   "type": "module",
   "scripts": {

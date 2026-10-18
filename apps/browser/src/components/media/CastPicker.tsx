@@ -1,5 +1,5 @@
-import { CastMode, preferredCastMode, startCasting, stopCasting, type CastSink } from "@ardia/ardiacore";
-import { openExternalURL, showMenu, Symbol } from "@ardia/shell";
+import { CastMode, preferredCastMode, startCasting, stopCasting, type CastSink } from "@medusa/ardiacore";
+import { openExternalURL, showMenu, Symbol } from "@medusa/shell";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, Pressable, ScrollView, Text, View } from "react-native";
 import { useTheme } from "../../lib/theme";

@@ -1,4 +1,4 @@
-import { ContextMenuArea, hapticTick, showMenu, Symbol } from "@ardia/shell";
+import { ContextMenuArea, hapticTick, showMenu, Symbol } from "@medusa/shell";
 import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Animated, Easing, PanResponder, Pressable, StyleSheet, Text, View } from "react-native";
 import { useShallow } from "zustand/react/shallow";

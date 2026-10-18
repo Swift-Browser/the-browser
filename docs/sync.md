@@ -231,7 +231,7 @@ Saved passwords are Chrome's (its password manager).
   the mock keychain's where ArdiaCoreHost uses that (test instances, ad hoc builds). No Touch ID prompt is needed each cycle, and no
   Chromium change.
 - **Writing.** Writes go through Chrome's API (`savePassword`, `deletePassword` in
-  `@ardia/ardiacore`), so Chrome's in-memory store and autofill see them at once. A changed
+  `@medusa/ardiacore`), so Chrome's in-memory store and autofill see them at once. A changed
   password is a delete plus an add: the update API needs the device check.
 - **Safety.**
   - A read that finds any row it can't decrypt is skipped (a partial list would read as
@@ -306,7 +306,7 @@ bookmark, settings, profile or group edit, and on Sync Now. A cycle:
 
 ## Tests
 
-- `pnpm --filter @ardia/sync test`:
+- `pnpm --filter @medusa/sync test`:
   - `swift test`: 5 tests. BIP39 reference vectors; tampering and truncation are detected; the
     wrong phrase opens nothing; the folder holds no plaintext in names or contents; deleting one
     chain leaves another.
@@ -314,7 +314,7 @@ bookmark, settings, profile or group edit, and on Sync Now. A cycle:
     edit-after-delete; clock skew; late, out-of-order and half-copied files; an edit during a read;
     an old snapshot put back after its tombstones were collected; a write that fails before or
     after the file lands; 40 randomized three-device runs with flaky delivery, compaction and crashes.
-- `pnpm --filter @ardia/browser test` runs `src/sync/adapters.test.mjs` (4 tests against the real
+- `pnpm --filter @medusa/browser test` runs `src/sync/adapters.test.mjs` (4 tests against the real
   store: delete versus add, concurrent moves that would make a cycle, parked pinned tabs, passwords
   both ways) and `src/sync/engine.test.mjs` (the engine against a fake native module: a crash the
   moment a batch lands re-sends the journalled batches byte for byte and numbers the next one after

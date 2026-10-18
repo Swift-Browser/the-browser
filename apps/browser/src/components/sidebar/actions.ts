@@ -1,5 +1,5 @@
-import { cleanUrl, markdownLink } from "@ardia/core";
-import { copyText, prompt } from "@ardia/shell";
+import { cleanUrl, markdownLink } from "@medusa/core";
+import { copyText, prompt } from "@medusa/shell";
 import { updateFolder } from "../../live/store";
 import { useBrowser } from "../../store/browser";
 import { activeTabId, bookmarkProfileId, viewTabIds } from "../../store/model";
