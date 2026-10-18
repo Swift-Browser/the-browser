@@ -4,10 +4,10 @@ import ExpoModulesCore
 public class ImportModule: Module {
   private let importer: Importer = {
     let env = ProcessInfo.processInfo.environment
-    let support = env["ARDIA_IMPORT_SOURCE_DIR"].map { URL(fileURLWithPath: $0, isDirectory: true) }
+    let support = (env["MEDUSA_IMPORT_SOURCE_DIR"] ?? env["MEDUSA_IMPORT_SOURCE_DIR"]).map { URL(fileURLWithPath: $0, isDirectory: true) }
       ?? FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
     let icons = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
-      .appendingPathComponent("\(Bundle.main.bundleIdentifier ?? "Ardia")/ImportIcons", isDirectory: true)
+      .appendingPathComponent("\(Bundle.main.bundleIdentifier ?? "Medusa")/ImportIcons", isDirectory: true)
     return Importer(discovery: BrowserDiscovery(
       applicationSupport: support,
       locateApp: AppIcons.locate,
@@ -17,28 +17,28 @@ public class ImportModule: Module {
 
   private static let safariHome: URL = {
     let env = ProcessInfo.processInfo.environment
-    if let home = env["ARDIA_IMPORT_SAFARI_HOME"] { return URL(fileURLWithPath: home, isDirectory: true) }
-    if let support = env["ARDIA_IMPORT_SOURCE_DIR"] {
+    if let home = env["MEDUSA_IMPORT_SAFARI_HOME"] ?? env["MEDUSA_IMPORT_SAFARI_HOME"] { return URL(fileURLWithPath: home, isDirectory: true) }
+    if let support = env["MEDUSA_IMPORT_SOURCE_DIR"] ?? env["MEDUSA_IMPORT_SOURCE_DIR"] {
       return URL(fileURLWithPath: support, isDirectory: true).deletingLastPathComponent().deletingLastPathComponent()
     }
     return FileManager.default.homeDirectoryForCurrentUser
   }()
 
   private static let secret: Importer.SecretProvider = {
-    if let fixed = ProcessInfo.processInfo.environment["ARDIA_IMPORT_TEST_SECRET"] {
+    if let fixed = ProcessInfo.processInfo.environment["MEDUSA_IMPORT_TEST_SECRET"] ?? ProcessInfo.processInfo.environment["MEDUSA_IMPORT_TEST_SECRET"] {
       return { _, _ in Data(fixed.utf8) }
     }
     return SafeStorageKeychain.secret
   }()
 
-  private static let diaBundleId = ProcessInfo.processInfo.environment["ARDIA_IMPORT_DIA_BUNDLE_ID"] ?? DiaAutomation.bundleIdentifier
+  private static let diaBundleId = ProcessInfo.processInfo.environment["MEDUSA_IMPORT_DIA_BUNDLE_ID"] ?? ProcessInfo.processInfo.environment["MEDUSA_IMPORT_DIA_BUNDLE_ID"] ?? DiaAutomation.bundleIdentifier
 
   private let jobs = ImportJobs()
   private let vault = ImportVault()
-  private static let work = DispatchQueue(label: "ardia.import", qos: .userInitiated, attributes: .concurrent)
+  private static let work = DispatchQueue(label: "medusa.import", qos: .userInitiated, attributes: .concurrent)
 
   public func definition() -> ModuleDefinition {
-    Name("ArdiaImport")
+    Name("MedusaImport")
     Events("onImportEvent")
 
     AsyncFunction("listBrowsers") { (promise: Promise) in

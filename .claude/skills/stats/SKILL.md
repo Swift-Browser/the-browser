@@ -1,9 +1,9 @@
 ---
 name: stats
-description: Ardia's numbers in one short report — users and installs, site traffic and downloads, the phone Send to my Mac panel, GitHub, and new errors. Use whenever the owner asks how things are going, "what are the stats", "how many users/downloads/installs", "how many updated", "how's the site doing", GitHub stats, or a growth check-in, even if they don't say "stats".
+description: Medusa's numbers in one short report — users and installs, site traffic and downloads, the phone Send to my Mac panel, GitHub, and new errors. Use whenever the owner asks how things are going, "what are the stats", "how many users/downloads/installs", "how many updated", "how's the site doing", GitHub stats, or a growth check-in, even if they don't say "stats".
 ---
 
-# Ardia stats
+# Medusa stats
 
 The owner wants the numbers fast: one command, then the reply. Don't read other files first.
 
@@ -24,7 +24,7 @@ Only go further when the report doesn't answer the question:
   with the queries in [queries.md](queries.md) and the event meanings in `docs/growth.md` ("Telemetry");
 - installs per version and per day: `node scripts/update-checks.mjs`.
 
-If `~/.config/ardia/telemetry.env` is missing, the report says so; ask the owner for it.
+If `~/.config/medusa/telemetry.env` is missing, the report says so; ask the owner for it.
 
 Copies on 0.2.17 or earlier send their opt-in events to PostHog Cloud, which nothing reads; the report
 names those versions when they still check for updates.

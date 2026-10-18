@@ -2,7 +2,7 @@ import { emitNativeEvent, provideNativeModule } from "../../expo-modules-core";
 import { currentPointer, watchPointer, type PointerSample } from "./pointer";
 
 const REACH = 24;
-const WINDOW_SELECTOR = ".ardia-window";
+const WINDOW_SELECTOR = ".medusa-window";
 
 const watched = new Map<string, number>();
 const over = new Set<string>();
@@ -34,11 +34,11 @@ function check(pointer: PointerSample | null = currentPointer()) {
     const x = pointer?.clientX ?? -1;
     const y = pointer?.clientY ?? -1;
     const point: [number, number] = frame ? [x - frame.left, y - frame.top] : [x, y];
-    emitNativeEvent("ArdiaShell", "onWindowEvent", { type: "leftEdge", id, over: now, point });
+    emitNativeEvent("MedusaShell", "onWindowEvent", { type: "leftEdge", id, over: now, point });
   }
 }
 
-const HOLDING_CLASS = "ardia-pointer-hold";
+const HOLDING_CLASS = "medusa-pointer-hold";
 
 function holdPagePointer() {
   const holding = [...watched.values()].some((hold) => hold > 0);
@@ -73,4 +73,4 @@ export function watchLeftEdge(id: string, on: boolean, hold: number) {
   if (watched.size) check();
 }
 
-provideNativeModule("ArdiaShell", { watchLeftEdge: async (id: string, on: boolean, hold: number) => watchLeftEdge(id, on, hold) });
+provideNativeModule("MedusaShell", { watchLeftEdge: async (id: string, on: boolean, hold: number) => watchLeftEdge(id, on, hold) });

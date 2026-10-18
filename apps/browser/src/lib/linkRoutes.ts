@@ -1,4 +1,4 @@
-import type { LinkRoute } from "@medusa/ardiacore";
+import type { LinkRoute } from "@medusa/medusacore";
 import { useBrowser } from "../store/browser";
 import { engineProfile } from "../store/model";
 import { lastActiveProfile } from "../store/small";

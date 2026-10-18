@@ -8,7 +8,7 @@ import { clickhouse, hasTelemetryEnv } from "./telemetry-env.mjs";
 
 const USAGE = `usage: node scripts/stats.mjs [--since <when>] [--json] [--no-save]
 
-Ardia's numbers in one report: users and installs, the site, phones, GitHub and errors, for a window
+Medusa's numbers in one report: users and installs, the site, phones, GitHub and errors, for a window
 ending now, plus what changed since the last run. Writes the visual as an SVG and prints its path.
 
   --since <when>   start of the window (default 24h): 6h, 90m, 2d, 1w, "8:30pm IST", "20:30",
@@ -16,11 +16,11 @@ ending now, plus what changed since the last run. Writes the visual as an SVG an
   --json           print the data as JSON instead of the report
   --no-save        don't record this run as the last check`;
 
-const REPO = "mantrakp04/ardia";
-const STATE = join(homedir(), ".local/state/ardia/stats-last.json");
-const TRAFFIC_CACHE = join(homedir(), ".cache/ardia/github-traffic.json");
-const RELEASES_CACHE = join(homedir(), ".cache/ardia/github-older-releases.json");
-const SVG_DIR = "/tmp/ardia-stats";
+const REPO = "mantrakp04/medusa";
+const STATE = join(homedir(), ".local/state/medusa/stats-last.json");
+const TRAFFIC_CACHE = join(homedir(), ".cache/medusa/github-traffic.json");
+const RELEASES_CACHE = join(homedir(), ".cache/medusa/github-older-releases.json");
+const SVG_DIR = "/tmp/medusa-stats";
 const TZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 const args = process.argv.slice(2);
@@ -70,9 +70,9 @@ const step = span <= 8 * 3600e3 ? 900 : span <= 3 * 864e5 ? 3600 : 86400;
 const zoneOffsetSec = -new Date(now).getTimezoneOffset() * 60;
 const origin = Math.floor((sinceSec + zoneOffsetSec) / step) * step - zoneOffsetSec;
 
-const HOSTS = "'ardia.dev', 'www.ardia.dev', 'netnyahoo.com', 'www.netnyahoo.com'";
-const SITE = `(source IN ('ardia-site', 'netnyahoo-site', 'posthog-cloud') AND properties['$lib'] IN ('web', 'ardia-web', 'netnyahoo-web') AND properties['$host'] IN (${HOSTS}))`;
-const APP = `(source IN ('ardia-app', 'netnyahoo-app', 'posthog-cloud') AND properties['$lib'] IN ('ardia-telemetry', 'netnyahoo-telemetry'))`;
+const HOSTS = "'medusa.dev', 'www.medusa.dev', 'netnyahoo.com', 'www.netnyahoo.com'";
+const SITE = `(source IN ('medusa-site', 'netnyahoo-site', 'posthog-cloud') AND properties['$lib'] IN ('web', 'medusa-web', 'netnyahoo-web') AND properties['$host'] IN (${HOSTS}))`;
+const APP = `(source IN ('medusa-app', 'netnyahoo-app', 'posthog-cloud') AND properties['$lib'] IN ('medusa-telemetry', 'netnyahoo-telemetry'))`;
 const WINDOW_EVENTS = [
   "$pageview", "download_clicked", "github_clicked", "screenshot_opened", "release_notes_viewed", "notify_clicked",
   "$rageclick", "$dead_click", "send_to_mac_clicked", "send_to_mac_fallback", "mac_link_visit", "$exception",
@@ -81,15 +81,15 @@ const WINDOW_EVENTS = [
 const OTEL = {
   table: "telemetry.otel_logs", final: " FINAL",
   p: "LogAttributes", ts: "Timestamp", t: "toDateTime64(Timestamp, 6, 'UTC')", e: "Event", d: "DistinctId",
-  site: `ServiceName IN ('ardia-site', 'netnyahoo-site') AND {p}['$lib'] IN ('web', 'ardia-web', 'netnyahoo-web') AND {p}['$host'] IN (${HOSTS})`,
-  app: "ServiceName IN ('ardia-app', 'netnyahoo-app') AND {p}['$lib'] IN ('ardia-telemetry', 'netnyahoo-telemetry')",
+  site: `ServiceName IN ('medusa-site', 'netnyahoo-site') AND {p}['$lib'] IN ('web', 'medusa-web', 'netnyahoo-web') AND {p}['$host'] IN (${HOSTS})`,
+  app: "ServiceName IN ('medusa-app', 'netnyahoo-app') AND {p}['$lib'] IN ('medusa-telemetry', 'netnyahoo-telemetry')",
   base: "Event != '' AND ResourceAttributes['service.version'] != '0.0.0-selftest'",
 };
 const HISTORY = {
   table: "telemetry.posthog_events", final: "",
   p: "properties", ts: "timestamp", t: "timestamp", e: "event", d: "distinct_id",
-  site: `{p}['$lib'] IN ('web', 'ardia-web', 'netnyahoo-web') AND {p}['$host'] IN (${HOSTS})`,
-  app: "{p}['$lib'] IN ('ardia-telemetry', 'netnyahoo-telemetry')",
+  site: `{p}['$lib'] IN ('web', 'medusa-web', 'netnyahoo-web') AND {p}['$host'] IN (${HOSTS})`,
+  app: "{p}['$lib'] IN ('medusa-telemetry', 'netnyahoo-telemetry')",
   base: "1",
 };
 const fill = (sql, t) =>
@@ -136,7 +136,7 @@ const headline = () =>
     (SELECT tuple(uniqExactIf(d, t >= toDateTime(${sinceSec}, 'UTC')), uniqExactIf(d, t >= today()), uniqExact(d))
      FROM (${both("{d} AS d, {t} AS t", `{ts} > now() - INTERVAL ${Math.max(7, Math.ceil(span / 864e5))} DAY AND {app}`)}))`);
 
-const githubQuery = (releases, after) => `{ repository(owner: "mantrakp04", name: "ardia") { stargazerCount forkCount issues(states: OPEN) { totalCount }
+const githubQuery = (releases, after) => `{ repository(owner: "mantrakp04", name: "medusa") { stargazerCount forkCount issues(states: OPEN) { totalCount }
   stargazers(last: 100) { edges { starredAt } }
   releases(first: ${releases}${after ? `, after: "${after}"` : ""}, orderBy: { field: CREATED_AT, direction: DESC }) { pageInfo { endCursor }
     nodes { tagName isDraft isPrerelease publishedAt releaseAssets(first: 20) { nodes { name downloadCount } } } } } }`;
@@ -194,7 +194,7 @@ const github = async () => {
 };
 
 const [rows, head, gitHub] = await Promise.all([
-  hasTelemetryEnv() ? attempt("telemetry (window)", windowRows) : (problems.push("telemetry: ~/.config/ardia/telemetry.env is missing (docs/growth.md, Telemetry)"), null),
+  hasTelemetryEnv() ? attempt("telemetry (window)", windowRows) : (problems.push("telemetry: ~/.config/medusa/telemetry.env is missing (docs/growth.md, Telemetry)"), null),
   hasTelemetryEnv() ? attempt("telemetry (headline)", headline) : null,
   attempt("github", github),
 ]);
@@ -356,7 +356,7 @@ function trendLine(b) {
 
 function report() {
   const out = [];
-  out.push(`**Ardia since ${whenLabel(since)} ${zoneName}** (${duration(span)}, as of ${clock(now)})`);
+  out.push(`**Medusa since ${whenLabel(since)} ${zoneName}** (${duration(span)}, as of ${clock(now)})`);
   if (data.headline || gitHub) {
     out.push("", "**Users**");
     if (gitHub) out.push(`- DMG downloads ${n(gitHub.dmg)} all time; ${gitHub.latest?.version} has ${n(gitHub.latest?.dmg)} DMG, ${n(gitHub.latest?.zip)} update zips (${n(gitHub.zips)} zips all time)`);
@@ -429,7 +429,7 @@ function svg() {
   const text = (x, y, s, { size = 12, color = C.muted, weight = 400, anchor = "start" } = {}) =>
     parts.push(`<text x="${x}" y="${y}" font-family="${FONT}" font-size="${size}" font-weight="${weight}" fill="${color}" text-anchor="${anchor}">${esc(s)}</text>`);
   let y = P;
-  text(P, y + 14, `Ardia since ${whenLabel(since)} ${zoneName} · ${duration(span)} · as of ${clock(now)}`, { size: 13, color: C.text, weight: 600 });
+  text(P, y + 14, `Medusa since ${whenLabel(since)} ${zoneName} · ${duration(span)} · as of ${clock(now)}`, { size: 13, color: C.text, weight: 600 });
   y += 30;
   const s = data.site, g = gitHub;
   const tiles = [

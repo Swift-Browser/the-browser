@@ -33,7 +33,7 @@ type MacProps = {
   tabIndex?: number;
 };
 
-const WINDOW_SELECTOR = ".ardia-window";
+const WINDOW_SELECTOR = ".medusa-window";
 
 function macEvent(node: HTMLElement, e: PointerSample): MacMouseEvent {
   const r = node.getBoundingClientRect();

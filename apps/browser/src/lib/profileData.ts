@@ -1,4 +1,4 @@
-import { deleteProfileData } from "@medusa/ardiacore";
+import { deleteProfileData } from "@medusa/medusacore";
 import { useBrowser } from "../store/browser";
 
 const CLOSE_DELAY_MS = 1500;

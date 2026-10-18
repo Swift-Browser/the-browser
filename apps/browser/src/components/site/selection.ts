@@ -1,4 +1,4 @@
-import { setSearchEngineName } from "@medusa/ardiacore";
+import { setSearchEngineName } from "@medusa/medusacore";
 import { chooseTextFragment, cleanUrl, searchUrl, withTextFragment, type SelectionContext } from "@medusa/core";
 import { copyText } from "@medusa/shell";
 import { create } from "zustand";

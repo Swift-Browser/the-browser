@@ -1,4 +1,4 @@
-import type { Download } from "@medusa/ardiacore";
+import type { Download } from "@medusa/medusacore";
 import type { StateCreator } from "zustand";
 import type { BrowserState } from "./browser";
 import { engineProfile, isIncognitoProfile, privateSession } from "./model";

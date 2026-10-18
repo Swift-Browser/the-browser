@@ -152,7 +152,7 @@ type AppModule = {
 };
 
 
-const App = requireNativeModule<AppModule>("ArdiaApp");
+const App = requireNativeModule<AppModule>("MedusaApp");
 
 export const updaterState = () => App.updaterState();
 export const checkForUpdates = () => App.checkForUpdates();

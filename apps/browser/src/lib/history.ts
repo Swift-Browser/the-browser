@@ -1,4 +1,4 @@
-import { addHistoryVisits, onHistoryChanged, queryHistory, watchHistory, type EngineHistoryEntry, type HistoryChange } from "@medusa/ardiacore";
+import { addHistoryVisits, onHistoryChanged, queryHistory, watchHistory, type EngineHistoryEntry, type HistoryChange } from "@medusa/medusacore";
 import { readDocument, removeDocument } from "@medusa/shell";
 import { useBrowser, type BrowserState } from "../store/browser";
 import { afterFirstWindow } from "./afterFirstWindow";

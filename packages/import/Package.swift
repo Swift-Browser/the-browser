@@ -2,14 +2,14 @@
 import PackageDescription
 
 let package = Package(
-  name: "ArdiaImportCore",
+  name: "MedusaImportCore",
   platforms: [.macOS(.v14)],
-  products: [.library(name: "ArdiaImportCore", targets: ["ArdiaImportCore"])],
+  products: [.library(name: "MedusaImportCore", targets: ["MedusaImportCore"])],
   targets: [
-    .target(name: "ArdiaImportCore", path: "ios/Core", linkerSettings: [.linkedLibrary("sqlite3")]),
+    .target(name: "MedusaImportCore", path: "ios/Core", linkerSettings: [.linkedLibrary("sqlite3")]),
     .testTarget(
-      name: "ArdiaImportCoreTests",
-      dependencies: ["ArdiaImportCore"],
+      name: "MedusaImportCoreTests",
+      dependencies: ["MedusaImportCore"],
       path: "tests"
     ),
   ]

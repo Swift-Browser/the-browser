@@ -1,4 +1,4 @@
-import { listTasks, onSystemState, releaseProfile, setBatterySaver, systemState, type SystemState, type WebViewHandle } from "@medusa/ardiacore";
+import { listTasks, onSystemState, releaseProfile, setBatterySaver, systemState, type SystemState, type WebViewHandle } from "@medusa/medusacore";
 import { onAppEvent, onWindowEvent } from "@medusa/shell";
 import { create } from "zustand";
 import { pageOf, usePages } from "../components/layout/pageState";

@@ -1,4 +1,4 @@
-import { cancelDownload, pauseDownload, resumeDownload, type Download } from "@medusa/ardiacore";
+import { cancelDownload, pauseDownload, resumeDownload, type Download } from "@medusa/medusacore";
 import { fileExists, MouseArea, openFile, revealFile, Symbol } from "@medusa/shell";
 import { useState } from "react";
 import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";

@@ -127,7 +127,7 @@ const device = parseUserAgent(navigator.userAgent, "brave" in navigator);
 const language = navigator.language || "";
 
 const constant: Props = {
-  $lib: "ardia-web",
+  $lib: "medusa-web",
   $lib_version: LIB_VERSION,
   ...device,
   $raw_user_agent: navigator.userAgent,
@@ -274,7 +274,7 @@ const resource = {
   }),
 };
 
-type Scope = "ardia.analytics" | "ardia.site";
+type Scope = "medusa.analytics" | "medusa.site";
 interface Queued {
   scope: Scope;
   record: LogRecord;
@@ -377,7 +377,7 @@ export function capture(event: string, props: Props = {}, options: CaptureOption
       ...props,
     };
     enqueue(
-      "ardia.analytics",
+      "medusa.analytics",
       {
         timeUnixNano: nanos(options.timestamp ?? now),
         severityNumber: 9,
@@ -404,7 +404,7 @@ export function log(level: keyof typeof SEVERITY, message: string, props: Props 
   if (!enabled) return;
   try {
     const [severityNumber, severityText] = SEVERITY[level];
-    enqueue("ardia.site", {
+    enqueue("medusa.site", {
       timeUnixNano: nanos(Date.now()),
       severityNumber,
       severityText,

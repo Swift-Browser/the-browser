@@ -16,7 +16,7 @@ export function chromeBinary() {
 
 export async function startChrome(name = "chrome-profile") {
   const port = await freePort();
-  const profile = `${realpathSync("/tmp")}/ardia-demo-layout/${name}`;
+  const profile = `${realpathSync("/tmp")}/medusa-demo-layout/${name}`;
   rmSync(profile, { recursive: true, force: true });
   const child = spawn(chromeBinary(), [
     "--headless=new", `--remote-debugging-port=${port}`, `--user-data-dir=${profile}`, "--force-device-scale-factor=2", "--no-first-run",

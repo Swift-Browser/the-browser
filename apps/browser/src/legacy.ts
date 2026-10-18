@@ -7,10 +7,10 @@ export const LEGACY_URLS: [string, string][] = [
 ];
 
 export const LEGACY_KEYS: Record<string, string> = {
-  openLinksInSmallYahu: "openLinksInLittleArdia",
-  smallYahuSize: "littleArdiaSize",
-  newSmallYahu: "newLittleArdia",
-  toggleOpenLinksInSmallYahu: "toggleOpenLinksInLittleArdia",
+  openLinksInSmallYahu: "openLinksInLittleMedusa",
+  smallYahuSize: "littleMedusaSize",
+  newSmallYahu: "newLittleMedusa",
+  toggleOpenLinksInSmallYahu: "toggleOpenLinksInLittleMedusa",
 };
 
 export function fromLegacyUrl(url: string): string {

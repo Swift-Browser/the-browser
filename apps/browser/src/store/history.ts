@@ -1,4 +1,4 @@
-import { deleteHistoryUrls, importHistoryRows } from "@medusa/ardiacore";
+import { deleteHistoryUrls, importHistoryRows } from "@medusa/medusacore";
 import type { StateCreator } from "zustand";
 import type { BrowserState } from "./browser";
 import { engineProfile, isIncognitoProfile } from "./model";

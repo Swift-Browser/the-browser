@@ -3,7 +3,7 @@ import { test } from "node:test";
 
 globalThis.__DEV__ = false;
 await import("../../test-native-stub.mjs");
-const { extensionActionChange } = await import("../../../../../packages/ardiacore/src/extensions.ts");
+const { extensionActionChange } = await import("../../../../../packages/medusacore/src/extensions.ts");
 
 test("an action event keeps the engine profile name the bridge already resolved", () => {
   assert.deepEqual(extensionActionChange({ profile: "p-abc", id: "ext", kind: "action" }), { profile: "p-abc", id: "ext", kind: "action" });

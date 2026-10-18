@@ -2,10 +2,10 @@
 set -euo pipefail
 here=$(cd "$(dirname "$0")" && pwd)
 root=$(cd "$here/../../.." && pwd)
-repo=${ARDIACORE_PREBUILT_REPO:-Swift-Browser/the-browser}
-assets=${ARDIACORE_PREBUILT_ASSETS:-https://github.com/$repo/releases/download}
+repo=${MEDUSACORE_PREBUILT_REPO:-Swift-Browser/the-browser}
+assets=${MEDUSACORE_PREBUILT_ASSETS:-https://github.com/$repo/releases/download}
 table="$here/../prebuilt-engines.tsv"
-store="$root/apps/browser/build-ardiacore/prebuilt"
+store="$root/apps/browser/build-medusacore/prebuilt"
 name="Chromium Framework"
 die() { echo "error: $*" >&2; exit 1; }
 
@@ -27,7 +27,7 @@ lookup() {
   [ -n "$1" ] || return 0
   line=$(awk -v t="$1" '$1 == t { print; exit }' "$table" 2>/dev/null || true)
   if [ -z "$line" ]; then
-    [ -n "$remote_table" ] || remote_table=$(curl -fsL --retry 2 "https://raw.githubusercontent.com/$repo/main/packages/ardiacore/prebuilt-engines.tsv" || echo "#")
+    [ -n "$remote_table" ] || remote_table=$(curl -fsL --retry 2 "https://raw.githubusercontent.com/$repo/main/packages/medusacore/prebuilt-engines.tsv" || echo "#")
     line=$(awk -v t="$1" '$1 == t { print; exit }' <<<"$remote_table")
   fi
   echo "$line"
@@ -46,7 +46,7 @@ if [ -z "$entry" ]; then
   version=$(awk '{ print $2 }' <<<"$found")
   if [ "$nearest" = 0 ]; then
     die "no prebuilt engine for this checkout's engine/ ($skipped engine commits since $version's). Check out v$version, \
-or run packages/ardiacore/scripts/fetch-engine.sh --nearest to build against $version's engine anyway, or build the engine"
+or run packages/medusacore/scripts/fetch-engine.sh --nearest to build against $version's engine anyway, or build the engine"
   fi
   echo "warning: using $version's engine; engine/ changed in $skipped commits since, and the app may not match it" >&2
   entry=$found
@@ -55,13 +55,13 @@ read -r tree version sha <<<"$entry"
 short=${tree:0:12}
 dest="$store/$short"
 if [ ! -f "$dest/.complete" ]; then
-  file="ArdiaCore-$short.tar.xz"
+  file="MedusaCore-$short.tar.xz"
   url="$assets/v$version/$file"
   tmp="$store/.tmp-$$"
   rm -rf "$tmp" && mkdir -p "$tmp"
   trap 'rm -rf "$tmp"' EXIT
   echo "downloading the engine from $version ($url)" >&2
-  curl -fL --retry 3 --progress-bar -o "$tmp/$file" "$url" || curl -fL --retry 3 --progress-bar -o "$tmp/$file" "https://github.com/mantrakp04/ardia/releases/download/v$version/$file" || die "couldn't download $url"
+  curl -fL --retry 3 --progress-bar -o "$tmp/$file" "$url" || curl -fL --retry 3 --progress-bar -o "$tmp/$file" "https://github.com/mantrakp04/medusa/releases/download/v$version/$file" || die "couldn't download $url"
   [ "$(shasum -a 256 "$tmp/$file" | awk '{ print $1 }')" = "$sha" ] || die "$file doesn't match its SHA-256 in prebuilt-engines.tsv"
   tar -xJf "$tmp/$file" -C "$tmp" || die "couldn't unpack $file"
   [ -f "$tmp/$name.framework/Versions/Current/$name" ] || die "$file holds no $name.framework"

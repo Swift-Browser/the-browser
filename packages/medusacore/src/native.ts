@@ -110,4 +110,4 @@ export const Cef = requireNativeModule<{
   saveCard(profile: string, card: CardInput, number: string | null): Promise<Result<{ id: string }>>;
   deleteAutofillEntry(profile: string, id: string): Promise<Result<{ ok: true }>>;
   revealCardNumber(profile: string, id: string): Promise<Result<{ number?: string | null }>>;
-}>("ArdiaCEF");
+}>("MedusaCEF");

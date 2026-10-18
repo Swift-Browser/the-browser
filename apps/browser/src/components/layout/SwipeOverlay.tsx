@@ -1,4 +1,4 @@
-import { SwipeArea, swipeHaptic, type SwipeAreaHandle, type SwipeEvent } from "@medusa/ardiacore";
+import { SwipeArea, swipeHaptic, type SwipeAreaHandle, type SwipeEvent } from "@medusa/medusacore";
 import { Surface, Symbol, VisualEffect } from "@medusa/shell";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Animated, Easing, StyleSheet, Text, View } from "react-native";

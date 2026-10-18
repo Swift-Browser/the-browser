@@ -18,7 +18,7 @@ core/ungoogled-chromium/disable-domain-reliability.patch	applied	exact
 core/ungoogled-chromium/block-trk-and-subdomains.patch	applied	exact
 core/ungoogled-chromium/disable-gaia.patch	applied	exact
 core/ungoogled-chromium/disable-fonts-googleapis-references.patch	applied	exact
-core/ungoogled-chromium/disable-webstore-urls.patch	skipped	disables the Web Store and extension update checks (Ardia needs both)
+core/ungoogled-chromium/disable-webstore-urls.patch	skipped	disables the Web Store and extension update checks (Medusa needs both)
 core/ungoogled-chromium/fix-learn-doubleclick-hsts.patch	applied	exact
 core/ungoogled-chromium/disable-webrtc-log-uploader.patch	applied	exact
 core/ungoogled-chromium/disable-ai.patch	applied	exact
@@ -44,7 +44,7 @@ extra/inox-patchset/0016-chromium-sandbox-pie.patch	skipped	Linux-only
 extra/inox-patchset/0019-disable-battery-status-service.patch	applied	exact
 extra/debian/disable/google-api-warning.patch	applied	exact
 extra/iridium-browser/mime_util-force-text-x-suse-ymp-to-be-downloaded.patch	applied	exact
-extra/iridium-browser/prefs-always-prompt-for-download-directory-by-defaul.patch	skipped	Ardia saves downloads to the Downloads folder without asking, as Chrome does by default
+extra/iridium-browser/prefs-always-prompt-for-download-directory-by-defaul.patch	skipped	Medusa saves downloads to the Downloads folder without asking, as Chrome does by default
 extra/iridium-browser/updater-disable-auto-update.patch	applied	exact
 extra/iridium-browser/Remove-EV-certificates.patch	applied	exact
 extra/iridium-browser/browser-disable-profile-auto-import-on-first-run.patch	applied	exact

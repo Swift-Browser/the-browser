@@ -63,8 +63,8 @@ export const SWITCHES = {
 type SwitchName = keyof typeof SWITCHES;
 
 const CACHE_DOC = "switches-cache.json";
-const SWITCHES_URL = "https://ardia.dev/switches.json";
-const SWITCHES_ENV = "ARDIA_SWITCHES";
+const SWITCHES_URL = "https://medusa.dev/switches.json";
+const SWITCHES_ENV = "MEDUSA_SWITCHES";
 const FETCH_TIMEOUT_MS = 5000;
 const MAX_BYTES = 4096;
 
@@ -101,7 +101,7 @@ function load() {
   loaded = true;
   try {
     cached = parseSwitches(readDocument(CACHE_DOC));
-    override = parseOverride(killSwitchEnvironment(SWITCHES_ENV));
+    override = parseOverride(killSwitchEnvironment(SWITCHES_ENV) ?? killSwitchEnvironment("ARDIA_SWITCHES"));
   } catch {
     cached = {};
     override = {};

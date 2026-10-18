@@ -8,8 +8,8 @@
     "macOS": "27.2 (26B5112a)"
   },
   "browsers": {
-    "ardia": {
-      "name": "Ardia",
+    "medusa": {
+      "name": "Medusa",
       "version": "dev build",
       "chromium": "155.0.8059.84"
     },
@@ -36,8 +36,8 @@
       "unit": "ms",
       "lowerIsBetter": true,
       "browsers": {
-        "ardia": {
-          "name": "Ardia",
+        "medusa": {
+          "name": "Medusa",
           "version": "dev build",
           "chromium": "155.0.8059.84",
           "median": 512,
@@ -81,8 +81,8 @@
       "unit": "ms",
       "lowerIsBetter": true,
       "browsers": {
-        "ardia": {
-          "name": "Ardia",
+        "medusa": {
+          "name": "Medusa",
           "version": "dev build",
           "chromium": "155.0.8059.84",
           "median": 289,
@@ -118,7 +118,7 @@
           "n": 10
         }
       },
-      "best": "ardia"
+      "best": "medusa"
     },
     {
       "id": "launch-restore",
@@ -126,8 +126,8 @@
       "unit": "ms",
       "lowerIsBetter": true,
       "browsers": {
-        "ardia": {
-          "name": "Ardia",
+        "medusa": {
+          "name": "Medusa",
           "version": "dev build",
           "chromium": "155.0.8059.84",
           "median": 342,
@@ -164,7 +164,7 @@
           "n": 10
         }
       },
-      "best": "ardia"
+      "best": "medusa"
     },
     {
       "id": "newtab",
@@ -172,8 +172,8 @@
       "unit": "ms",
       "lowerIsBetter": true,
       "browsers": {
-        "ardia": {
-          "name": "Ardia",
+        "medusa": {
+          "name": "Medusa",
           "version": "dev build",
           "chromium": "155.0.8059.84",
           "median": 65.7,
@@ -217,8 +217,8 @@
       "unit": "ms",
       "lowerIsBetter": true,
       "browsers": {
-        "ardia": {
-          "name": "Ardia",
+        "medusa": {
+          "name": "Medusa",
           "version": "dev build",
           "chromium": "155.0.8059.84",
           "median": 10,
@@ -262,8 +262,8 @@
       "unit": "ms",
       "lowerIsBetter": true,
       "browsers": {
-        "ardia": {
-          "name": "Ardia",
+        "medusa": {
+          "name": "Medusa",
           "version": "dev build",
           "chromium": "155.0.8059.84",
           "median": 104,
@@ -307,8 +307,8 @@
       "unit": "MB",
       "lowerIsBetter": true,
       "browsers": {
-        "ardia": {
-          "name": "Ardia",
+        "medusa": {
+          "name": "Medusa",
           "version": "dev build",
           "chromium": "155.0.8059.84",
           "median": 302,
@@ -344,7 +344,7 @@
           "n": 5
         }
       },
-      "best": "ardia"
+      "best": "medusa"
     },
     {
       "id": "memory-10",
@@ -352,8 +352,8 @@
       "unit": "MB",
       "lowerIsBetter": true,
       "browsers": {
-        "ardia": {
-          "name": "Ardia",
+        "medusa": {
+          "name": "Medusa",
           "version": "dev build",
           "chromium": "155.0.8059.84",
           "median": 718,
@@ -397,8 +397,8 @@
       "unit": "MB",
       "lowerIsBetter": true,
       "browsers": {
-        "ardia": {
-          "name": "Ardia",
+        "medusa": {
+          "name": "Medusa",
           "version": "dev build",
           "chromium": "155.0.8059.84",
           "median": 1083,
@@ -442,8 +442,8 @@
       "unit": "MB",
       "lowerIsBetter": true,
       "browsers": {
-        "ardia": {
-          "name": "Ardia",
+        "medusa": {
+          "name": "Medusa",
           "version": "dev build",
           "chromium": "155.0.8059.84",
           "median": 394,
@@ -479,7 +479,7 @@
           "n": 5
         }
       },
-      "best": "ardia"
+      "best": "medusa"
     },
     {
       "id": "idle-cpu-1",
@@ -487,8 +487,8 @@
       "unit": "%",
       "lowerIsBetter": true,
       "browsers": {
-        "ardia": {
-          "name": "Ardia",
+        "medusa": {
+          "name": "Medusa",
           "version": "dev build",
           "chromium": "155.0.8059.84",
           "median": 0.24,
@@ -532,8 +532,8 @@
       "unit": "%",
       "lowerIsBetter": true,
       "browsers": {
-        "ardia": {
-          "name": "Ardia",
+        "medusa": {
+          "name": "Medusa",
           "version": "dev build",
           "chromium": "155.0.8059.84",
           "median": 0.58,
@@ -569,7 +569,7 @@
           "n": 5
         }
       },
-      "best": "ardia"
+      "best": "medusa"
     },
     {
       "id": "idle-wakeups-1",
@@ -577,8 +577,8 @@
       "unit": "/s",
       "lowerIsBetter": true,
       "browsers": {
-        "ardia": {
-          "name": "Ardia",
+        "medusa": {
+          "name": "Medusa",
           "version": "dev build",
           "chromium": "155.0.8059.84",
           "median": 5.62,
@@ -614,7 +614,7 @@
           "n": 5
         }
       },
-      "best": "ardia"
+      "best": "medusa"
     },
     {
       "id": "idle-wakeups-20",
@@ -622,8 +622,8 @@
       "unit": "/s",
       "lowerIsBetter": true,
       "browsers": {
-        "ardia": {
-          "name": "Ardia",
+        "medusa": {
+          "name": "Medusa",
           "version": "dev build",
           "chromium": "155.0.8059.84",
           "median": 15.29,
@@ -659,7 +659,7 @@
           "n": 5
         }
       },
-      "best": "ardia"
+      "best": "medusa"
     },
     {
       "id": "idle-cpu-1-steady",
@@ -667,8 +667,8 @@
       "unit": "%",
       "lowerIsBetter": true,
       "browsers": {
-        "ardia": {
-          "name": "Ardia",
+        "medusa": {
+          "name": "Medusa",
           "version": "dev build",
           "chromium": "155.0.8059.84",
           "median": 0.06,
@@ -704,7 +704,7 @@
           "n": 0
         }
       },
-      "best": "ardia"
+      "best": "medusa"
     },
     {
       "id": "idle-cpu-20-steady",
@@ -712,8 +712,8 @@
       "unit": "%",
       "lowerIsBetter": true,
       "browsers": {
-        "ardia": {
-          "name": "Ardia",
+        "medusa": {
+          "name": "Medusa",
           "version": "dev build",
           "chromium": "155.0.8059.84",
           "median": 0.36,
@@ -749,7 +749,7 @@
           "n": 0
         }
       },
-      "best": "ardia"
+      "best": "medusa"
     },
     {
       "id": "idle-wakeups-1-steady",
@@ -757,8 +757,8 @@
       "unit": "/s",
       "lowerIsBetter": true,
       "browsers": {
-        "ardia": {
-          "name": "Ardia",
+        "medusa": {
+          "name": "Medusa",
           "version": "dev build",
           "chromium": "155.0.8059.84",
           "median": 3.18,
@@ -794,7 +794,7 @@
           "n": 0
         }
       },
-      "best": "ardia"
+      "best": "medusa"
     },
     {
       "id": "idle-wakeups-20-steady",
@@ -802,8 +802,8 @@
       "unit": "/s",
       "lowerIsBetter": true,
       "browsers": {
-        "ardia": {
-          "name": "Ardia",
+        "medusa": {
+          "name": "Medusa",
           "version": "dev build",
           "chromium": "155.0.8059.84",
           "median": 12.26,
@@ -839,16 +839,16 @@
           "n": 0
         }
       },
-      "best": "ardia"
+      "best": "medusa"
     }
   ],
   "method": "docs/perf/vs-browsers.md",
   "notes": [
     "One harness drives all four from outside the app over CDP, the same local test pages served from 127.0.0.1, one instance at a time, browsers interleaved per run and rotated each round.",
     "Every run starts from its own copy of a template profile made once per browser (one launch, the test page open, 90 s to settle, quit), with HOME pointed into it; default settings, built-in ad blockers as shipped.",
-    "Chrome and Helium get --restore-last-session so all four restore the same one-tab session (Ardia and Dia restore by default).",
-    "Window 1280×800 at the same place for every browser that takes --window-size; Ardia's window frame is set in its session to the same size; Dia ignores --window-size and opens full-screen-sized (1512×949).",
-    "Chrome runs as shipped and brings itself to the front at launch and on a tab switch; Helium runs from a copy marked background-only (LSBackgroundOnly), so it can't take focus. Both fetch their Finch (variations) seed and components as usual. Dia runs in view without taking focus, signed in with a throwaway account. Ardia runs in its background test mode: it can't become the active app, its windows sit behind the owner's and report themselves as not occluded, and App Nap is off for it.",
+    "Chrome and Helium get --restore-last-session so all four restore the same one-tab session (Medusa and Dia restore by default).",
+    "Window 1280×800 at the same place for every browser that takes --window-size; Medusa's window frame is set in its session to the same size; Dia ignores --window-size and opens full-screen-sized (1512×949).",
+    "Chrome runs as shipped and brings itself to the front at launch and on a tab switch; Helium runs from a copy marked background-only (LSBackgroundOnly), so it can't take focus. Both fetch their Finch (variations) seed and components as usual. Dia runs in view without taking focus, signed in with a throwaway account. Medusa runs in its background test mode: it can't become the active app, its windows sit behind the owner's and report themselves as not occluded, and App Nap is off for it.",
     "Memory is phys_footprint summed over every process of the browser (app, helpers, GPU, renderers, utilities, anything running from its bundle); CPU and wakeups are rusage over the same processes.",
     "Measured on the owner's working Mac, in normal use: browsers interleaved run by run and rotated each round so the owner's activity falls on all of them alike; each figure is the median of the runs, with min–max and n.",
     "Median, min–max and n over runs; a row is a win when the ranges don't overlap."

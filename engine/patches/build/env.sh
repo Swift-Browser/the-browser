@@ -1,10 +1,10 @@
-# Shared environment for the Ardia engine build: plain Chromium + ungoogled-chromium + our
+# Shared environment for the Medusa engine build: plain Chromium + ungoogled-chromium + our
 # series (docs/engine-build.md). Source this file.
 export CB=~/chromium-build
-# The Ardia checkout (game-resource.sh reads the offline game from it): the one this file is in, or
-# ~/Documents/ardia for the copy in ~/chromium-build/scripts that the step scripts source.
+# The Medusa checkout (game-resource.sh reads the offline game from it): the one this file is in, or
+# ~/Documents/medusa for the copy in ~/chromium-build/scripts that the step scripts source.
 _ac_repo="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")/../../.." && pwd)"
-[[ -f "$_ac_repo/engine/patches/series" ]] || _ac_repo="$HOME/Documents/ardia"
+[[ -f "$_ac_repo/engine/patches/series" ]] || _ac_repo="$HOME/Documents/medusa"
 export AC_REPO="${AC_REPO:-$_ac_repo}"
 unset _ac_repo
 export DEPOT_TOOLS_UPDATE=0

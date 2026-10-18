@@ -98,7 +98,7 @@ export function ReleaseNotesPostcard({ notes, size, onOpen, onDismiss }: { notes
             transform: [{ rotate: `${CARD.tilt}deg` }, { scale }],
           }}
         >
-          <Pressable onPress={onOpen} accessibilityRole="button" accessibilityLabel="What's new in Ardia" style={{ flex: 1 }}>
+          <Pressable onPress={onOpen} accessibilityRole="button" accessibilityLabel="What's new in Medusa" style={{ flex: 1 }}>
             <Surface
               style={StyleSheet.absoluteFill}
               cornerRadius={CARD.radius}
@@ -170,7 +170,7 @@ function Artwork({ notes, radius, titleSize, hidden }: { notes: ReleaseNotes; ra
     <View style={{ flex: 1, borderRadius: radius, overflow: "hidden", backgroundColor: mix(colors[0], colors[1], 0.5) }}>
       <WindowBackdrop colors={colors} angle={150} grainOpacity={0.1} style={StyleSheet.absoluteFill} />
       <View style={{ flex: 1, padding: pad, paddingTop: pad + (hidden?.top ?? 0), paddingRight: pad + (hidden?.right ?? 0), justifyContent: "space-between" }}>
-        <Text style={{ fontSize: 11.5 * k, fontWeight: "700", letterSpacing: 1.4 * k, color: "#FFFFFFCC" }}>{`ARDIA ${notes.version}`}</Text>
+        <Text style={{ fontSize: 11.5 * k, fontWeight: "700", letterSpacing: 1.4 * k, color: "#FFFFFFCC" }}>{`MEDUSA ${notes.version}`}</Text>
         <Text style={{ fontSize: titleSize, fontWeight: "300", fontStyle: "italic", letterSpacing: -1.1 * k, color: "#FFFFFF" }}>{"What's new"}</Text>
       </View>
     </View>

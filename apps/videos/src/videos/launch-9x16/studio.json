@@ -413,10 +413,10 @@
     {
       "id": "title-name",
       "definition": "type",
-      "label": "title · ARDIA",
+      "label": "title · MEDUSA",
       "parentId": null,
       "values": {
-        "text": "ARDIA",
+        "text": "MEDUSA",
         "size": 240,
         "color": "#16130F",
         "fill": "#00000000",
@@ -1028,10 +1028,10 @@
     {
       "id": "end-name",
       "definition": "type",
-      "label": "end · ARDIA",
+      "label": "end · MEDUSA",
       "parentId": null,
       "values": {
-        "text": "ARDIA",
+        "text": "MEDUSA",
         "size": 150,
         "color": "#16130F",
         "fill": "#00000000",
@@ -1079,10 +1079,10 @@
     {
       "id": "end-url",
       "definition": "type",
-      "label": "end · ARDIA.DEV",
+      "label": "end · MEDUSA.DEV",
       "parentId": null,
       "values": {
-        "text": "ARDIA.DEV",
+        "text": "MEDUSA.DEV",
         "size": 190,
         "color": "#2150D9",
         "fill": "#00000000",
@@ -1113,10 +1113,10 @@
     {
       "id": "end-source",
       "definition": "type",
-      "label": "end · GITHUB.COM/MANTRAKP04/ARDIA",
+      "label": "end · GITHUB.COM/MANTRAKP04/MEDUSA",
       "parentId": null,
       "values": {
-        "text": "GITHUB.COM/MANTRAKP04/\nARDIA",
+        "text": "GITHUB.COM/MANTRAKP04/\nMEDUSA",
         "size": 40,
         "color": "#16130F",
         "fill": "#00000000",

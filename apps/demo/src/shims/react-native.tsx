@@ -13,7 +13,7 @@ const pageMeasureInWindow = (UIManager as unknown as { measureInWindow: (node: E
 Object.assign(UIManager, {
   measureInWindow(node: Element, callback: Measured) {
     pageMeasureInWindow(node, (x, y, width, height) => {
-      const frame = node.closest?.(".ardia-window")?.getBoundingClientRect();
+      const frame = node.closest?.(".medusa-window")?.getBoundingClientRect();
       callback(x - (frame?.left ?? 0), y - (frame?.top ?? 0), width, height);
     });
   },
@@ -54,7 +54,7 @@ function assignRef<T>(ref: ForwardedRef<T>, value: T | null) {
   else if (ref) ref.current = value;
 }
 
-export const NATIVE_CHANGE = Symbol("ardiaNativeChange");
+export const NATIVE_CHANGE = Symbol("medusaNativeChange");
 
 export const TextInput = forwardRef<unknown, MacTextInputProps>(function MacTextInput({ keyDownEvents, onKeyDown, ...props }, ref) {
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {

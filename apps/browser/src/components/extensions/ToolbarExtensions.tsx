@@ -1,4 +1,4 @@
-import { terminateCastRoute, type ActionState, type CastRoute, type InstalledExtension } from "@medusa/ardiacore";
+import { terminateCastRoute, type ActionState, type CastRoute, type InstalledExtension } from "@medusa/medusacore";
 import { ContextMenuArea, showMenu, Symbol } from "@medusa/shell";
 import { memo, useMemo, useRef } from "react";
 import { Image, Pressable, Text, View } from "react-native";

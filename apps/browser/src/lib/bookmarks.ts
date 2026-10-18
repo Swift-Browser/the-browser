@@ -1,4 +1,4 @@
-import { applyBookmarkOps, bookmarkTree, onBookmarksChanged, watchBookmarks, type BookmarkOp, type EngineBookmark } from "@medusa/ardiacore";
+import { applyBookmarkOps, bookmarkTree, onBookmarksChanged, watchBookmarks, type BookmarkOp, type EngineBookmark } from "@medusa/medusacore";
 import { readDocument, removeDocument, writeDocument } from "@medusa/shell";
 import { bookmarkUuidFor, isBookmarkUuid, rootIdsFor } from "../store/bookmarks";
 import { useBrowser, type BrowserState } from "../store/browser";

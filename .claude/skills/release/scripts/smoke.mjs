@@ -61,7 +61,7 @@ await go("https://example.com/");
 check("a web page loads", (await evaluate("document.title")) === "Example Domain");
 
 const adScript = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js";
-const adRequest = "https://ib.adnxs.com/ut/v3?ardia-smoke";
+const adRequest = "https://ib.adnxs.com/ut/v3?medusa-smoke";
 async function adFate(adUrl, run) {
   const ids = new Set();
   let fate;
@@ -166,7 +166,7 @@ await sleep(1500);
 checkUnlocked("…and closes when the page navigates", !windows().some((w) => /passkey/i.test(w.title)));
 
 const adsOnPage = () => adFate(adScript, () => go(`${pages}/ad.html`));
-const allowAds = (allowed) => instance.eval(`return globalThis.expo.modules.ArdiaCEF.setContentBlockerAllowed("localhost", ${allowed})`, { timeout: 30000 });
+const allowAds = (allowed) => instance.eval(`return globalThis.expo.modules.MedusaCEF.setContentBlockerAllowed("localhost", ${allowed})`, { timeout: 30000 });
 const adSteps = [await adsOnPage()];
 await allowAds(true);
 adSteps.push(await adsOnPage());
@@ -347,8 +347,8 @@ try {
 } catch (error) {
   console.log(`note: ${error.message}`);
 }
-check("a link from another app (a GURL Apple Event) opens in Little Ardia", !!linked && linkedPage,
-  linked ? `${linked}${linkedPage ? "" : ", but no page loaded"}` : "no Little Ardia within 10 s");
+check("a link from another app (a GURL Apple Event) opens in Little Medusa", !!linked && linkedPage,
+  linked ? `${linked}${linkedPage ? "" : ", but no page loaded"}` : "no Little Medusa within 10 s");
 
 const failed = results.filter((r) => !r.ok).length;
 console.log(`\n${results.length - failed}/${results.length} passed`);

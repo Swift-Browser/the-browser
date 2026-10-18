@@ -18,7 +18,7 @@ export type WindowBackdropProps = ViewProps & {
   grainScale?: number;
 };
 
-const NativeBackdrop = requireNativeViewManager<WindowBackdropProps>("ArdiaWindowBackdrop");
+const NativeBackdrop = requireNativeViewManager<WindowBackdropProps>("MedusaWindowBackdrop");
 
 export function WindowBackdrop({ angle = 180, grainOpacity = 0.09, grainScale = 1, ...props }: WindowBackdropProps) {
   return <NativeBackdrop pointerEvents="none" angle={angle} grainOpacity={grainOpacity} grainScale={grainScale} {...props} />;
@@ -36,7 +36,7 @@ export type PowerUpProps = ViewProps & {
 
 type NativePowerUpProps = Omit<PowerUpProps, "palette" | "halo"> & { palette?: string[]; haloFrame: number[] };
 
-const NativePowerUp = requireNativeViewManager<NativePowerUpProps>("ArdiaPowerUp");
+const NativePowerUp = requireNativeViewManager<NativePowerUpProps>("MedusaPowerUp");
 
 export function PowerUp({ palette = "pink", halo = null, ...props }: PowerUpProps) {
   return (

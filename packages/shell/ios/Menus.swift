@@ -120,7 +120,7 @@ final class StandardItem: NSMenuItem, Rebindable {
     let shortcut = MainMenu.keyEquivalent(key, mods)
     super.init(title: title, action: action, keyEquivalent: shortcut.key)
     keyEquivalentModifierMask = shortcut.mods
-    identifier = NSUserInterfaceItemIdentifier("ardia.shortcut." + shortcutId)
+    identifier = NSUserInterfaceItemIdentifier("medusa.shortcut." + shortcutId)
   }
 
   override init(title: String, action: Selector?, keyEquivalent: String) {
@@ -129,7 +129,7 @@ final class StandardItem: NSMenuItem, Rebindable {
     defaultKey = keyEquivalent
     defaultModifiers = .command
     super.init(title: title, action: action, keyEquivalent: keyEquivalent)
-    identifier = NSUserInterfaceItemIdentifier("ardia.shortcut." + shortcutId)
+    identifier = NSUserInterfaceItemIdentifier("medusa.shortcut." + shortcutId)
   }
 
   required init(coder: NSCoder) { fatalError("init(coder:) is not supported") }
@@ -156,7 +156,7 @@ final class CommandItem: NSMenuItem, Rebindable {
     let shortcut = MainMenu.keyEquivalent(key, mods)
     super.init(title: title, action: #selector(MenuTarget.performCommand(_:)), keyEquivalent: shortcut.key)
     keyEquivalentModifierMask = shortcut.mods
-    identifier = NSUserInterfaceItemIdentifier("ardia.command." + command)
+    identifier = NSUserInterfaceItemIdentifier("medusa.command." + command)
     target = MenuTarget.shared
     tag = Self.chromeMenuTag
   }
@@ -310,8 +310,8 @@ enum MainMenu {
       cmd("New Tab in Group", "newTabInGroup", "t", [.command, .option]),
       cmd("New Window", "newWindow", "n"),
       cmd("New Incognito Window", "newIncognitoWindow", "n", [.command, .shift]),
-      cmd("New Little Ardia Window", "newLittleArdia", "n", [.command, .option]),
-      cmd("Open Links from Other Apps in Main Window", "toggleOpenLinksInLittleArdia"),
+      cmd("New Little Medusa Window", "newLittleMedusa", "n", [.command, .option]),
+      cmd("Open Links from Other Apps in Main Window", "toggleOpenLinksInLittleMedusa"),
       cmd("Reopen Closed Tab", "reopenClosedTab", "t", [.command, .shift]),
       cmd("Reopen Closed Window", "reopenClosedWindow"),
       cmd("Open File…", "openFile", "o"),
@@ -794,7 +794,7 @@ enum MainMenu {
     }
     if bound != announcedShortcuts {
       announcedShortcuts = bound
-      NotificationCenter.default.post(name: .init("ArdiaMenuShortcutsChanged"), object: nil)
+      NotificationCenter.default.post(name: .init("MedusaMenuShortcutsChanged"), object: nil)
     }
   }
 
@@ -901,7 +901,7 @@ enum MainMenu {
     let incognito = CommandItem("New Incognito Window", "newIncognitoWindow")
     incognito.windowless = true
     menu.addItem(incognito)
-    let small = CommandItem("New Little Ardia Window", "newLittleArdia")
+    let small = CommandItem("New Little Medusa Window", "newLittleMedusa")
     small.windowless = true
     menu.addItem(small)
     return menu

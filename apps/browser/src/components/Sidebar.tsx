@@ -549,7 +549,7 @@ const CleanUpUpsell = memo(function CleanUpUpsell({ windowId, shift }: { windowI
         <Symbol name="wand.and.stars" size={12} color={theme.icon} style={{ width: 16, height: 16 }} />
         <Text style={{ flex: 1, fontSize: 12, fontWeight: "600", color: theme.textPrimary }}>{count} tabs haven’t been touched in a while</Text>
       </View>
-      <Text style={{ fontSize: 12, color: theme.textSecondary }}>Ardia can tidy up for you. You can always reopen closed tabs from the ⌄ menu.</Text>
+      <Text style={{ fontSize: 12, color: theme.textSecondary }}>Medusa can tidy up for you. You can always reopen closed tabs from the ⌄ menu.</Text>
       <View style={{ gap: 6 }}>
         {button("Clean Up Once", () => {
           useBrowser.getState().cleanUpTabs(windowId);

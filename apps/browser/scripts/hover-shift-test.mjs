@@ -5,7 +5,7 @@ import { launch, reporter, session, sleep } from "../../../scripts/lib/instance.
 
 const [appArg, port] = process.argv.slice(2);
 if (!appArg) {
-  console.error("usage: node hover-shift-test.mjs <Debug Ardia.app> [cdpPort]");
+  console.error("usage: node hover-shift-test.mjs <Debug Medusa.app> [cdpPort]");
   process.exit(2);
 }
 const scratch = mkdtempSync(join(tmpdir(), "ac-hover-shift-"));
@@ -38,7 +38,7 @@ try {
     s.updateGroup(shut, { collapsed: true });
     const { store, engine } = ac.live;
     const folder = store.createFolder("default", "pullRequests");
-    const pr = (n, extra) => ({ number: n, repo: "ardia/app", author: "a", authorAvatar: null, draft: false, headRef: "h" + n, baseRef: "main",
+    const pr = (n, extra) => ({ number: n, repo: "medusa/app", author: "a", authorAvatar: null, draft: false, headRef: "h" + n, baseRef: "main",
       review: null, mergeable: "mergeable", checks: [], comments: 0, unresolvedThreads: 0, additions: 1, deletions: 1, changedFiles: 1, ...extra });
     const item = (n, extra) => ({ id: "pr" + n, source: "github", url: "https://example.com/pr/" + n, title: "Pull request " + n + " with a long title",
       subtitle: "", icon: null, updatedAt: Date.now() - n, section: "authored", pr: pr(n, extra) });

@@ -5,7 +5,7 @@ const FILE_EXTENSIONS =
 const RULES: [RegExp, string][] = [
   [/"[^"\n]*"|“[^”\n]*”|‘[^’\n]*’|`[^`\n]*`/g, "<text>"],
   [/(^|[\s(\[{=:,])'[^'\n]*'(?=$|[\s)\]},.:;!?])/g, "$1<text>"],
-  [/\b(?:about|data|blob|javascript|mailto|file|chrome|ardia|chrome-extension|devtools|view-source):\S+/gi, "<url>"],
+  [/\b(?:about|data|blob|javascript|mailto|file|chrome|medusa|chrome-extension|devtools|view-source):\S+/gi, "<url>"],
   [/\b[a-z][a-z0-9+.-]*:\/\/[^\s"'<>)\]}]*/gi, "<url>"],
   [/[\w.%+-]+@[\w-]+(?:\.[\w-]+)+/g, "<email>"],
   [/(^|[\s(\[{=:,"'])~?\/?(?:[^\s/"'<>()\[\]{}]+\/)+[^\s"'<>()\[\]{},;]*/g, "$1<path>"],
@@ -121,7 +121,7 @@ export function parseStack(stack: unknown, limit = 50): ExceptionFrame[] {
 
 export type NativeFrame = { image: string; symbol?: string; offset?: number };
 
-const OUR_IMAGES = /^(Ardia|ArdiaCore|ArdiaShell|Chromium Framework|Expo|ExpoModulesCore|React|hermes|RCT)/;
+const OUR_IMAGES = /^(Medusa|MedusaCore|MedusaShell|Chromium Framework|Expo|ExpoModulesCore|React|hermes|RCT)/;
 
 export function nativeFrames(frames: NativeFrame[], limit = 64): ExceptionFrame[] {
   return frames.slice(0, limit).map((f): ExceptionFrame => {

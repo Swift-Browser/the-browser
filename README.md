@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="apps/site/src/assets/app-icon.png" width="128" height="128" alt="Ardia's app icon">
+  <img src="apps/site/src/assets/app-icon.png" width="128" height="128" alt="Medusa's app icon">
 </p>
 
 <h1 align="center">Touch grass.</h1>
@@ -10,42 +10,42 @@
 </p>
 
 <h3 align="center">
-  <a href="https://github.com/mantrakp04/ardia/releases/latest/download/Ardia-0.2.37.dmg">Download Ardia 0.2.37 for Mac</a>
+  <a href="https://github.com/mantrakp04/medusa/releases/latest/download/Medusa-0.2.37.dmg">Download Medusa 0.2.37 for Mac</a>
 </h3>
 
 <p align="center">
   187 MB DMG · macOS 14 Sonoma or later · Apple Silicon · Notarized by Apple<br>
-  Like your paint wet? <a href="https://ardia.dev/nightly">The nightly</a> has every fix the day it’s made, smudges and all.<br>
-  <a href="https://ardia.dev">ardia.dev</a> · <a href="https://ardia.dev/release-notes">What’s new</a> · <a href="https://github.com/mantrakp04/ardia/releases">All releases</a> · <a href="https://discord.gg/TdhuXrbcA6">Discord</a>
+  Like your paint wet? <a href="https://medusa.dev/nightly">The nightly</a> has every fix the day it’s made, smudges and all.<br>
+  <a href="https://medusa.dev">medusa.dev</a> · <a href="https://medusa.dev/release-notes">What’s new</a> · <a href="https://github.com/mantrakp04/medusa/releases">All releases</a> · <a href="https://discord.gg/TdhuXrbcA6">Discord</a>
 </p>
 
 <p align="center">
-  <img src="apps/site/src/assets/shots/window.webp" alt="The Ardia window in light mode: pinned tiles and tabs in the sidebar, and Wikipedia’s article on The Hay Wain open on the right.">
+  <img src="apps/site/src/assets/shots/window.webp" alt="The Medusa window in light mode: pinned tiles and tabs in the sidebar, and Wikipedia’s article on The Hay Wain open on the right.">
 </p>
 
 ## Lose the toolbar.
 
 Move the address bar into the sidebar and the page runs all the way to the top of the window.
 
-<img src="apps/site/src/assets/shots/address-sidebar.webp" alt="Ardia with the address bar in the sidebar under the traffic lights and Wikipedia running to the top of the window.">
+<img src="apps/site/src/assets/shots/address-sidebar.webp" alt="Medusa with the address bar in the sidebar under the traffic lights and Wikipedia running to the top of the window.">
 
 ## Two pages, one window.
 
 Drag a tab onto the page. Up to three panes, side by side or stacked.
 
-<img src="apps/site/src/assets/shots/split.webp" alt="Ardia in split view: MDN on the left, Wikipedia on the right, both in one window.">
+<img src="apps/site/src/assets/shots/split.webp" alt="Medusa in split view: MDN on the left, Wikipedia on the right, both in one window.">
 
 ## Refuses to leave the picture.
 
 Switch tabs mid-video and it floats along in the corner. Go back to its tab and it slips back into the page.
 
-<img src="apps/site/src/assets/shots/pip.webp" alt="Ardia on Wikipedia’s article about Big Buck Bunny, while the film keeps playing in a small floating window at the bottom right.">
+<img src="apps/site/src/assets/shots/pip.webp" alt="Medusa on Wikipedia’s article about Big Buck Bunny, while the film keeps playing in a small floating window at the bottom right.">
 
 ## Your extensions come along.
 
-The Chrome Web Store just works, and its button says Add to Ardia.
+The Chrome Web Store just works, and its button says Add to Medusa.
 
-<img src="apps/site/src/assets/shots/extensions.webp" alt="Dark Reader’s page on the Chrome Web Store, open in Ardia, with an Add to Ardia button.">
+<img src="apps/site/src/assets/shots/extensions.webp" alt="Dark Reader’s page on the Chrome Web Store, open in Medusa, with an Add to Medusa button.">
 
 ## Ads and trackers stay out.
 
@@ -55,7 +55,7 @@ opt-in and never carry your sites or searches.
 ## Also in there
 
 - **Work stays at work.** Each profile keeps its own logins, history, extensions and colour. Swipe the sidebar to switch.
-- **Little Ardia.** ⌥⌘N opens a small window with one page and no sidebar.
+- **Little Medusa.** ⌥⌘N opens a small window with one page and no sidebar.
 - **Groups on contact.** Drop a tab on a tab and they’re a group, named for you.
 - **Moves in for you.** Bookmarks, history, passwords and logins from Chrome, Safari, Firefox, Arc, Dia and five more. Arc’s spaces and pinned tabs too.
 - **Syncs through your iCloud.** End-to-end encrypted, in a folder in your own iCloud Drive. No server of ours in the middle.
@@ -83,7 +83,7 @@ Not WebKit. Not Electron. Every window is Chrome’s own, so sites, extensions a
 | Intel Macs | Apple Silicon only. | ✗ No |
 
 <h3 align="center">
-  <a href="https://github.com/mantrakp04/ardia/releases/latest/download/Ardia-0.2.37.dmg">Download Ardia 0.2.37</a>
+  <a href="https://github.com/mantrakp04/medusa/releases/latest/download/Medusa-0.2.37.dmg">Download Medusa 0.2.37</a>
 </h3>
 
 <p align="center">
@@ -96,14 +96,14 @@ Not WebKit. Not Electron. Every window is Chrome’s own, so sites, extensions a
 # Build it yourself
 
 A macOS browser that looks and feels like [Dia](https://diabrowser.com): Chrome's own framework from our
-patched Chromium with our layer on top (ArdiaCore), an Expo + React Native macOS shell, and Metal shaders
+patched Chromium with our layer on top (MedusaCore), an Expo + React Native macOS shell, and Metal shaders
 reconstructed from Dia's own New Tab effects.
 
 ```
 apps/
   browser/            Expo + react-native-macos app (UI in src/, Xcode project in macos/)
 packages/
-  ardiacore/             The engine: Chromium 154's framework with our layer (Chrome tabs hosted in our views), JS API in src/
+  medusacore/             The engine: Chromium 154's framework with our layer (Chrome tabs hosted in our views), JS API in src/
   shell/              Native menu bar + shortcuts → JS, windows, SF Symbols, native primitives
   shaders/            Metal: New Tab effects + grained OKLab window backdrop
   import/             Import from other browsers (bookmarks, history, passwords, Arc spaces)
@@ -121,15 +121,15 @@ pnpm install
 
 The engine (Chrome's framework, built from our patched Chromium) comes prebuilt: with no local engine build, the app's
 build downloads the one matching your checkout's `engine/` (about 110 MB, once; Apple Silicon only) and checks it
-against `packages/ardiacore/prebuilt-engines.tsv`. Every release whose engine changed publishes one. If `main`'s engine
+against `packages/medusacore/prebuilt-engines.tsv`. Every release whose engine changed publishes one. If `main`'s engine
 is newer than the last release's, work from a release tag (`v0.2.30`, say), or run
-`packages/ardiacore/scripts/fetch-engine.sh --nearest` to build against the newest prebuilt anyway. Passkeys and saved
+`packages/medusacore/scripts/fetch-engine.sh --nearest` to build against the newest prebuilt anyway. Passkeys and saved
 cards need our team ID and won't work in a build signed by anyone else.
 
 To change the engine itself (anything under `engine/`), build it from source: Chrome's framework from our patched
 Chromium tree in `~/chromium-build` (plain Chromium 155.0.8059.84, ungoogled-chromium and our patches;
 `docs/engine-build.md` › "Rebuilding", then `engine/chromium/apply.sh`,
-`engine/ardiacore/apply.sh` and `autoninja -C out/Release_GN_arm64 chrome_framework`; the first build takes about 2
+`engine/medusacore/apply.sh` and `autoninja -C out/Release_GN_arm64 chrome_framework`; the first build takes about 2
 hours). The app's build stages it from there when it exists.
 
 ```bash
@@ -142,8 +142,8 @@ In one terminal, start Metro:
 pnpm dev
 ```
 
-In another, build and launch the Debug app (on its own data, `~/Library/Application Support/Ardia Dev`, or
-`ARDIA_DATA_DIR`):
+In another, build and launch the Debug app (on its own data, `~/Library/Application Support/Medusa Dev`, or
+`MEDUSA_DATA_DIR`):
 
 ```bash
 pnpm macos
@@ -159,7 +159,7 @@ Shortcuts: ⌘T new tab, ⌘L command bar, ⌘W close, ⇧⌘T reopen, ⌘S side
 ## How Dia's New Tab light works
 
 Dia 1.50 turns this light off along with its rebrand (a painted mark, a single-colour power-up band
-and a halo around the bar; `docs/dia-spec.md` › "1.50 Sunglow"), and so does Ardia. The
+and a halo around the bar; `docs/dia-spec.md` › "1.50 Sunglow"), and so does Medusa. The
 reconstruction left the tree with it: `git show f2c0e251:packages/shaders/ios/AreaLightView.swift`.
 
 These findings come from disassembling the Metal libraries in `Dia.app` (v1.49.1) with
@@ -218,10 +218,10 @@ Only math and colour values are reused. No Dia images, fonts or binaries are cop
 
 Feature parity with Dia (everything but its AI) is tracked row by row in
 [docs/dia-feature-parity.md](docs/dia-feature-parity.md); releases and their notes are at
-[ardia.dev/release-notes](https://ardia.dev/release-notes).
+[medusa.dev/release-notes](https://medusa.dev/release-notes).
 
 ## License
 
-Ardia is licensed under the [Apache License 2.0](LICENSE). It builds on Chromium and ungoogled-chromium,
+Medusa is licensed under the [Apache License 2.0](LICENSE). It builds on Chromium and ungoogled-chromium,
 carries a few of the Chromium Embedded Framework's patches to Chromium (BSD-3-Clause), and bundles uBlock Origin
 Lite, each under its own license; see [NOTICE](NOTICE).

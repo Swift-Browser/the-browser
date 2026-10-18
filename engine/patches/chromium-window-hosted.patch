@@ -4,12 +4,12 @@
  @property(assign, nonatomic) BOOL drawMenuBackgroundForBlur;
  @property(strong, nonatomic) NSEvent* keyDownEventForTesting;
  
-+// Ardia: a view the embedder added as a subview of this one to show its
-+// own UI over the widget's views (ArdiaCore's windows, engine/ardiacore). Hit
++// Medusa: a view the embedder added as a subview of this one to show its
++// own UI over the widget's views (MedusaCore's windows, engine/medusacore). Hit
 +// testing and accessibility ask it first, so
 +// the points it covers reach its views and assistive technologies see its
 +// tree rather than the widget's views underneath.
-+@property(weak, nonatomic) NSView* ardiaEmbeddedView;
++@property(weak, nonatomic) NSView* medusaEmbeddedView;
 +
  // Initialize the NSView -> views::View bridge. |viewToHost| must be non-NULL.
  - (instancetype)initWithBridge:(remote_cocoa::NativeWidgetNSWindowBridge*)bridge
@@ -20,7 +20,7 @@
  @synthesize bridge = _bridge;
  @synthesize drawMenuBackgroundForBlur = _drawMenuBackgroundForBlur;
  @synthesize keyDownEventForTesting = _keyDownEvent;
-+@synthesize ardiaEmbeddedView = _ardiaEmbeddedView;
++@synthesize medusaEmbeddedView = _medusaEmbeddedView;
  
  - (instancetype)initWithBridge:(remote_cocoa::NativeWidgetNSWindowBridge*)bridge
                          bounds:(gfx::Rect)bounds {
@@ -29,8 +29,8 @@
    // superview is taller than the contentView.
    NSPoint pointInView = [self convertPoint:point fromView:self.superview];
 +
-+  // Ardia: the embedder's views come first.
-+  if (NSView* embedded = [self ardiaEmbeddedSubview]) {
++  // Medusa: the embedder's views come first.
++  if (NSView* embedded = [self medusaEmbeddedSubview]) {
 +    if (NSView* hit = [embedded hitTest:pointInView]) {
 +      return hit;
 +    }
@@ -42,8 +42,8 @@
  // NSAccessibility formal protocol implementation:
  
  - (NSArray*)accessibilityChildren {
-+  // Ardia: the embedder's views cover the widget's.
-+  if (NSView* embedded = [self ardiaEmbeddedSubview]) {
++  // Medusa: the embedder's views cover the widget's.
++  if (NSView* embedded = [self medusaEmbeddedSubview]) {
 +    return NSAccessibilityUnignoredChildren(@[ embedded ]);
 +  }
    if (id accessible = _bridge->host_helper()->GetNativeViewAccessible())
@@ -53,7 +53,7 @@
  // NSAccessibility informal protocol implementation:
  
  - (id)accessibilityHitTest:(NSPoint)point {
-+  if (NSView* embedded = [self ardiaEmbeddedSubview]) {
++  if (NSView* embedded = [self medusaEmbeddedSubview]) {
 +    if (id hit = [embedded accessibilityHitTest:point]) {
 +      return hit;
 +    }
@@ -62,9 +62,9 @@
        accessibilityHitTest:point];
  }
  
-+// Ardia: ardiaEmbeddedView while it is a visible subview of this view.
-+- (NSView*)ardiaEmbeddedSubview {
-+  NSView* embedded = self.ardiaEmbeddedView;
++// Medusa: medusaEmbeddedView while it is a visible subview of this view.
++- (NSView*)medusaEmbeddedSubview {
++  NSView* embedded = self.medusaEmbeddedView;
 +  return embedded && embedded.superview == self && !embedded.hidden ? embedded
 +                                                                     : nil;
 +}
@@ -78,15 +78,15 @@
    OnActiveTabChanged(change, selection);
  }
  
-+// Ardia: ArdiaCore (engine/ardiacore) keeps its windows open without tabs.
-+bool (*g_ardia_keeps_window_without_tabs)(
++// Medusa: MedusaCore (engine/medusacore) keeps its windows open without tabs.
++bool (*g_medusa_keeps_window_without_tabs)(
 +    const BrowserWindowInterface* browser) = nullptr;
 +
  void Browser::TabStripEmpty() {
-+  // Ardia: a window ArdiaCore shows its own UI in stays open without tabs,
++  // Medusa: a window MedusaCore shows its own UI in stays open without tabs,
 +  // unless it is closing.
-+  if (g_ardia_keeps_window_without_tabs &&
-+      g_ardia_keeps_window_without_tabs(this) &&
++  if (g_medusa_keeps_window_without_tabs &&
++      g_medusa_keeps_window_without_tabs(this) &&
 +      !UnloadController::From(this)->is_attempting_to_close_browser()) {
 +    return;
 +  }
@@ -99,7 +99,7 @@
  // found in the LICENSE file.
  
  #include "chrome/browser/ui/unload_controller.h"
-+#include "ardia/core/ac_hooks.h"  // nogncheck
++#include "medusa/core/ac_hooks.h"  // nogncheck
  
  #include <algorithm>
  
@@ -107,10 +107,10 @@
  }
  
  void UnloadController::TabStripEmpty() {
-+  // Ardia: see Browser::TabStripEmpty. The window stays open for new tabs.
++  // Medusa: see Browser::TabStripEmpty. The window stays open for new tabs.
 +  if (!is_attempting_to_close_browser_ &&
-+      g_ardia_keeps_window_without_tabs &&
-+      g_ardia_keeps_window_without_tabs(browser_.get())) {
++      g_medusa_keeps_window_without_tabs &&
++      g_medusa_keeps_window_without_tabs(browser_.get())) {
 +    return;
 +  }
    // Set is_attempting_to_close_browser_ here, so that extensions, etc, do not

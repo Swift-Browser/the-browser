@@ -2,8 +2,8 @@
 
 End-to-end-encrypted sync with no server, no account and no Apple entitlement. Every Mac reads
 and writes sealed files in a folder the user picks; any service that syncs a folder carries them
-between Macs. The default is `iCloud Drive › Ardia Sync`
-(`~/Library/Mobile Documents/com~apple~CloudDocs/Ardia Sync`: iCloud Drive syncs any folder
+between Macs. The default is `iCloud Drive › Medusa Sync`
+(`~/Library/Mobile Documents/com~apple~CloudDocs/Medusa Sync`: iCloud Drive syncs any folder
 under it, with no CloudKit container and no entitlement). Dropbox, a NAS or a USB drive work
 the same way. A Mac that turned sync on before the rename keeps `Netnyahoo Sync`, and one setting up after it is
 offered that folder while it holds the data (`SyncModule.defaultFolder`).
@@ -19,7 +19,7 @@ Code:
   - `SyncVault.swift`: the folder, with file coordination and partial files.
   - `SyncKeyStore.swift`: Keychain.
   - `RecoveryKit.swift`: PDF, text sheet and QR code.
-- `packages/sync/ios/SyncModule.swift`: the Expo module (`ArdiaSync`). It also reads this app's saved passwords.
+- `packages/sync/ios/SyncModule.swift`: the Expo module (`MedusaSync`). It also reads this app's saved passwords.
 - `packages/sync/src`: the merge, in TypeScript with no dependencies.
   - `scope.ts`: replica, logs, snapshots, compaction.
   - `hlc.ts`: hybrid logical clocks.
@@ -45,7 +45,7 @@ Apple, Dropbox, whoever has the NAS or finds the USB drive, malware that reads c
   (CRIME-style).
 
 What they do see (metadata): how many profiles sync (one folder each) and how many devices; when
-and how much each writes (file count, times, sizes to 1 KiB); and that it's Ardia sync data
+and how much each writes (file count, times, sizes to 1 KiB); and that it's Medusa sync data
 (the `NNS1` magic and `.nns` extension).
 
 What they can do: delete or withhold files (denial of service). Withheld files show as
@@ -57,9 +57,9 @@ within a file, or move data between profiles.
 Not protected against:
 - Someone with the phrase. The phrase is the key, like Dia's.
 - Someone with the unlocked Mac. They have the data in the clear anyway.
-- A compromised Ardia binary.
+- A compromised Medusa binary.
 
-The phrase's entropy is in each Mac's login Keychain (`Ardia Sync Key`, this device only,
+The phrase's entropy is in each Mac's login Keychain (`Medusa Sync Key`, this device only,
 never iCloud Keychain). Losing every Mac and the Recovery Kit loses the synced data. There's no
 reset by email, because there's no one to email.
 
@@ -79,10 +79,10 @@ reset by email, because there's no one to email.
   - `name-key` (HMAC-SHA256) names folders: the chain tag is `HMAC("chain")` and a scope's tag
     is `HMAC("scope/<scope id>")`, each cut to 128 bits and written in base32.
   - The phrase already has 256 bits of entropy, so no password stretching is needed.
-- Where the entropy is kept: the login Keychain, as a generic password (`Ardia Sync Key`,
+- Where the entropy is kept: the login Keychain, as a generic password (`Medusa Sync Key`,
   account = this device's sync id, `kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly`, not
   synchronizable).
-  - Test instances (`ARDIA_DATA_DIR`) keep it in a 0600 file in their data folder instead,
+  - Test instances (`MEDUSA_DATA_DIR`) keep it in a 0600 file in their data folder instead,
     as Chrome's mock keychain does for them.
   - A Debug build can't read an item an earlier build saved (no prompt, by design). Sync then
     shows "not syncing" with Enter Recovery Phrase…, and the same device carries on.
@@ -217,7 +217,7 @@ Profiles).
 | `prof:<sync id>` | app | a profile's name, colour, icon (`d` for the default) | deleting a profile on one Mac doesn't delete it on another |
 | `dev:<device id>` | app | a device's name | removed when it stops syncing |
 | `bm:<sync key>` | profile | `{ k, p (parent: its sync key, "bar" or "other"), t, u, a (added), pos }` | Bookmarks are Chrome's (BookmarkModel). A node's sync key is its Chrome UUID, or, for a bookmark synced before 0.2.20, its old id (`bm-…`, kept on Chrome's node as meta info `ac_sync_key`); every Mac makes an old key the node `bookmarkUuidFor` gives it, so Macs on either version name a bookmark alike (no renames, no duplicates; tested). Favicons stay local. A node whose folder was deleted elsewhere lands in Other Bookmarks; a cycle from two concurrent moves is broken the same way on every Mac (tested). Nothing is published or applied until the tree has been read from Chrome |
-| `h:<url>` | profile | `{ t, n (visits), vt (last 50 visit times) }` for pages visited in the last 90 days | History is Chrome's (HistoryService). Applying a record adds the visits Chrome lacks; a local edit is a visit the record doesn't have, so Macs settle on the union of their visits (tested). Not deletions: older history (it stays on the Mac that has it and is dropped from snapshots), Chrome's 90-day expiry, URLs past the newest 5,000 the app reads, and pages Chrome doesn't keep (`ardia://`) |
+| `h:<url>` | profile | `{ t, n (visits), vt (last 50 visit times) }` for pages visited in the last 90 days | History is Chrome's (HistoryService). Applying a record adds the visits Chrome lacks; a local edit is a visit the record doesn't have, so Macs settle on the union of their visits (tested). Not deletions: older history (it stays on the Mac that has it and is dropped from snapshots), Chrome's 90-day expiry, URLs past the newest 5,000 the app reads, and pages Chrome doesn't keep (`medusa://`) |
 | `tabs:<device id>` | profile | `{ n (device name), tabs: [{ u, t }] }`: that device's 30 most recent open tabs | only its device writes it. It feeds the overflow menu's "Your Devices" |
 | `pin:t:<tab id>`, `pin:g:<group id>` | profile | pinned tabs `{ g, u, t, i, ti, pos }` and pinned groups `{ n, i, c, pos }` (Dia's pinned container) | they arrive as unloaded tiles in the window showing the profile and load when selected. Unpinning on one Mac removes the tile on the others |
 | `pw:<origin>\n<username>` | profile | `{ o, u, p }` | see below |
@@ -227,11 +227,11 @@ Profiles).
 Saved passwords are Chrome's (its password manager).
 - **Reading.** Chrome's own API (`passwordsPrivate`) reveals a password only after device
   authentication, so sync reads the profile's `Login Data` with the importer's reader
-  (`ChromiumSecrets`, `packages/import`). Chrome's key is its "Ardia Safe Storage" item, or
-  the mock keychain's where ArdiaCoreHost uses that (test instances, ad hoc builds). No Touch ID prompt is needed each cycle, and no
+  (`ChromiumSecrets`, `packages/import`). Chrome's key is its "Medusa Safe Storage" item, or
+  the mock keychain's where MedusaCoreHost uses that (test instances, ad hoc builds). No Touch ID prompt is needed each cycle, and no
   Chromium change.
 - **Writing.** Writes go through Chrome's API (`savePassword`, `deletePassword` in
-  `@medusa/ardiacore`), so Chrome's in-memory store and autofill see them at once. A changed
+  `@medusa/medusacore`), so Chrome's in-memory store and autofill see them at once. A changed
   password is a delete plus an add: the update API needs the device check.
 - **Safety.**
   - A read that finds any row it can't decrypt is skipped (a partial list would read as
@@ -260,7 +260,7 @@ Settings › Sync. Dia puts sync in Account › Sync, with the section icon
     lose access to this device.", with "another" underlined.
   - A preview of the page.
   - Buttons: Save…, Close, and Other Options (Copy, Share…, Save as Text…).
-  - The PDF is "Ardia Recovery Kit.pdf", US Letter as Dia's, with the 24 words and a QR code.
+  - The PDF is "Medusa Recovery Kit.pdf", US Letter as Dia's, with the 24 words and a QR code.
 - **Connect with Recovery Phrase.**
   - Dia's copy: "Enter your 24-word recovery phrase to sync with another device.", the
     placeholder "Enter your 24-word recovery phrase", the "%d/%d words" counter, "too many

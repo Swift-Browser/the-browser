@@ -43,8 +43,8 @@ export async function playNudge(signal: AbortSignal) {
   if (!label) return;
 
   const cursor = document.createElement("div");
-  cursor.className = "ardia-nudge";
-  cursor.innerHTML = `${ARROW}<span class="ardia-nudge-ring"></span>`;
+  cursor.className = "medusa-nudge";
+  cursor.innerHTML = `${ARROW}<span class="medusa-nudge-ring"></span>`;
   const startX = label.left + 150;
   const startY = label.top + 170;
   cursor.style.transform = `translate(${startX}px, ${startY}px)`;

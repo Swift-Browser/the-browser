@@ -5,9 +5,9 @@ import { mount } from "../test-hooks.mjs";
 
 globalThis.__DEV__ = false;
 
-const ardiacore = new URL("../test-native-stub.mjs", import.meta.url).href;
+const medusacore = new URL("../test-native-stub.mjs", import.meta.url).href;
 const stubs = {
-  "@medusa/ardiacore": `export * from ${JSON.stringify(ardiacore)};
+  "@medusa/medusacore": `export * from ${JSON.stringify(medusacore)};
     export const listTasks = async () => [];
     export const onSystemState = () => ({ remove() {} });
     export const systemState = async () => null;

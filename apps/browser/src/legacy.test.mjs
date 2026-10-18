@@ -17,11 +17,11 @@ test("app URLs move to today's scheme; other text stays", () => {
 test("records: settings and shortcut ids renamed, the rest kept as the same objects", () => {
   const tab = { u: "https://example.com", t: "Example" };
   assert.equal(fromLegacy(tab), tab);
-  assert.deepEqual(fromLegacy({ v: { [old("newLittleArdia")]: ["cmd+opt+n"], newTab: ["cmd+t"] } }), {
-    v: { newLittleArdia: ["cmd+opt+n"], newTab: ["cmd+t"] },
+  assert.deepEqual(fromLegacy({ v: { [old("newLittleMedusa")]: ["cmd+opt+n"], newTab: ["cmd+t"] } }), {
+    v: { newLittleMedusa: ["cmd+opt+n"], newTab: ["cmd+t"] },
   });
   assert.deepEqual(fromLegacy({ u: `${oldScheme}downloads`, t: "Downloads" }), { u: "medusa://downloads", t: "Downloads" });
-  assert.deepEqual(fromLegacy({ [old("littleArdiaSize")]: [1, 2], littleArdiaSize: [3, 4] }), { littleArdiaSize: [3, 4] });
+  assert.deepEqual(fromLegacy({ [old("littleMedusaSize")]: [1, 2], littleMedusaSize: [3, 4] }), { littleMedusaSize: [3, 4] });
 });
 
 test("a bookmark saved before Chrome kept them gets the UUID 0.2.32 gave it, on every Mac", async () => {

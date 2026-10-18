@@ -7,8 +7,8 @@ import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const pkg = join(dirname(fileURLToPath(import.meta.url)), "..");
-const scratchPath = join(tmpdir(), "ardia-sync-swiftpm");
-const NEW_ID = "com.ardia.browser";
+const scratchPath = join(tmpdir(), "medusa-sync-swiftpm");
+const NEW_ID = "com.medusa.browser";
 
 function tool() {
   execFileSync("swift", ["build", "--product", "legacy-migration", "--scratch-path", scratchPath], { cwd: pkg, stdio: ["ignore", "ignore", "inherit"] });
@@ -72,7 +72,7 @@ const snapshot = (dir) => {
 };
 
 function toOld(text) {
-  let out = text.split("ardia://game").join(oldGame).split("chrome://game").join(oldChromeGame).split("ardia://").join(oldScheme);
+  let out = text.split("medusa://game").join(oldGame).split("chrome://game").join(oldChromeGame).split("medusa://").join(oldScheme);
   for (const [old, now] of Object.entries(names.jsonKeys)) out = out.split(`"${now}"`).join(`"${old}"`);
   return out;
 }
@@ -116,7 +116,7 @@ function seedFrom(instance, home) {
   });
   writeFileSync(join(home, "keychain.json"), JSON.stringify({
     [safeStorage.oldService]: { [safeStorage.oldAccount]: Buffer.from("mock_password").toString("base64") },
-    [oldService("Ardia Connected Accounts")]: { github: Buffer.from("e2e-token").toString("base64") },
+    [oldService("Medusa Connected Accounts")]: { github: Buffer.from("e2e-token").toString("base64") },
   }));
   writeOldDefaultBrowser(home);
   console.log(`old install at ${home} (from ${instance})`);
@@ -134,7 +134,7 @@ function seedSynthetic(home, secret) {
   mkdirSync(join(chromium, "Default"), { recursive: true });
   writeFileSync(join(oldData, "session.json"), JSON.stringify({
     version: 2,
-    settings: { [oldKey("openLinksInLittleArdia")]: false, [oldKey("littleArdiaSize")]: [800, 600], shortcuts: { [oldKey("newLittleArdia")]: ["cmd+opt+y"] } },
+    settings: { [oldKey("openLinksInLittleMedusa")]: false, [oldKey("littleMedusaSize")]: [800, 600], shortcuts: { [oldKey("newLittleMedusa")]: ["cmd+opt+y"] } },
     windows: [{ id: "w1" }],
     tabs: [
       { id: "t1", windowId: "w1", url: `${oldScheme}history`, title: "History" },
@@ -150,10 +150,10 @@ function seedSynthetic(home, secret) {
     roots: { bookmark_bar: { type: "folder", children: [{ type: "url", name: "Downloads", url: `${oldScheme}downloads`, meta_info: { [oldKey("ac_sync_key")]: "bm-7" } }] } },
     version: 1,
   }));
-  writeFileSync(join(oldData, oldPath("Chromium/ArdiaPictureInPicture.plist")), '<?xml version="1.0"?><plist version="1.0"><array><real>320</real></array></plist>');
+  writeFileSync(join(oldData, oldPath("Chromium/MedusaPictureInPicture.plist")), '<?xml version="1.0"?><plist version="1.0"><array><real>320</real></array></plist>');
   mkdirSync(join(chromium, "NativeMessagingHosts"));
-  writeFileSync(join(oldData, oldPath("Chromium/NativeMessagingHosts/.ardia-managed.json")), "[]");
-  mkdirSync(join(chromium, "Default", oldPath("Chromium/*/Ardia Favicons").split("/").pop()));
+  writeFileSync(join(oldData, oldPath("Chromium/NativeMessagingHosts/.medusa-managed.json")), "[]");
+  mkdirSync(join(chromium, "Default", oldPath("Chromium/*/Medusa Favicons").split("/").pop()));
   sqlite(join(chromium, "Default/Login Data"), "CREATE TABLE logins (origin_url TEXT, username_value TEXT, password_value BLOB);");
   sqlite(join(chromium, "Default/Login Data"), `INSERT INTO logins VALUES ('https://example.com/', 'e2e', X'${encrypt(secret, "hunter2-e2e").toString("hex")}');`);
   sqlite(join(chromium, "Default/Cookies"), "CREATE TABLE cookies (host_key TEXT, name TEXT, encrypted_value BLOB);");
@@ -166,29 +166,29 @@ function seedSynthetic(home, secret) {
   });
   writeFileSync(join(home, "keychain.json"), JSON.stringify({
     [safeStorage.oldService]: { [safeStorage.oldAccount]: Buffer.from(secret).toString("base64") },
-    [oldService("Ardia Connected Accounts")]: { github: Buffer.from("gh-e2e").toString("base64") },
-    [oldService("Ardia Sync Key")]: { "device-e2e": randomBytes(32).toString("base64") },
+    [oldService("Medusa Connected Accounts")]: { github: Buffer.from("gh-e2e").toString("base64") },
+    [oldService("Medusa Sync Key")]: { "device-e2e": randomBytes(32).toString("base64") },
   }));
   writeOldDefaultBrowser(home);
   return oldData;
 }
 
 function run(home, data, crashAfter) {
-  const env = { ...process.env, ARDIA_DATA_DIR: data, ARDIA_LEGACY_SOURCE: home };
-  if (crashAfter) env.ARDIA_LEGACY_CRASH_AFTER = crashAfter;
-  else delete env.ARDIA_LEGACY_CRASH_AFTER;
+  const env = { ...process.env, MEDUSA_DATA_DIR: data, MEDUSA_LEGACY_SOURCE: home };
+  if (crashAfter) env.MEDUSA_LEGACY_CRASH_AFTER = crashAfter;
+  else delete env.MEDUSA_LEGACY_CRASH_AFTER;
   return spawnSync(bin, ["run"], { env, stdio: ["ignore", "ignore", "pipe"] }).status;
 }
 
 function verify(label, data, secret) {
   const session = JSON.parse(readFileSync(join(data, "session.json"), "utf8"));
-  check(`${label}: tabs' app URLs`, JSON.stringify(session.tabs.map((t) => t.url)) === JSON.stringify(["ardia://history", "chrome://game", "https://example.com/"]), JSON.stringify(session.tabs.map((t) => t.url)));
+  check(`${label}: tabs' app URLs`, JSON.stringify(session.tabs.map((t) => t.url)) === JSON.stringify(["medusa://history", "chrome://game", "https://example.com/"]), JSON.stringify(session.tabs.map((t) => t.url)));
   check(`${label}: pinned group`, session.groups?.[0]?.pinned === true && session.groups[0].tabIds[0] === "t3");
-  check(`${label}: settings`, session.settings.openLinksInLittleArdia === false && session.settings.littleArdiaSize?.[0] === 800 && !(oldKey("openLinksInLittleArdia") in session.settings));
-  check(`${label}: shortcuts`, JSON.stringify(session.settings.shortcuts) === JSON.stringify({ newLittleArdia: ["cmd+opt+y"] }));
-  check(`${label}: launch hint`, session.launchTab.url === "ardia://history");
+  check(`${label}: settings`, session.settings.openLinksInLittleMedusa === false && session.settings.littleMedusaSize?.[0] === 800 && !(oldKey("openLinksInLittleMedusa") in session.settings));
+  check(`${label}: shortcuts`, JSON.stringify(session.settings.shortcuts) === JSON.stringify({ newLittleMedusa: ["cmd+opt+y"] }));
+  check(`${label}: launch hint`, session.launchTab.url === "medusa://history");
   const bookmarks = readFileSync(join(data, "Chromium/Default/Bookmarks"), "utf8");
-  check(`${label}: bookmark URL and sync key`, bookmarks.includes('"url":"ardia://downloads"') && bookmarks.includes('"ac_sync_key":"bm-7"'));
+  check(`${label}: bookmark URL and sync key`, bookmarks.includes('"url":"medusa://downloads"') && bookmarks.includes('"ac_sync_key":"bm-7"'));
   for (const [, now] of names.paths) {
     const p = join(data, now.replace("*", "Default"));
     check(`${label}: ${now}`, existsSync(p));
@@ -203,7 +203,7 @@ function verify(label, data, secret) {
   check(`${label}: connected account`, JSON.parse(readFileSync(join(data, "Connected Accounts.json"), "utf8")).github === "gh-e2e");
   check(`${label}: sync key`, existsSync(join(data, "sync-key-device-e2e")) && statSync(join(data, "sync-key-device-e2e")).size === 32);
   const prefs = domainJSON(join(data, "Preferences", `${NEW_ID}.plist`));
-  check(`${label}: preferences`, prefs.ACAppIcon === "ocean" && prefs["NSWindow Frame ArdiaSettings"] === "1 2 3 4" && prefs.SUAutomaticallyUpdate === false, JSON.stringify(prefs));
+  check(`${label}: preferences`, prefs.ACAppIcon === "ocean" && prefs["NSWindow Frame MedusaSettings"] === "1 2 3 4" && prefs.SUAutomaticallyUpdate === false, JSON.stringify(prefs));
   const offer = existsSync(join(data, OFFER)) ? JSON.parse(readFileSync(join(data, OFFER), "utf8")) : null;
   check(`${label}: the offer to be the default browser again`, offer?.version === 1 && offer.askedAt === null, JSON.stringify(offer));
   const journal = JSON.parse(readFileSync(join(data, ".legacy-migration.json"), "utf8"));
@@ -264,14 +264,14 @@ for (const crashAfter of [null, "staged", "secrets", "journal", "published", "de
   check("before the offer: an offer already answered stays answered", JSON.parse(readFileSync(join(data, OFFER), "utf8")).askedAt === 1);
 }
 
-const NEW_APP = "Ardia.app";
+const NEW_APP = "Medusa.app";
 function fakeBundle(folder, name = names.appFileName) {
   const bundle = join(folder, name);
   mkdirSync(join(bundle, "Contents/MacOS"), { recursive: true });
-  cpSync(bin, join(bundle, "Contents/MacOS/Ardia"));
+  cpSync(bin, join(bundle, "Contents/MacOS/Medusa"));
   return bundle;
 }
-const exe = (bundle) => join(bundle, "Contents/MacOS/Ardia");
+const exe = (bundle) => join(bundle, "Contents/MacOS/Medusa");
 const moveArgs = (wait) => ["move", ...(wait ? ["--wait", wait] : [])];
 const move = (bundle) => spawnSync(exe(bundle), moveArgs(), { env: { ...process.env, MOVE_MARK: "kept" }, encoding: "utf8" }).stdout.trim();
 const ranFrom = (bundle, wait) => `at ${exe(bundle)}|kept|${moveArgs(wait).join(" ")}`;
@@ -281,7 +281,7 @@ rmSync(moves, { recursive: true, force: true });
   const folder = join(moves, "plain");
   const bundle = fakeBundle(folder);
   const out = move(bundle);
-  check("move: the old name becomes Ardia.app", !existsSync(bundle) && existsSync(join(folder, NEW_APP)), readdirSync(folder).join(", "));
+  check("move: the old name becomes Medusa.app", !existsSync(bundle) && existsSync(join(folder, NEW_APP)), readdirSync(folder).join(", "));
   check("move: it starts over from there, with its arguments and environment", out === ranFrom(join(folder, NEW_APP)), out);
 }
 {
@@ -327,7 +327,7 @@ const stays = (label, folder, bundle) => {
   const folder = join(moves, "clash");
   const bundle = fakeBundle(folder);
   fakeBundle(folder, NEW_APP);
-  stays("beside an Ardia.app", folder, bundle);
+  stays("beside an Medusa.app", folder, bundle);
 }
 {
   const folder = join(moves, "link");
@@ -339,7 +339,7 @@ const stays = (label, folder, bundle) => {
 }
 {
   const folder = join(moves, "other");
-  stays("another name", folder, fakeBundle(folder, "Ardia Beta.app"));
+  stays("another name", folder, fakeBundle(folder, "Medusa Beta.app"));
 }
 {
   const folder = join(moves, "AppTranslocation/ABCD/d");

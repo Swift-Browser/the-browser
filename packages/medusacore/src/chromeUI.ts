@@ -79,7 +79,7 @@ type NativeActionState = {
   icon: string;
 };
 
-export const ChromeUI = requireNativeModule<NativeChromeUI>("ArdiaChromeUI");
+export const ChromeUI = requireNativeModule<NativeChromeUI>("MedusaChromeUI");
 
 if (__DEV__) (globalThis as { acChromeUI?: unknown }).acChromeUI = ChromeUI;
 

@@ -4,7 +4,7 @@ One Markdown file per version: `docs/release-notes/<version>.md`, where `<versio
 `MARKETING_VERSION` exactly (`0.1.4.md`). Write it before running `scripts/release.sh`, which refuses
 to build without it. The same file ends up in three places:
 
-- **The website**, `https://ardia.dev/release-notes#<version>` (`apps/site/src/pages/release-notes.astro`),
+- **The website**, `https://medusa.dev/release-notes#<version>` (`apps/site/src/pages/release-notes.astro`),
   newest first. The app opens that anchor in a new tab the first time it launches after an update, and from
   Help › Release Notes. The page only shows a version once the site is rebuilt and deployed.
 - **The GitHub release**: `release.sh` writes `dist/<version>/release-notes.md` (the body, then the standard
@@ -81,7 +81,7 @@ channel: nightly
 The notes are plain and useful. The wit goes in the headline only.
 
 **Headline.** One sentence, 30 to 60 characters, ending with a full stop. It's about the release's most
-noticeable change, said flatly, as if nothing much had happened. Ardia is Arc plus Dia, its logo is a painted
+noticeable change, said flatly, as if nothing much had happened. Medusa is Arc plus Dia, its logo is a painted
 field, and using it should feel like touching grass. So the wit is dry and calm. A light
 open-country touch (a lamb, a field, a quiet week) is welcome where it fits; most headlines won't need one,
 and none should be bent to make room for it. Deadpan, never a pun on the change, never an exclamation mark.
@@ -93,7 +93,7 @@ The fact under it must be true.
 - 0.1.3 "Autofill starts counting clicks again." (autofill suggestions ignored clicks)
 - 0.1.4 "Chrome makes no further unscheduled appearances." (Chrome's bubbles over the page)
 - 0.2.9 "Nothing you can see has changed, on purpose." (tidied source, the same app)
-- 0.2.19 "Ardia now does less while you do nothing." (less battery while idle)
+- 0.2.19 "Medusa now does less while you do nothing." (less battery while idle)
 
 Keep headlines short, calm and dry, with one outdoor phrase at most. No politics, and no jokes at the
 user's expense.
@@ -102,11 +102,11 @@ user's expense.
 
 - Lead with what the user sees, not with what the code does: "Menu commands no longer crash the app", not
   "Fix selector in MenuTarget".
-- Name the symptom people hit, so they recognise it: "every command in the menu bar crashed Ardia",
+- Name the symptom people hit, so they recognise it: "every command in the menu bar crashed Medusa",
   "sites like Google waited forever at 'Complete sign-in using your passkey'".
 - One short "why" is welcome when it explains the fix in user terms ("The menu items pointed at the wrong
   method."). No file names, class names, commit hashes or internal flags.
-- Name menus by their path (Ardia › Check for Updates…, System Settings › Privacy & Security), shortcuts
+- Name menus by their path (Medusa › Check for Updates…, System Settings › Privacy & Security), shortcuts
   with symbols (⌘T, ⇧⌘T), settings by their label in quotes.
 - Say which versions a regression affected when it matters ("In 0.1.0 and 0.1.1, …").
 - "Like Dia" / "as in Dia" is fine where the feature copies Dia's behaviour.

@@ -140,9 +140,9 @@ the same as top"), so if a Dia capture ever differs, the owner's equal insets wi
   chooser) 14.5 → 16.5 on all four sides; blocked pop-ups 13.5 → 16.5; history 13.5 → 16.5 (its favicons 18 in, a 16 pt
   favicon centred in the slot); Cast 14 → 16; Downloads' header caps and rows 16 / 16.
 - Placement in the page (`POPOVER_MARGIN`): every panel sits **8** from the card's side and 8 below the page's top
-  (the card's top with the address bar in the sidebar and in Little Ardia, the toolbar's hairline otherwise); it was 2
+  (the card's top with the address bar in the sidebar and in Little Medusa, the toolbar's hairline otherwise); it was 2
   (Site Controls, Zoom, pop-ups, history) or 4 (prompts, Cast, Share) below the top (owner, 2026-10-15). A panel taller
-  than the page (Site Controls in Little Ardia) scrolls inside an 8 pt margin at the bottom.
+  than the page (Site Controls in Little Medusa) scrolls inside an 8 pt margin at the bottom.
 
 ## Sidebar
 
@@ -164,7 +164,7 @@ the same as top"), so if a Dia capture ever differs, the owner's equal insets wi
       relative luminance > 0.88) gets a black fill and an opaque white 30% ring instead.
     - No theme (a non-RGB image, no opaque pixels, no favicon): fill `TabBackgroundSelectedPrimary`
       (black / white), ring `TabDockItemDefaultSelectionStroke` (white .45 dark / black .48 light).
-      Ardia still draws its older look there (white 25% fill, black rim, `TabOutline` bevel).
+      Medusa still draws its older look there (white 25% fill, black rim, `TabOutline` bevel).
     - Only the primary selection draws the ring; a secondary selection is a
       `TabBackgroundSelectedSecondary` fill with no ring. The dock item has no `TabOutline` bevel
       or `TabSelectedShadow` of its own.
@@ -199,7 +199,7 @@ Regular rows on the 37 pt pitch; the same for "+ New Tab" and ⌘T, and for the 
 - Curves: the slide is Core Animation's default, cubic-bezier(0.25, 0.1, 0.25, 1) over 0.14 s, no overshoot (a
   spring with ω ≈ 40 rad/s and damping ratio 0.9 fits almost as well). The fade is ease-out, cubic-bezier(0, 0, 0.58,
   1) over 0.10 s, opacity 1 → 0.
-- Ardia (`sidebar/listMotion.tsx`): the same, for every top-level list entry (rows, splits, group blocks, the + row)
+- Medusa (`sidebar/listMotion.tsx`): the same, for every top-level list entry (rows, splits, group blocks, the + row)
   and inside an expanded group, whose box grows or shrinks with its rows (a tab added as the group's last row: the box
   takes its height at once and what is below the group slides instead); several closes at once fade together. The row
   just under a new one is clipped at the new row's bottom edge while it slides, which gives Dia's look over our
@@ -634,7 +634,7 @@ than ours at the same cap height.
   else the stored one) and the page card starts at the sidebar's width. A 2× capture of the user's Dia (2026-09-26,
   inactive, dark) has its card at x 191 and rows at 6 … 185: that window's sidebar is 191 wide (resized), with the
   same 6 pt insets. Rows 34 tall (hairline at y 212.0 and 245.5), tiles 54 … 95, favicon, title and colours identical
-  to Ardia's to the pixel.
+  to Medusa's to the pixel.
 - Header (a horizontal stack, spacing 2, 6 after the window controls; items 34 tall): Dia's traffic lights are centred
   at x 24.75 / 47.75 / 70.75, y 26.75.
   - `SidebarProfileIndicatorButton` (`0x10542e234` …): the profile name, 13 pt semibold (NSFontWeightSemibold), single
@@ -656,7 +656,7 @@ than ours at the same cap height.
   shape), 16 pt wide, white 0.28 in dark over any row state (measured; which asset draws it wasn't traced).
 - The clean-tabs upsell is a borderless child window (not a popover), 316 wide: title at (24, 24), a 21 × 26
   illustration, body 16 below, then one row of 32 pt buttons 21 below: Not Now (or Don't Ask Again) at the left,
-  Clean Up Once and Clean Up Daily (8 apart) at the right (`0x103bca7d0`). Ardia's card lives in the 160–400 pt
+  Clean Up Once and Clean Up Daily (8 apart) at the right (`0x103bca7d0`). Medusa's card lives in the 160–400 pt
   sidebar, so it stacks the three buttons.
 
 ### Top tab strip (1.50.1, 2× capture of the user's window, 2026-09-30)
@@ -686,7 +686,7 @@ classes are `TabStrip.TabStripViewController`, `TabStripDockView` (the pinned gr
   the flares start).
 - **"+"**: a plain `plus` glyph, 10 pt wide, centred at (530.5, 20.5): a 32 pt button 4 after the last tab, white ~0.55.
 - Not captured (it would take clicking in Dia): hover and pressed states in the strip, a selected pinned tab, split
-  tabs, and light mode (groups: below). Ardia uses the sidebar's tokens there (`TabBackgroundHovered` 0.16 / 0.55,
+  tabs, and light mode (groups: below). Medusa uses the sidebar's tokens there (`TabBackgroundHovered` 0.16 / 0.55,
   `TabBackgroundPressed` 0.31 / 0.70, in a 32 pt row with radius 10).
 
 #### Groups (1.50.1, owner's 2× screen recording, 2026-09-30)
@@ -721,14 +721,14 @@ theme, a group "X" of five tabs after the pinned dock. Positions in points from 
 - **Picking a member** of an expanded group (13.29 s) selects it and leaves the group open; the group closed at 14.04 s,
   0.38 s after the pointer came to rest on the chip (the chip click, as at every other collapse in the recording), leaving
   the picked tab out after the chip.
-- Ardia (in-process snapshots, same state): dock 86 … 156, container from 164 (8 after the dock), chip 50, the active
+- Medusa (in-process snapshots, same state): dock 86 … 156, container from 164 (8 after the dock), chip 50, the active
   tab 6.5 after the chip, container 4.5 after it, the next tab 8 after the container; spring sampled in the app: response
   0.31 s / damping 0.81 expanding, 0.30 s / 0.82 collapsing, 1.1 % overshoot.
 
 #### Dragging tabs and split targets (1.50.1, owner's 2× recordings, 2026-10-01)
 
 Two recordings, dark, tabs on top (3024 × 1964, variable frame rate, every frame's own timestamp): one with three
-"New Tab" tabs dragged within and out of the strip (rec1026, 0–8 s; then Ardia 0.2.18), one with the active tab
+"New Tab" tabs dragged within and out of the strip (rec1026, 0–8 s; then Medusa 0.2.18), one with the active tab
 dragged onto the page and into a split (rec1027, 7.6 s). The page card spans x 6 … 1505.5 and y 38 … 908.5 (1499.5 ×
 870.5). Classes: `DragDrop.SplitTargetView` (`leftSplitTarget` / `rightSplitTarget`), titles "Add left split" / "Add
 right split"; the numbers are from the pixels.
@@ -757,7 +757,7 @@ right split"; the numbers are from the pixels.
   tab-shaped pill in ~0.05 s (1.758 → 1.808 s) and that strip makes room for it; let go there, the tab joins it.
 - **The pill** (rec1027, 1.483 s): for a frame or two before the card, the tab itself (its strip look, title and ✕)
   follows the pointer; then it becomes the card (1.508 s).
-- **Ardia** (`layout/splitDrop.ts`, `SplitChrome.tsx`; the picture is `DragPreview` in `packages/shell/ios/Windows.swift`):
+- **Medusa** (`layout/splitDrop.ts`, `SplitChrome.tsx`; the picture is `DragPreview` in `packages/shell/ios/Windows.swift`):
   the same target stages as fractions of the pane's card, the same lean, 0.11 s slide, a 0.2 s / 0.9 spring for the
   sizes; the dashes are React Native's (3 × the width: 2 pt → 6 / 6, 2.33 pt → 7 / 7). The picture is a borderless,
   non-activating panel that takes no mouse: the tab's own strip look as the pill (30 ms, then 60 ms into the card),
@@ -767,12 +767,12 @@ right split"; the numbers are from the pixels.
   into the new window in 0.2 s, then fades in 0.1 s. A background tab's card shows its own page: its last picture
   (taken 1.5 s after it was shown or went to another page; memory only, not in private windows), else its icon
   and title.
-- **Reordering, frame by frame** (the owner's 60 fps phone video of Dia and Ardia 0.2.22, 2026-10-02; frame strips in
+- **Reordering, frame by frame** (the owner's 60 fps phone video of Dia and Medusa 0.2.22, 2026-10-02; frame strips in
   `output/tab-drag/`): Dia's tab moves with the pointer from the first move and stays within about a frame of it
   (motion blur limits the reading); it's opaque, so the tab it passes doesn't show through. Once its leading edge
   passes a neighbour's centre, the neighbour slides into the place it left while the drag goes on: 91 % of the way
   in 43 ms, 97 % in 60, all of it by ~76 ms (a critically damped spring, ω ≈ 90 rad/s, ~0.07 s). Let go at its
-  place, nothing else moves. Ardia 0.2.22 in the same video: the tab stood still for 20 frames (333 ms) after the
+  place, nothing else moves. Medusa 0.2.22 in the same video: the tab stood still for 20 frames (333 ms) after the
   pointer set off (the drag picture's window snapshot, 0.13–0.35 s of the main thread at the press), the neighbours
   never moved (the dragged tab, at 0.92 opacity, slid over them), and the drop snapped everything in one frame. Now
   (`layout/stripReorder.ts`): the snapshot waits until the tab leaves the strip and costs ~17 ms (the window at
@@ -829,13 +829,13 @@ right split"; the numbers are from the pixels.
 Measured from a 13 s recording of the user's Dia (3024 × 1964, YouTube video, dark), frame by frame at 60 fps, the
 window 468 × 263 pt at (1034, 43), where the user had left it. Dia draws its own video PiP window (`PIP.VideoPIPContentController`,
 `PIPWindowController`) and keeps where it was last left (`LastVideoPIPPosition`); the first-ever default wasn't
-recovered (Ardia keeps Chrome's: a fifth of the work area, bottom right). Ardia restyles Chrome's own window
-to these numbers (`chrome/browser/ardia/pip/` (`engine/chromium`)); a same-crop comparison is in the table.
+recovered (Medusa keeps Chrome's: a fifth of the work area, bottom right). Medusa restyles Chrome's own window
+to these numbers (`chrome/browser/medusa/pip/` (`engine/chromium`)); a same-crop comparison is in the table.
 - **At rest**: only the video. Corners circular, **6 pt** (the outline fits a circle to 0.1 px at 2×), with a 1 pt rim
   of white **17 %** just inside the edge (content + 32…40 levels) and a faint shadow that follows the rounded corners
   (the backdrop is 3–4 levels darker next to the window, with a 1 px dark contact line). No title, host label or badge.
-  Ardia: Chrome's square, transparent window gets its content view clipped to 6 pt, the rim drawn over it and its
-  shadow invalidated (`ArdiaCorePictureInPicture.mm`); measured on a window capture: 6.0 pt radius, rim + 32…36 levels.
+  Medusa: Chrome's square, transparent window gets its content view clipped to 6 pt, the rim drawn over it and its
+  shadow invalidated (`MedusaCorePictureInPicture.mm`); measured on a window capture: 6.0 pt radius, rim + 32…36 levels.
 - **Appears** about 125 ms after the tab switch, at full opacity (one black frame, then the video): no fade, no slide.
 - **Hover**: an even black scrim at **35 %** over the whole video (content × 0.645, same pixels before and after),
   fading in over **200 ms**, ease-in-out (2, 7, 14, 24, 40, 55, 69, 80, 90, 96, 99 % at 60 fps).
@@ -853,7 +853,7 @@ to these numbers (`chrome/browser/ardia/pip/` (`engine/chromium`)); a same-crop 
 - **Back to tab**: the tab shows at once, and the PiP window fades out over it in ~**70 ms** (84, 40, 11, 0 % at 60 fps)
   while the page swaps YouTube's "Playing in picture-in-picture" placeholder for the video (YouTube's own ~220 ms fade).
 
-| Measured (pt) | Dia | Ardia |
+| Measured (pt) | Dia | Medusa |
 |---|---|---|
 | Scrim (content ×) | 0.645 | 0.647 |
 | Back to tab button / glyph | 12, 12, 28 × 28 / ↖ 22.5–30.5 | same / same |
@@ -864,7 +864,7 @@ to these numbers (`chrome/browser/ardia/pip/` (`engine/chromium`)); a same-crop 
 | Controls fade in | ~200 ms ease-in-out | ~190 ms ease-in-out |
 | Fade out: close / back to tab | ~100 / ~70 ms | 100 / 70 ms (Core Animation) |
 
-Ardia differs in: the origin includes a port when the page has one (Chrome's formatting), and the play glyph
+Medusa differs in: the origin includes a port when the page has one (Chrome's formatting), and the play glyph
 (paused) and replay glyph weren't in the recording, so they're a rounded triangle of the same height and Chrome's icon.
 
 ### Still unknown (needs a capture of Dia 1.50.1)

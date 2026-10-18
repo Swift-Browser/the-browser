@@ -20,7 +20,7 @@ enum DocumentStore {
     var waiters: [Done]
   }
 
-  private static let queue = DispatchQueue(label: "ardia.documents", qos: .utility)
+  private static let queue = DispatchQueue(label: "medusa.documents", qos: .utility)
   private static let lock = NSLock()
   private static var staged: [String: Staged] = [:]
   private static var generation: UInt64 = 0
@@ -86,7 +86,7 @@ enum DocumentStore {
     lock.unlock()
     for waiter in waiters { waiter(failure) }
     guard let failure else { return }
-    NSLog("Ardia: saving \(key) failed (try \(attempt + 1)): \(failure.localizedDescription)")
+    NSLog("Medusa: saving \(key) failed (try \(attempt + 1)): \(failure.localizedDescription)")
     let delay = min(60.0, 2.0 * pow(2.0, Double(min(attempt, 5))))
     queue.asyncAfter(deadline: .now() + delay) { land(key, generation, attempt: attempt + 1) }
   }
@@ -119,11 +119,11 @@ enum DocumentStore {
 public class ShellModule: Module {
   static func documentURL(_ name: String) throws -> URL {
     let dir: URL
-    if let custom = ProcessInfo.processInfo.environment["ARDIA_DATA_DIR"] {
+    if let custom = ProcessInfo.processInfo.environment["MEDUSA_DATA_DIR"] ?? ProcessInfo.processInfo.environment["MEDUSA_DATA_DIR"] {
       dir = URL(fileURLWithPath: custom, isDirectory: true)
     } else {
       let base = try FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-      dir = base.appendingPathComponent(Bundle.main.bundleIdentifier ?? "Ardia", isDirectory: true)
+      dir = base.appendingPathComponent(Bundle.main.bundleIdentifier ?? "Medusa", isDirectory: true)
     }
     try FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
     return dir.appendingPathComponent((name as NSString).lastPathComponent)
@@ -136,7 +136,7 @@ public class ShellModule: Module {
   private let switcherPointer = SwitcherPointer()
 
   public func definition() -> ModuleDefinition {
-    Name("ArdiaShell")
+    Name("MedusaShell")
     Events("onCommand", "onOpenURLs", "onWindowEvent", "onAppEvent")
 
     OnCreate {
@@ -157,7 +157,7 @@ public class ShellModule: Module {
         }
         self?.observeForSidebar()
         let quitCancelled = NotificationCenter.default.addObserver(
-          forName: Notification.Name("ArdiaCoreQuitCancelled"), object: nil, queue: .main
+          forName: Notification.Name("MedusaCoreQuitCancelled"), object: nil, queue: .main
         ) { _ in self?.sendEvent("onAppEvent", ["type": "quitCancelled"]) }
         self?.sidebarObservers.append((NotificationCenter.default, quitCancelled))
       }
@@ -505,7 +505,7 @@ public enum ShellApp {
 
 public class FadeLabelModule: Module {
   public func definition() -> ModuleDefinition {
-    Name("ArdiaFadeLabel")
+    Name("MedusaFadeLabel")
 
     View(FadeLabel.self) {
       Prop("text") { (view: FadeLabel, v: String) in view.text = v }
@@ -579,7 +579,7 @@ final class FadeLabel: ExpoView {
 
 public class ActivitySpinnerModule: Module {
   public func definition() -> ModuleDefinition {
-    Name("ArdiaActivitySpinner")
+    Name("MedusaActivitySpinner")
 
     View(ActivitySpinner.self) {}
   }
@@ -655,7 +655,7 @@ final class ActivitySpinner: ExpoView {
 
 public class SymbolModule: Module {
   public func definition() -> ModuleDefinition {
-    Name("ArdiaSymbol")
+    Name("MedusaSymbol")
 
     View(SymbolView.self) {
       Prop("name") { (view: SymbolView, name: String) in view.name = name }
@@ -769,7 +769,7 @@ final class WindowDragRegion: ExpoView {
 
 public class OutsidePressAreaModule: Module {
   public func definition() -> ModuleDefinition {
-    Name("ArdiaOutsidePressArea")
+    Name("MedusaOutsidePressArea")
 
     View(OutsidePressArea.self) {
       Events("onOutsidePress")
@@ -878,7 +878,7 @@ let installScrollViewInsetFix: Void = {
 
 public class ContextMenuAreaModule: Module {
   public func definition() -> ModuleDefinition {
-    Name("ArdiaContextMenuArea")
+    Name("MedusaContextMenuArea")
 
     View(ContextMenuArea.self) {
       Events("onContextMenu")
@@ -915,7 +915,7 @@ final class ContextMenuArea: ExpoView {
 
 public class VisualEffectModule: Module {
   public func definition() -> ModuleDefinition {
-    Name("ArdiaVisualEffect")
+    Name("MedusaVisualEffect")
 
     View(VisualEffect.self) {
       Prop("material") { (view: VisualEffect, name: String) in view.setMaterial(name) }
@@ -967,7 +967,7 @@ final class VisualEffect: ExpoView {
 
 public class GlassEffectModule: Module {
   public func definition() -> ModuleDefinition {
-    Name("ArdiaGlassEffect")
+    Name("MedusaGlassEffect")
 
     Function("isLiquidGlass") { () -> Bool in
       if #available(macOS 26.0, *) { return true }
@@ -1033,7 +1033,7 @@ final class GlassEffect: ExpoView {
 
 public class SurfaceModule: Module {
   public func definition() -> ModuleDefinition {
-    Name("ArdiaSurface")
+    Name("MedusaSurface")
 
     View(Surface.self) {
       Prop("fill") { (view: Surface, hex: String?) in view.surfaceFill = hex.flatMap(NSColor.init(hex:)) }

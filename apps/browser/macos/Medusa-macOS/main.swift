@@ -1,11 +1,11 @@
 import AppKit
-import ArdiaCore
-import ArdiaSync
+import MedusaCore
+import MedusaSync
 
-if getenv("ARDIA_PREWARM") != nil { exit(0) }
+if getenv("MEDUSA_PREWARM") != nil || getenv("MEDUSA_PREWARM") != nil { exit(0) }
 
 LegacyMigration.moveToNewName()
 
 if !LegacyMigration.runAtLaunch() { exit(0) }
 
-exit(ArdiaCoreHost.run(argc: CommandLine.argc, argv: CommandLine.unsafeArgv) { AppDelegate() })
+exit(MedusaCoreHost.run(argc: CommandLine.argc, argv: CommandLine.unsafeArgv) { AppDelegate() })

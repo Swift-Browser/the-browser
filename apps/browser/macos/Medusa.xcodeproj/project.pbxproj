@@ -128,14 +128,14 @@
 			buildPhases = (
 				1A938104A937498D81B3BD3B /* [CP] Check Pods Manifest.lock */,
 				8CEEFC6E2691476FEA5FE73B /* [Expo] Configure project */,
-				C3F0EB5E2E9A4B1D00CEF001 /* Stage ArdiaCore framework */,
+				C3F0EB5E2E9A4B1D00CEF001 /* Stage MedusaCore framework */,
 				514201452437B4B30078DB4F /* Sources */,
 				514201462437B4B30078DB4F /* Frameworks */,
 				514201472437B4B30078DB4F /* Resources */,
 				381D8A6E24576A4E00465D17 /* Bundle React Native code and images */,
 				2A6668A84BEE1867A8B8AF9E /* [CP] Embed Pods Frameworks */,
 				F2B782290948FD07702EBCEC /* [CP] Copy Pods Resources */,
-				D0C71E5E2E9A4B1D00D0C001 /* Build Dock Tile Plug-in, embed ArdiaCore, bundle the CLI installer */,
+				D0C71E5E2E9A4B1D00D0C001 /* Build Dock Tile Plug-in, embed MedusaCore, bundle the CLI installer */,
 			);
 			buildRules = (
 			);
@@ -277,7 +277,7 @@
 			shellPath = /bin/sh;
 			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-Medusa-macOS/expo-configure-project.sh\"\n";
 		};
-		C3F0EB5E2E9A4B1D00CEF001 /* Stage ArdiaCore framework */ = {
+		C3F0EB5E2E9A4B1D00CEF001 /* Stage MedusaCore framework */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
@@ -287,17 +287,17 @@
 			);
 			inputPaths = (
 			);
-			name = "Stage ArdiaCore framework";
+			name = "Stage MedusaCore framework";
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(ARDIACORE_STAGE_DIR)/.stamp",
+				"$(MEDUSACORE_STAGE_DIR)/.stamp",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"$PROJECT_DIR/../../../packages/ardiacore/scripts/stage-framework.sh\"\n";
+			shellScript = "\"$PROJECT_DIR/../../../packages/medusacore/scripts/stage-framework.sh\"\n";
 		};
-		D0C71E5E2E9A4B1D00D0C001 /* Build Dock Tile Plug-in, embed ArdiaCore, bundle the CLI installer */ = {
+		D0C71E5E2E9A4B1D00D0C001 /* Build Dock Tile Plug-in, embed MedusaCore, bundle the CLI installer */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
@@ -307,14 +307,14 @@
 			);
 			inputPaths = (
 			);
-			name = "Build Dock Tile Plug-in, embed ArdiaCore, bundle the CLI installer";
+			name = "Build Dock Tile Plug-in, embed MedusaCore, bundle the CLI installer";
 			outputFileListPaths = (
 			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"$PROJECT_DIR/../../../packages/shell/docktile/build.sh\" && \"$PROJECT_DIR/../../../packages/ardiacore/scripts/embed.sh\" && \"$PROJECT_DIR/../../../packages/shell/scripts/bundle-cli-installer.sh\"\n";
+			shellScript = "\"$PROJECT_DIR/../../../packages/shell/docktile/build.sh\" && \"$PROJECT_DIR/../../../packages/medusacore/scripts/embed.sh\" && \"$PROJECT_DIR/../../../packages/shell/scripts/bundle-cli-installer.sh\"\n";
 		};
 		F2B782290948FD07702EBCEC /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -323,7 +323,7 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Medusa-macOS/Pods-Medusa-macOS-resources.sh",
-				"${PODS_ROOT}/../../../../packages/ardiacore/ios/page_script.js",
+				"${PODS_ROOT}/../../../../packages/medusacore/ios/page_script.js",
 				"${PODS_CONFIGURATION_BUILD_DIR}/EXConstants/EXConstants.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/EXConstants/ExpoConstants_privacy.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/ExpoFileSystem/ExpoFileSystem_privacy.bundle",
@@ -373,7 +373,7 @@
 			baseConfigurationReference = B061BE5464342E57C82A2F6C /* Pods-Medusa-macOS.debug.xcconfig */;
 			buildSettings = {
 				ARCHS = arm64;
-				ARDIACORE_STAGE_DIR = "$(OBJROOT)/ArdiaCoreFramework";
+				MEDUSACORE_STAGE_DIR = "$(OBJROOT)/MedusaCoreFramework";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Medusa-macOS/Medusa.entitlements";
@@ -392,7 +392,7 @@
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
-					"\"$(ARDIACORE_STAGE_DIR)/Chromium Framework.framework/Chromium Framework\"",
+					"\"$(MEDUSACORE_STAGE_DIR)/Chromium Framework.framework/Chromium Framework\"",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.medusa.browser;
@@ -408,7 +408,7 @@
 			baseConfigurationReference = C35C3DFDC1BA58B94EE6A74C /* Pods-Medusa-macOS.release.xcconfig */;
 			buildSettings = {
 				ARCHS = arm64;
-				ARDIACORE_STAGE_DIR = "$(OBJROOT)/ArdiaCoreFramework";
+				MEDUSACORE_STAGE_DIR = "$(OBJROOT)/MedusaCoreFramework";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Medusa-macOS/Medusa.entitlements";
@@ -427,7 +427,7 @@
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
-					"\"$(ARDIACORE_STAGE_DIR)/Chromium Framework.framework/Chromium Framework\"",
+					"\"$(MEDUSACORE_STAGE_DIR)/Chromium Framework.framework/Chromium Framework\"",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.medusa.browser;

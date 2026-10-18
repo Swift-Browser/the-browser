@@ -2,7 +2,7 @@
 
 A speed change people can feel ships behind a switch, so a release that turns out slow or broken on some Macs can be
 backed out without another build. `apps/browser/src/lib/killSwitches.ts` is the registry; `apps/site/public/switches.json`
-(served at `https://ardia.dev/switches.json`) says which are off.
+(served at `https://medusa.dev/switches.json`) says which are off.
 
 ## Rules
 
@@ -35,7 +35,7 @@ another. Disclosed in Settings › What's Sent (“Even with sharing off”) and
 
 ## For a bench or a test instance
 
-`ARDIA_SWITCHES="newTabPrewarm=off,lazySidebarRows=off"` sets a launch's values over everything else (the app and
+`MEDUSA_SWITCHES="newTabPrewarm=off,lazySidebarRows=off"` sets a launch's values over everything else (the app and
 the updater both read it). A test instance has no updater, so it never fetches.
 
 ## The switches (see `SWITCHES` for owners and dates)
@@ -45,7 +45,7 @@ the updater both read it). A test instance has no updater, so it never fetches.
 | `newTabPrewarm` | a New Tab page's tab is made by Enter, as before the prewarm | yes |
 | `lazySidebarRows` | a launch mounts 64 rows per page and every profile page at once | no |
 | `updatePrewarm` | a staged update waits for the quit without the hidden first run (read natively: `KillSwitch` in `Updater.swift`) | yes |
-| `launchTab` | session.json keeps no launch hint and a launch claims nothing: the restored page loads once its window's content mounts, and the early window stays off (it also has its own environment switch, `ARDIA_EARLY_WINDOW=off`) | no |
+| `launchTab` | session.json keeps no launch hint and a launch claims nothing: the restored page loads once its window's content mounts, and the early window stays off (it also has its own environment switch, `MEDUSA_EARLY_WINDOW=off`) | no |
 | `focusedWindowFirst` | a launch opens every window at once, the focused one last | no |
 | `sidebarSlide` | hiding or showing the sidebar jumps instead of sliding (it stays mounted either way); with the address bar in the sidebar, a hidden sidebar's bar moves to a toolbar on the card and the peek is Dia's | yes |
 | `sidebarSlideLean` | every step of the slide lays the traffic lights out (AppKit then rewalks the window's views); read natively, once a launch: `ChromeWindows.swift` | no |

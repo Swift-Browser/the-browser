@@ -10,8 +10,8 @@ export type OtlpLogRecord = {
 
 export type QueuedEvent = { uuid: string; event: string; distinct_id: string; timestamp: string; properties: Record<string, unknown> };
 
-export const EVENTS_SCOPE = "ardia.analytics";
-export const LOGS_SCOPE = "ardia.app";
+export const EVENTS_SCOPE = "medusa.analytics";
+export const LOGS_SCOPE = "medusa.app";
 
 function otlpValue(value: unknown): OtlpValue | null {
   switch (typeof value) {

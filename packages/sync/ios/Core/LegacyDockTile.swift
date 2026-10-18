@@ -163,7 +163,7 @@ public enum LegacyDockTile {
     #endif
   }
 
-  static func isTestInstance(_ env: [String: String]) -> Bool { env["ARDIA_DATA_DIR"] != nil || env["ARDIA_BACKGROUND"] != nil }
+  static func isTestInstance(_ env: [String: String]) -> Bool { env["MEDUSA_DATA_DIR"] != nil || env["MEDUSA_BACKGROUND"] != nil || env["MEDUSA_DATA_DIR"] != nil || env["MEDUSA_BACKGROUND"] != nil }
 
   struct Seams {
     let synchronize: () -> Void
@@ -211,17 +211,17 @@ public enum LegacyDockTile {
       if !wrote {
         if !wasPending { seams.setFlag(restartKey, false) }
         guard again.tiles == nil else {
-          NSLog("Ardia: couldn't repoint the Dock's \(LegacyName.appName) tile; trying again next launch")
+          NSLog("Medusa: couldn't repoint the Dock's \(LegacyName.appName) tile; trying again next launch")
           return
         }
       } else {
-        NSLog("Ardia: the Dock's \(LegacyName.appName) tile now opens \(app.path); restarting the Dock")
+        NSLog("Medusa: the Dock's \(LegacyName.appName) tile now opens \(app.path); restarting the Dock")
       }
       result = again
     }
     if seams.flag(restartKey) {
       guard seams.restart() else {
-        NSLog("Ardia: couldn't restart the Dock; trying again next launch")
+        NSLog("Medusa: couldn't restart the Dock; trying again next launch")
         return
       }
       seams.setFlag(restartKey, false)

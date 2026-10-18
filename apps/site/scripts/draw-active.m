@@ -14,7 +14,7 @@ static void force(Class c, const char *name) {
 
 __attribute__((constructor)) static void drawActive(void) {
   const char *name = getprogname();
-  if (!name || strcmp(name, "Ardia") != 0) return;
+  if (!name || strcmp(name, "Medusa") != 0) return;
   Class w = [NSWindow class];
   force(w, "_hasActiveAppearance");
   force(w, "_hasActiveAppearanceIgnoringKeyFocus");

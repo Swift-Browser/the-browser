@@ -9,7 +9,7 @@ const shims = here("./src/shims/");
 
 const realPackages: Record<string, string> = {
   shell: `${repo}packages/shell/src/index.tsx`,
-  ardiacore: `${repo}packages/ardiacore/src/index.ts`,
+  medusacore: `${repo}packages/medusacore/src/index.ts`,
   shaders: `${repo}packages/shaders/src/index.tsx`,
   sync: `${repo}packages/sync/src/index.ts`,
   import: `${repo}packages/import/src/index.ts`,
@@ -45,7 +45,7 @@ const LAZY_COMPONENTS: Record<string, string[]> = {
   [`${repo}apps/browser/src/components/extensions/SidePanel.tsx`]: ["ExtensionSidePanel"],
   [`${repo}apps/browser/src/components/bookmarks/BookmarkDialog.tsx`]: ["BookmarkDialog"],
   [`${repo}apps/browser/src/components/bookmarks/EditBookmarkDialog.tsx`]: ["EditBookmarkDialog"],
-  [`${repo}apps/browser/src/components/littleArdia/LittleArdiaWindow.tsx`]: ["LittleArdiaWindow"],
+  [`${repo}apps/browser/src/components/littleMedusa/LittleMedusaWindow.tsx`]: ["LittleMedusaWindow"],
 };
 
 const LAZY_PREFIX = "\0medusa-lazy:";
@@ -98,7 +98,7 @@ export default defineConfig({
       { find: /^react-native\/Libraries\/Animated\/useAnimatedProps$/, replacement: "react-native-web/dist/vendor/react-native/Animated/useAnimatedProps.js" },
       { find: /^react-native(-macos)?$/, replacement: `${shims}react-native.tsx` },
       { find: /^expo-modules-core$/, replacement: `${shims}expo-modules-core.ts` },
-      { find: /^@medusa\/(shell|ardiacore|shaders|sync|import)$/, replacement: `${shims}$1.tsx` },
+      { find: /^@medusa\/(shell|medusacore|shaders|sync|import)$/, replacement: `${shims}$1.tsx` },
       ...Object.entries(realPackages).map(([name, path]) => ({ find: new RegExp(`^@medusa-real/${name}$`), replacement: path })),
     ],
   },

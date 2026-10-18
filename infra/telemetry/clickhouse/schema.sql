@@ -62,7 +62,7 @@ SELECT
     ResourceAttributes['service.version'] AS source_version
 FROM telemetry.otel_logs FINAL
 WHERE Event != ''
-  AND ServiceName NOT IN ('ardia-selftest', 'netnyahoo-selftest')
+  AND ServiceName NOT IN ('medusa-selftest', 'netnyahoo-selftest')
   AND ResourceAttributes['service.version'] != '0.0.0-selftest'
 UNION ALL
 SELECT
@@ -86,7 +86,7 @@ SELECT
     Body AS message,
     LogAttributes AS attributes
 FROM telemetry.otel_logs
-WHERE Event = '' AND ServiceName NOT IN ('ardia-selftest', 'netnyahoo-selftest') AND ResourceAttributes['service.version'] != '0.0.0-selftest';
+WHERE Event = '' AND ServiceName NOT IN ('medusa-selftest', 'netnyahoo-selftest') AND ResourceAttributes['service.version'] != '0.0.0-selftest';
 
 CREATE OR REPLACE VIEW telemetry.replay_sessions AS
 SELECT

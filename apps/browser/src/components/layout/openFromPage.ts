@@ -1,4 +1,4 @@
-import type { OpenWindowRequest } from "@medusa/ardiacore";
+import type { OpenWindowRequest } from "@medusa/medusacore";
 import { openWindow } from "../../lib/actions";
 import { useBrowser } from "../../store/browser";
 import { engineProfile } from "../../store/model";

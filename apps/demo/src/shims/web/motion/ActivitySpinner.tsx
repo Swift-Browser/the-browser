@@ -8,7 +8,7 @@ const TURN_MS = 1880;
 const TRACK_ALPHA = 0.18;
 const SECONDARY_LABEL = { light: "rgba(0,0,0,0.5)", dark: "rgba(255,255,255,0.55)" };
 const SECONDARY_TRACK = { light: `rgba(0,0,0,${0.5 * TRACK_ALPHA})`, dark: `rgba(255,255,255,${0.55 * TRACK_ALPHA})` };
-const KEYFRAMES_ID = "ardia-activity-spinner";
+const KEYFRAMES_ID = "medusa-activity-spinner";
 
 function ensureKeyframes() {
   if (typeof document === "undefined" || document.getElementById(KEYFRAMES_ID)) return;

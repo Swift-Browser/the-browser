@@ -1,4 +1,4 @@
-import { cancelDownload, type Download } from "@medusa/ardiacore";
+import { cancelDownload, type Download } from "@medusa/medusacore";
 import { readDocument, writeDocument } from "@medusa/shell";
 import { useBrowser, type BrowserState, type HydrateData } from "../store/browser";
 import { inPinnedContainer, isIncognitoProfile, newId, privateSession, snapshotTab } from "../store/model";

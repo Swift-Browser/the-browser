@@ -10,7 +10,7 @@ import {
   watchExtensionActions,
   webStoreExtensionId,
   type TabsRequest,
-} from "@medusa/ardiacore";
+} from "@medusa/medusacore";
 import { killSwitchEnvironment } from "@medusa/shell";
 import { AppState } from "react-native";
 import { openWindow } from "../../lib/actions";
@@ -137,7 +137,7 @@ function pollActionStates() {
   }, ACTION_POLL_MS);
 }
 
-const pollsActions = () => killSwitchEnvironment("ARDIA_EXTENSION_ACTION_POLL") === "on";
+const pollsActions = () => (killSwitchEnvironment("MEDUSA_EXTENSION_ACTION_POLL") ?? killSwitchEnvironment("ARDIA_EXTENSION_ACTION_POLL")) === "on";
 
 function watchActionsOf(profile: string) {
   if (pollsActions()) return pollActionStates();
@@ -249,8 +249,8 @@ function startSidePanels() {
 
 const STORE_SCRIPT = `
 const g = window;
-if (!g.__ardiaStore) {
-  const store = (g.__ardiaStore = { waiting: null, queued: [] });
+if (!g.__medusaStore) {
+  const store = (g.__medusaStore = { waiting: null, queued: [] });
   const request = (id) => {
     if (!id) return;
     if (store.waiting) { const w = store.waiting; store.waiting = null; w(id); } else store.queued.push(id);
@@ -269,14 +269,14 @@ if (!g.__ardiaStore) {
     for (const el of document.querySelectorAll("button, button *")) {
       if (el.childElementCount) continue;
       const t = el.textContent;
-      if (t === "Add to Chrome") el.textContent = "Add to Ardia";
-      else if (t === "Remove from Chrome") el.textContent = "Remove from Ardia";
+      if (t === "Add to Chrome") el.textContent = "Add to Medusa";
+      else if (t === "Remove from Chrome") el.textContent = "Remove from Medusa";
     }
   };
   relabel();
   new MutationObserver(relabel).observe(document.documentElement, { subtree: true, childList: true, characterData: true });
 }
-const store = g.__ardiaStore;
+const store = g.__medusaStore;
 if (store.queued.length) post("result", JSON.stringify(store.queued.shift()));
 else store.waiting = (id) => post("result", JSON.stringify(id));
 `;

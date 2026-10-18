@@ -2,7 +2,7 @@ import { useBrowser } from "../../browser/src/store/browser";
 import { applyControl, controlModel, type Control } from "./Controls";
 import { playNudge } from "./nudge";
 
-type Inbound = { type: "ardia-demo:control"; id: Control["id"]; value?: string } | { type: "ardia-demo:hello" } | { type: "ardia-demo:nudge" };
+type Inbound = { type: "medusa-demo:control"; id: Control["id"]; value?: string } | { type: "medusa-demo:hello" } | { type: "medusa-demo:nudge" };
 
 function guardFocus(engaged: () => boolean) {
   const focus = HTMLElement.prototype.focus;
@@ -25,7 +25,7 @@ export function startEmbed() {
     if (engaged) return;
     engaged = true;
     nudge.abort();
-    post({ type: "ardia-demo:engaged" });
+    post({ type: "medusa-demo:engaged" });
   };
   guardFocus(() => engaged);
   addEventListener("pointerdown", engage, { capture: true });
@@ -36,20 +36,20 @@ export function startEmbed() {
     const snapshot = JSON.stringify(controlModel(useBrowser.getState()));
     if (!force && snapshot === last) return;
     last = snapshot;
-    post({ type: "ardia-demo:controls", controls: JSON.parse(snapshot) });
+    post({ type: "medusa-demo:controls", controls: JSON.parse(snapshot) });
   };
   useBrowser.subscribe(() => publish());
 
   addEventListener("message", (event: MessageEvent<Inbound>) => {
     if (event.source !== host || !event.data || typeof event.data !== "object") return;
-    if (event.data.type === "ardia-demo:hello") return publish(true);
-    if (event.data.type === "ardia-demo:nudge") {
+    if (event.data.type === "medusa-demo:hello") return publish(true);
+    if (event.data.type === "medusa-demo:nudge") {
       if (engaged || nudged) return;
       nudged = true;
       void playNudge(nudge.signal);
       return;
     }
-    if (event.data.type === "ardia-demo:control") {
+    if (event.data.type === "medusa-demo:control") {
       engage();
       applyControl(event.data.id, event.data.value);
     }
@@ -58,7 +58,7 @@ export function startEmbed() {
   requestAnimationFrame(() =>
     requestAnimationFrame(() => {
       publish(true);
-      post({ type: "ardia-demo:ready" });
+      post({ type: "medusa-demo:ready" });
     }),
   );
 }

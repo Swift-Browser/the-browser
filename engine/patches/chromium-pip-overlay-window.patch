@@ -4,8 +4,8 @@
        const VideoOverlayWindowViews::PlaybackState playback_state);
  
   private:
-+  // Ardia: Dia's glyphs (chrome/browser/ardia/pip/ac_pip_controls.h).
-+  friend class ArdiaPlaybackButton;
++  // Medusa: Dia's glyphs (chrome/browser/medusa/pip/ac_pip_controls.h).
++  friend class MedusaPlaybackButton;
 +
    void UpdateImageAndText();
    void UpdatePosition();
@@ -17,10 +17,10 @@
    }
  };
 +
-+// Ardia: Dia's window, defined in //chrome/browser/ardia (pip/). Not a
-+// GN dependency: it resolves at link time in the binary we build (ArdiaCore's
++// Medusa: Dia's window, defined in //chrome/browser/medusa (pip/). Not a
++// GN dependency: it resolves at link time in the binary we build (MedusaCore's
 +// chrome_dll links that target).
-+std::unique_ptr<VideoOverlayWindowViews> NewArdiaVideoOverlayWindow(
++std::unique_ptr<VideoOverlayWindowViews> NewMedusaVideoOverlayWindow(
 +    content::VideoPictureInPictureWindowController* controller);
  
  // static
@@ -32,7 +32,7 @@
 -  auto overlay_window =
 -      base::WrapUnique(new VideoOverlayWindowViews(controller));
 +  std::unique_ptr<VideoOverlayWindowViews> overlay_window =
-+      NewArdiaVideoOverlayWindow(controller);
++      NewMedusaVideoOverlayWindow(controller);
  
    overlay_window->SetColorModeOverride(ui::ColorProviderKey::ColorMode::kDark);
  
@@ -70,9 +70,9 @@
  
   private:
    friend class VideoPictureInPictureWindowControllerBrowserTest;
-+  // Ardia: Dia's window (chrome/browser/ardia/pip/ac_pip_window.h)
++  // Medusa: Dia's window (chrome/browser/medusa/pip/ac_pip_window.h)
 +  // overrides the methods made virtual here.
-+  friend class ArdiaVideoOverlayWindow;
++  friend class MedusaVideoOverlayWindow;
  
    // Return the work area for the nearest display the widget is on.
    gfx::Rect GetWorkAreaForWindow() const;

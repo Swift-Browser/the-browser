@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "react-native start",
-    "macos": "xcodebuild -workspace macos/Ardia.xcworkspace -scheme Ardia-macOS -derivedDataPath build -destination 'platform=macOS,arch=arm64' -quiet -configuration Debug && open -n --env ARDIA_DATA_DIR=\"${ARDIA_DATA_DIR:-$HOME/Library/Application Support/Ardia Dev}\" build/Build/Products/Debug/Ardia.app",
+    "macos": "xcodebuild -workspace macos/Medusa.xcworkspace -scheme Medusa-macOS -derivedDataPath build -destination 'platform=macOS,arch=arm64' -quiet -configuration Debug && open -n --env MEDUSA_DATA_DIR=\"${MEDUSA_DATA_DIR:-$HOME/Library/Application Support/Medusa Dev}\" build/Build/Products/Debug/Medusa.app",
     "pods": "cd macos && pod install",
-    "build": "xcodebuild -workspace macos/Ardia.xcworkspace -scheme Ardia-macOS -derivedDataPath build -destination 'platform=macOS,arch=arm64' -quiet -configuration Release",
+    "build": "xcodebuild -workspace macos/Medusa.xcworkspace -scheme Medusa-macOS -derivedDataPath build -destination 'platform=macOS,arch=arm64' -quiet -configuration Release",
     "typecheck": "tsc -p .",
     "test": "node --no-warnings --import ./src/test-loader.mjs --test \"src/**/*.test.mjs\""
   },
@@ -15,7 +15,7 @@
     "@medusa/core": "workspace:*",
     "@medusa/shaders": "workspace:*",
     "@medusa/shell": "workspace:*",
-    "@medusa/ardiacore": "workspace:*",
+    "@medusa/medusacore": "workspace:*",
     "@medusa/import": "workspace:*",
     "@medusa/sync": "workspace:*",
     "expo": "~54.0.37",

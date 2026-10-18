@@ -2,7 +2,7 @@ import CommonCrypto
 import Foundation
 import Security
 import XCTest
-@testable import ArdiaSyncCore
+@testable import MedusaSyncCore
 
 final class LegacyKeychainTests: XCTestCase {
   var dir: URL!
@@ -22,7 +22,7 @@ final class LegacyKeychainTests: XCTestCase {
 
   override func setUpWithError() throws {
     searchListBefore = Self.searchList()
-    dir = URL(fileURLWithPath: "/tmp/ac-ardia-mig/keychain-\(UUID().uuidString)")
+    dir = URL(fileURLWithPath: "/tmp/ac-medusa-mig/keychain-\(UUID().uuidString)")
     try FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
     let password = "throwaway"
     var kc: SecKeychain?
@@ -40,8 +40,8 @@ final class LegacyKeychainTests: XCTestCase {
   }
 
   let item = Renamed.KeychainItem(
-    oldService: "Ardia Migration Test Old Safe Storage", newService: "Ardia Migration Test New Safe Storage",
-    account: ("Old", "New"), label: { _ in "Ardia Migration Test New Safe Storage" }, accessible: nil, critical: true)
+    oldService: "Medusa Migration Test Old Safe Storage", newService: "Medusa Migration Test New Safe Storage",
+    account: ("Old", "New"), label: { _ in "Medusa Migration Test New Safe Storage" }, accessible: nil, critical: true)
 
   static func crypt(_ op: CCOperation, _ secret: Data, _ input: Data) -> Data? {
     var key = [UInt8](repeating: 0, count: 16)

@@ -42,22 +42,22 @@ function MenuList({ items, x, y }: { items: MenuItem[]; x: number; y: number }) 
   const width = 240;
   const left = Math.min(x, window.innerWidth - width - 8);
   return (
-    <div className={`ardia-menu${dark ? " dark" : ""}`} style={{ left, top: Math.min(y, window.innerHeight - 40), width }} onPointerDown={(e) => e.stopPropagation()}>
+    <div className={`medusa-menu${dark ? " dark" : ""}`} style={{ left, top: Math.min(y, window.innerHeight - 40), width }} onPointerDown={(e) => e.stopPropagation()}>
       {items.map((item, i) => {
-        if ("separator" in item) return <div key={i} className="ardia-menu-separator" />;
+        if ("separator" in item) return <div key={i} className="medusa-menu-separator" />;
         const enabled = item.enabled !== false;
         return (
           <div
             key={item.id + i}
-            className={`ardia-menu-item${enabled ? "" : " disabled"}`}
+            className={`medusa-menu-item${enabled ? "" : " disabled"}`}
             onPointerEnter={(e) => setSub(item.children ? { index: i, top: (e.currentTarget as HTMLElement).getBoundingClientRect().top } : null)}
             onClick={() => enabled && !item.children && close(item.id)}
           >
-            <span className="ardia-menu-check">{item.checked ? "✓" : ""}</span>
+            <span className="medusa-menu-check">{item.checked ? "✓" : ""}</span>
             {item.symbol ? <Symbol name={item.symbol} size={12} color="currentColor" style={{ width: 16, height: 16, marginRight: 6 }} /> : null}
-            {item.swatch ? <span className="ardia-menu-swatch" style={{ background: item.swatch }} /> : null}
-            <span className="ardia-menu-title">{item.title}</span>
-            <span className="ardia-menu-key">{item.children ? "›" : item.key ? `${(item.modifiers ?? []).map((m) => KEYS[m]).join("")}${item.key.toUpperCase()}` : ""}</span>
+            {item.swatch ? <span className="medusa-menu-swatch" style={{ background: item.swatch }} /> : null}
+            <span className="medusa-menu-title">{item.title}</span>
+            <span className="medusa-menu-key">{item.children ? "›" : item.key ? `${(item.modifiers ?? []).map((m) => KEYS[m]).join("")}${item.key.toUpperCase()}` : ""}</span>
             {sub?.index === i && item.children ? <MenuList items={item.children} x={left + width - 4} y={sub.top - 5} /> : null}
           </div>
         );

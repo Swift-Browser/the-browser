@@ -1,4 +1,4 @@
-import { engineInfo } from "@medusa/ardiacore";
+import { engineInfo } from "@medusa/medusacore";
 import { launchEnvironment, readDocument, systemInfo, writeDocument, type SystemInfo } from "@medusa/shell";
 import { create } from "zustand";
 import { DEV_SEND_ENV, LOGS_URL, MAX_BODY_BYTES } from "./config";
@@ -81,9 +81,9 @@ const canSend = () => !__DEV__ || devSendAllowed();
 function context(): Record<string, unknown> {
   const info = appInfo();
   return {
-    $lib: "ardia-telemetry",
+    $lib: "medusa-telemetry",
     $lib_version: "1",
-    $app_name: "Ardia",
+    $app_name: "Medusa",
     $app_version: info.appVersion,
     $app_build: info.appBuild,
     $os: "macOS",
@@ -224,7 +224,7 @@ async function post(kind: RequestLogEntry["kind"], url: string, body: string, co
 function resource(): Record<string, unknown> {
   const info = appInfo();
   return {
-    "service.name": "ardia-app",
+    "service.name": "medusa-app",
     "service.version": info.appVersion,
     "deployment.environment": environment() === "production" ? "production" : "development",
     "os.type": "darwin",
@@ -345,7 +345,7 @@ type ClientSession = {
 export function startClient(): ClientSession | null {
   loadChoice();
   void engineInfo()
-    .then((e) => (engineVersion = `ArdiaCore / Chromium ${e.chromiumVersion}`))
+    .then((e) => (engineVersion = `MedusaCore / Chromium ${e.chromiumVersion}`))
     .catch(() => {});
   if (!saved.sharing) {
     const stale = readJson<Queue>(QUEUE_DOC);

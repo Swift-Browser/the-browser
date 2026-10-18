@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
 
-const FILE = join(homedir(), ".config/ardia/telemetry.env");
+const FILE = join(homedir(), ".config/medusa/telemetry.env");
 
 export function telemetryEnv() {
   if (!existsSync(FILE)) throw new Error(`${FILE} is missing (docs/growth.md, Telemetry)`);

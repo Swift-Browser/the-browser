@@ -14,7 +14,7 @@ import {
   type ExtensionInstallPrompt,
   type ExtensionPackage,
   type InstalledExtension,
-} from "@medusa/ardiacore";
+} from "@medusa/medusacore";
 import { confirm, showMenu } from "@medusa/shell";
 import { openWindow } from "../../lib/actions";
 import { webviews } from "../../lib/webviews";

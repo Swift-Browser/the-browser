@@ -18,7 +18,7 @@ import { loadSeed } from "./seedSession.mjs";
 import { COMMAND_QUERY, DEMO_WINDOW, demoLayoutScript, fieldScript, HOVER_ROW, newTabScript, profileScript, resetScript, STATES, THEMES, VIEWPORT, WINDOW_INSET } from "./states.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
-const scratch = realpathSync("/tmp") + "/ardia-demo-layout";
+const scratch = realpathSync("/tmp") + "/medusa-demo-layout";
 const args = process.argv.slice(2);
 if (args.includes("-h") || args.includes("--help")) {
   const lines = readFileSync(fileURLToPath(import.meta.url), "utf8").split("\n").slice(1);
@@ -37,7 +37,7 @@ const states = option("states", STATES.join(",")).split(",");
 const regions = option("regions", "");
 
 const seed = await loadSeed();
-const reset = resetScript("ardiaDemo.store", seed.seedTabs());
+const reset = resetScript("medusaDemo.store", seed.seedTabs());
 const run = (page, body) => page.eval(`(() => { ${body} })()`);
 
 async function key(page, key, { meta = false } = {}) {
@@ -65,14 +65,14 @@ const setups = {
     await sleep(300);
     await typeText(page, COMMAND_QUERY);
   },
-  ntp: (page) => run(page, newTabScript("ardiaDemo.store")),
+  ntp: (page) => run(page, newTabScript("medusaDemo.store")),
   hover: (page) => mouse(page, HOVER_ROW.x, HOVER_ROW.y),
   menu: async (page) => {
     await mouse(page, 100, 209, "mousePressed", { button: "right", clickCount: 1 });
     await mouse(page, 100, 209, "mouseReleased", { button: "right", clickCount: 1 });
   },
-  profile: (page) => run(page, profileScript("ardiaDemo.store")),
-  field: (page) => run(page, fieldScript("ardiaDemo.store")),
+  profile: (page) => run(page, profileScript("medusaDemo.store")),
+  field: (page) => run(page, fieldScript("medusaDemo.store")),
 };
 
 async function captureDemo() {
@@ -84,10 +84,10 @@ async function captureDemo() {
       mkdirSync(join(out, theme), { recursive: true });
       for (const state of states) {
         await page.send("Page.navigate", { url: `${url}${url.includes("?") ? "&" : "?"}bare&compare=${Date.now()}` });
-        for (let i = 0; i < 100 && !(await page.eval("!!globalThis.ardiaDemo && document.readyState === 'complete'").catch(() => false)); i++) await sleep(100);
+        for (let i = 0; i < 100 && !(await page.eval("!!globalThis.medusaDemo && document.readyState === 'complete'").catch(() => false)); i++) await sleep(100);
         await page.eval("document.fonts.ready.then(() => true)");
         await run(page, reset);
-        for (let i = 0; i < 100 && (await run(page, "const s = ardiaDemo.store.getState(); return !!s.live.t_browser?.isLoading;")); i++) await sleep(100);
+        for (let i = 0; i < 100 && (await run(page, "const s = medusaDemo.store.getState(); return !!s.live.t_browser?.isLoading;")); i++) await sleep(100);
         await mouse(page, -10, -10);
         await sleep(700);
         await setups[state](page);

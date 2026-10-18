@@ -223,7 +223,7 @@ const Native = requireNativeModule<{
   openAutomationSettings(): Promise<null>;
   openDia(): Promise<null>;
   readDiaTabs(): Promise<string>;
-}>("ArdiaImport");
+}>("MedusaImport");
 
 let jobSeq = 0;
 

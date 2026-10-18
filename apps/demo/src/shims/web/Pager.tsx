@@ -1,6 +1,6 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
 import { View } from "react-native";
-import type { PagerSnapshot, SwipeAreaHandle, SwipeAreaProps } from "@medusa-real/ardiacore";
+import type { PagerSnapshot, SwipeAreaHandle, SwipeAreaProps } from "@medusa-real/medusacore";
 import { Pager, type PagerArea } from "./motion/pager";
 import { addSwipeTarget, simulate, type SwipeTarget } from "./motion/swipe";
 

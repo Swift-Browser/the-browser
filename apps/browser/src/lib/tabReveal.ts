@@ -1,4 +1,4 @@
-import { dropTabReveals, revealOffered, revealTab } from "@medusa/ardiacore";
+import { dropTabReveals, revealOffered, revealTab } from "@medusa/medusacore";
 import { useMedia } from "../components/media/state";
 import { pageOf } from "../components/layout/pageState";
 import { useToolbarAutoHide } from "../components/layout/toolbarAutoHide";
@@ -8,7 +8,7 @@ import { splitOf } from "../store/splits";
 import type { Tab } from "../store/types";
 
 const WEB_PAGE = /^(https?|file):/i;
-const OFFERED = /^(tab|ardiacore):/;
+const OFFERED = /^(tab|medusacore):/;
 
 export type Switch = { tabId: string; offered?: string; over: string } | { tabId: null; over: string };
 

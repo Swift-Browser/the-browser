@@ -1,6 +1,6 @@
 # Performance benchmarks
 
-How to measure Ardia and gate a release on it. Every script prints its flags with `--help`, and its header
+How to measure Medusa and gate a release on it. Every script prints its flags with `--help`, and its header
 documents the same flags, so you don't need to read the rest of a script to run it. Results from past
 comparisons: [0.2.19 → 0.2.20](0.2.19-to-0.2.20.md), [0.2.22 → 0.2.23](0.2.22-to-0.2.23.md), [0.2.23 → 0.2.24](0.2.23-to-0.2.24.md), [0.2.24 → 0.2.25](0.2.24-to-0.2.25.md), [0.2.25 → 0.2.26](0.2.25-to-0.2.26.md), [0.2.26 → 0.2.27](0.2.26-to-0.2.27.md).
 
@@ -30,7 +30,7 @@ All of them are in `apps/browser/scripts/perf/`.
 The app side of the JS benches is `apps/browser/src/lib/perfProbe.ts`. It only turns on in an isolated instance
 whose data folder holds a `perf-probe` file.
 
-Each bench drives the app through files in the instance's `ARDIA_DATA_DIR`:
+Each bench drives the app through files in the instance's `MEDUSA_DATA_DIR`:
 
 | Files | Used by | Written by |
 |---|---|---|
@@ -45,9 +45,9 @@ Each bench drives the app through files in the instance's `ARDIA_DATA_DIR`:
 
 The previous stable release is the control and the new release candidate is the candidate. The gate passes when every
 row is the same or better. Only stable releases are gated, and only against stable: a nightly is never a control, so
-the control stays `dist/<previous stable>/export/Ardia.app` however many nightlies shipped in between.
+the control stays `dist/<previous stable>/export/Medusa.app` however many nightlies shipped in between.
 
-1. **Build the candidate with `scripts/release.sh <v> --rc`.** That gives you `dist/<v>-rc/export/Ardia.app`.
+1. **Build the candidate with `scripts/release.sh <v> --rc`.** That gives you `dist/<v>-rc/export/Medusa.app`.
    A local Release build is a different app: it's unstripped (about 18 MB against 8.9 MB) and has no secure
    timestamp or notarization ticket, so its launch numbers don't stand for what ships.
 2. **Give each app a bench bundle that matches its `NATIVE_API_VERSION`.** native-bench swaps its own bundle
@@ -93,11 +93,11 @@ V=0.2.23 PREV=0.2.22 OUT=<your scratch dir>/gate
 scripts/release.sh $V --rc
 # Native. Omit --control-bundle when both apps share NATIVE_API_VERSION.
 node apps/browser/scripts/perf/native-bench.mjs --out $OUT/nb --port 9478 \
-  --app dist/$V-rc/export/Ardia.app --label rc \
-  --control dist/$PREV/export/Ardia.app --control-label $PREV --control-bundle dist/$PREV/bench/main.jsbundle \
+  --app dist/$V-rc/export/Medusa.app --label rc \
+  --control dist/$PREV/export/Medusa.app --control-label $PREV --control-bundle dist/$PREV/bench/main.jsbundle \
   --only launch,session,windows --launch-runs 6 --runs 2
 # JS: alternate the apps one run at a time.
-for i in 1 2 3; do for app in $PREV:dist/$PREV/export/Ardia.app rc:dist/$V-rc/export/Ardia.app; do
+for i in 1 2 3; do for app in $PREV:dist/$PREV/export/Medusa.app rc:dist/$V-rc/export/Medusa.app; do
   node apps/browser/scripts/perf/js-bench.mjs run --app ${app#*:} --bundle ${app#*:}/Contents/Resources/main.jsbundle \
     --label ${app%%:*} --runs 1 --append 1 --out $OUT/js
 done; done
@@ -138,7 +138,7 @@ raised only by hand, with the reason in the commit. Nothing runs in CI, so the c
 ```sh
 node apps/browser/scripts/perf/ratchet.mjs run            # 90 s: bundle the tree, run the journeys once, count the Node hot paths, check
 node apps/browser/scripts/perf/ratchet.mjs run --instr    # the same, plus the instruction counter
-node apps/browser/scripts/perf/ratchet.mjs run --own --app dist/<v>-rc/export/Ardia.app   # a release candidate's own bundle
+node apps/browser/scripts/perf/ratchet.mjs run --own --app dist/<v>-rc/export/Medusa.app   # a release candidate's own bundle
 node apps/browser/scripts/perf/ratchet.mjs check <report.json>          # a js-bench report you already have (several runs: the median run)
 node apps/browser/scripts/perf/ratchet.mjs lower <report.json>          # lock in the counts a change cut; prints the diff
 node apps/browser/scripts/perf/ratchet.mjs baseline       # rebuild ratchet.json (8 runs of each session, about 13 minutes, a quiet machine)
@@ -230,7 +230,7 @@ again shows up here at once: `switchTabs.subNotified` grows by the row count per
 
 ### In the release gate
 
-Step 4b of the release skill: `ratchet.mjs run --own --app dist/<v>-rc/export/Ardia.app` must print `ratchet: ok` before
+Step 4b of the release skill: `ratchet.mjs run --own --app dist/<v>-rc/export/Medusa.app` must print `ratchet: ok` before
 publishing. Counts need no perflab lock (they aren't timings), but run it on a Mac that isn't busy with someone's timing
 run. After a release that cut counts, `ratchet.mjs lower` and commit.
 
@@ -403,9 +403,9 @@ shape.
 
 | Row | Why | Compare instead |
 |---|---|---|
-| launch → window shown, new window → on screen | CEF builds put a window on screen empty and fill it after. ArdiaCore keeps it transparent until its content commits. The same row times an empty window on one engine and a full one on the other. | the "with its content" rows |
-| launch → first page painted, new tab → first paint, new window → first paint | CEF stamps first-contentful-paint with the start of the frame. Chrome (ArdiaCore) stamps it with the frame on screen, about a frame later. | the "first frame" rows |
-| main-thread samples `engineWork` | The engine's main-thread work goes through different functions: CEF's `CefDoMessageLoopWork` against ArdiaCore's `RunWorkSource`. | treat as indicative only |
+| launch → window shown, new window → on screen | CEF builds put a window on screen empty and fill it after. MedusaCore keeps it transparent until its content commits. The same row times an empty window on one engine and a full one on the other. | the "with its content" rows |
+| launch → first page painted, new tab → first paint, new window → first paint | CEF stamps first-contentful-paint with the start of the frame. Chrome (MedusaCore) stamps it with the frame on screen, about a frame later. | the "first frame" rows |
+| main-thread samples `engineWork` | The engine's main-thread work goes through different functions: CEF's `CefDoMessageLoopWork` against MedusaCore's `RunWorkSource`. | treat as indicative only |
 | js-bench `taskMs`, `tasks`, `otherJsMs`, `startup.*` task counts | Probe revision 1 (0.2.21) didn't time Expo module events as tasks. Revision 2 (6232fa43) does. | numbers from bundles of one probe revision |
 
 The JS reports stamp `probeRevision` (from `PERF_PROBE_REVISION` in `perfProbe.ts`, inferred for older bundles)

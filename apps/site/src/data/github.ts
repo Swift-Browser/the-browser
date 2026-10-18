@@ -2,8 +2,8 @@ const MIN_SHOWN = 100;
 
 async function fetchStars(): Promise<number | null> {
   try {
-    const res = await fetch("https://api.github.com/repos/mantrakp04/ardia", {
-      headers: { Accept: "application/vnd.github+json", "User-Agent": "ardia-site-build" },
+    const res = await fetch("https://api.github.com/repos/mantrakp04/medusa", {
+      headers: { Accept: "application/vnd.github+json", "User-Agent": "medusa-site-build" },
       signal: AbortSignal.timeout(5000),
     });
     if (!res.ok) return null;

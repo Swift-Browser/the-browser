@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// JS/React benchmark for Ardia on a production (Hermes) bundle: what each interaction costs the JS thread
+// JS/React benchmark for Medusa on a production (Hermes) bundle: what each interaction costs the JS thread
 // (React commits and renders, store updates, native→JS tasks, timers, document writes), counted by the opt-in probe
 // in src/lib/perfProbe.ts. Gate recipe and the other benches: docs/perf/README.md.
 //
@@ -7,7 +7,7 @@
 //       Builds the production JS bundle of the current tree (metro, --dev false) and compiles it with
 //       hermesc, as the Release build does. Prints sizes and the biggest packages. --profiling 1 bundles
 //       React's profiling renderer, which times each component's render (render-bench.mjs uses it).
-//   node js-bench.mjs run --app <Release Ardia.app> --bundle <main.jsbundle> --label <name> [flags]
+//   node js-bench.mjs run --app <Release Medusa.app> --bundle <main.jsbundle> --label <name> [flags]
 //       Clones the app (APFS clone), swaps in the bundle, and for each run seeds a fresh data folder
 //       (seed.mjs: 200 tabs, 5000 history entries, 1000 bookmarks), launches a hidden instance, runs
 //       the scenarios of bench-app.js through the dev harness and quits it. Writes <out>/<label>.json.
@@ -248,12 +248,12 @@ export function writeSwitches(dataDir, text) {
 
 export async function launch(app, dataDir, port) {
   const binary = binaryOf(realpathSync(app));
-  writeSwitches(dataDir, process.env.ARDIA_SWITCHES);
+  writeSwitches(dataDir, process.env.MEDUSA_SWITCHES);
   if (pidsOf(binary).length) throw new Error(`an instance of ${app} is already running`);
   const launchedAt = Date.now();
   const env = appEnv(app, {
-    ARDIA_BACKGROUND: "1", ARDIA_DATA_DIR: dataDir, ARDIA_REMOTE_DEBUGGING_PORT: String(port),
-    ...(process.env.ARDIA_SWITCHES ? { ARDIA_SWITCHES: process.env.ARDIA_SWITCHES } : {}),
+    MEDUSA_BACKGROUND: "1", MEDUSA_DATA_DIR: dataDir, MEDUSA_REMOTE_DEBUGGING_PORT: String(port),
+    ...(process.env.MEDUSA_SWITCHES ? { MEDUSA_SWITCHES: process.env.MEDUSA_SWITCHES } : {}),
   });
   execFileSync("open", ["-g", "-n", ...Object.entries(env).flatMap(([k, v]) => ["--env", `${k}=${v}`]), app]);
   for (let i = 0; i < 200; i++) {
@@ -323,7 +323,7 @@ async function run() {
   const { app, bundle: jsbundle, label, runs = "5", port = "47817", out = defaultOut } = flags;
   if (!app || !jsbundle || !label) throw new Error("run needs --app, --bundle and --label");
   const scenarios = flags.scenarios ? flags.scenarios.split(",") : ALL;
-  const clone = join(out, "apps", label, "Ardia.app");
+  const clone = join(out, "apps", label, "Medusa.app");
   rmSync(dirname(clone), { recursive: true, force: true });
   mkdirSync(dirname(clone), { recursive: true });
   execFileSync("cp", ["-cR", app, clone]);
@@ -382,7 +382,7 @@ async function run() {
   console.log(`\nwrote ${file}`);
 }
 
-const HOST = /^(View|Text|Pressable|Image|ScrollView|TextInput|InternalTextInput|Animated\(.*\)|(Ardia|Netnyahoo).*|Surface|Symbol|MouseArea|ContextMenuArea|FadeLabel|VirtualizedList.*|CellRenderer.*)$/;
+const HOST = /^(View|Text|Pressable|Image|ScrollView|TextInput|InternalTextInput|Animated\(.*\)|(Medusa|Netnyahoo).*|Surface|Symbol|MouseArea|ContextMenuArea|FadeLabel|VirtualizedList.*|CellRenderer.*)$/;
 const appOnly = (counter) => Object.fromEntries(Object.entries(counter ?? {}).filter(([k]) => !HOST.test(k)));
 
 const top = (counter, n = 6) =>

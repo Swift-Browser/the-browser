@@ -6,7 +6,7 @@ import SwiftUI
 
 public class TranslateModule: Module {
   public func definition() -> ModuleDefinition {
-    Name("ArdiaTranslate")
+    Name("MedusaTranslate")
 
     Constant("available") { () -> Bool in
       if #available(macOS 26.0, *) { return true }

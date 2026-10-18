@@ -1,4 +1,4 @@
-import { beginTracing, endTracing, engineInfo, isTracing, openTaskManager } from "@medusa/ardiacore";
+import { beginTracing, endTracing, engineInfo, isTracing, openTaskManager } from "@medusa/medusacore";
 import {
   confirm,
   copyText,
@@ -98,7 +98,7 @@ export async function diagnostics(): Promise<string> {
   const regular = s.windowOrder.filter((id) => !s.windows[id]?.incognito);
   return [
     `${app.appName} ${app.appVersion} (${app.appBuild}) — ${app.configuration}`,
-    engine ? `Engine: ArdiaCore, Chromium ${engine.chromiumVersion}` : "Engine: unavailable",
+    engine ? `Engine: MedusaCore, Chromium ${engine.chromiumVersion}` : "Engine: unavailable",
     `macOS ${app.osVersion} (${app.osBuild}), ${app.arch}, ${app.model}, ${Math.round(app.memoryGB)} GB`,
     `Bundle: ${app.bundleId}, locale ${app.locale}`,
     `Windows: ${regular.length} (+${s.windowOrder.length - regular.length} incognito), tabs: ${Object.keys(s.tabs).length}, profiles: ${s.profileOrder.length}`,
@@ -114,7 +114,7 @@ async function recordPerformanceIssue() {
   if (await isTracing()) return;
   const start = await confirm({
     title: "Record a performance issue?",
-    message: "Ardia records what the engine does while you reproduce the problem. The recording is saved to your Downloads folder.",
+    message: "Medusa records what the engine does while you reproduce the problem. The recording is saved to your Downloads folder.",
     confirmTitle: "Start Recording",
   });
   if (!start.confirmed || !(await beginTracing())) return;

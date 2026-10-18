@@ -22,7 +22,7 @@ export const FRAMEABLE_HOSTS = [
   "lobste.rs",
   "excalidraw.com",
   "www.tldraw.com",
-  "ardia.dev",
+  "medusa.dev",
   "www.weather.gov",
 ] as const;
 

@@ -6,13 +6,13 @@ previous="${2:?usage: smoke.sh <version> <previous-version> [--rc]}"
 root="$(git -C "$(dirname "$0")" rev-parse --show-toplevel)"
 here="$(cd "$(dirname "$0")" && pwd)"
 if [ "${3:-}" = --rc ]; then dist="$root/dist/$version-rc"; else dist="$root/dist/$version"; fi
-app="${SMOKE_APP:-$dist/export/Ardia.app}"
+app="${SMOKE_APP:-$dist/export/Medusa.app}"
 old="$(ls -d "$root/dist/$previous/export"/*.app 2>/dev/null | head -1)"
-old="${old:-$root/dist/$previous/export/Ardia.app}"
+old="${old:-$root/dist/$previous/export/Medusa.app}"
 port="${SMOKE_CDP_PORT:-9398}"
 pages_port="${SMOKE_PAGES_PORT:-8798}"
 [ -d "$app" ] || { echo "error: no $app (run scripts/release.sh $version first)" >&2; exit 1; }
-[ "$(cd "$app" && pwd -P)" != /Applications/Ardia.app ] || { echo "error: never the installed app (/Applications/Ardia.app)" >&2; exit 1; }
+[ "$(cd "$app" && pwd -P)" != /Applications/Medusa.app ] || { echo "error: never the installed app (/Applications/Medusa.app)" >&2; exit 1; }
 for p in "$port" "$pages_port"; do
   if nc -z -G 2 127.0.0.1 "$p" 2>/dev/null; then
     echo "error: something already listens on port $p (SMOKE_CDP_PORT, SMOKE_PAGES_PORT)" >&2
@@ -40,7 +40,7 @@ cdhash() { codesign -dvvv "$1" 2>&1 | sed -n 's/^CDHash=//p'; }
 
 fw="$app/Contents/Frameworks"
 [ -d "$fw/Chromium Framework.framework" ] && [ ! -e "$fw/Chromium Embedded Framework.framework" ] && ok=1 || ok=0
-check "the engine is ArdiaCore (Chrome's framework, no CEF)" $ok \
+check "the engine is MedusaCore (Chrome's framework, no CEF)" $ok \
   "$(plutil -extract CFBundleShortVersionString raw "$fw/Chromium Framework.framework/Resources/Info.plist" 2>/dev/null)"
 if [ -d "$old" ]; then
   legacy_id="$(sed -n 's/^ *public static let bundleId = "\(.*\)"$/\1/p' "$root/packages/sync/ios/Core/LegacyMigration.swift")"
@@ -79,8 +79,8 @@ if [ -d "$old" ]; then
 else
   check "$previous's export to compare with" 0 "no $old"
 fi
-zip="$dist/Ardia-$version.zip"
-dmg="$dist/Ardia-$version.dmg"
+zip="$dist/Medusa-$version.zip"
+dmg="$dist/Medusa-$version.dmg"
 if [ -z "${SMOKE_APP:-}" ]; then
   for f in "$zip" "$dmg" "$dist/appcast.xml"; do [ -f "$f" ] || check "the release has $(basename "$f")" 0; done
   if [ -f "$zip" ] && [ -f "$dist/appcast.xml" ]; then
@@ -149,7 +149,7 @@ printf '{"profile":{"last_used":"Profile p-work"}}' > "$work/data/Chromium/Local
 
 codesign --verify --deep --strict "$app"
 launched="$("$root/scripts/agent/ac" launch "$app" --data "$work/data" --port "$port" --js none --no-wait \
-  --env ARDIA_RELEASE_NOTES=1 --env ARDIA_PIP_SELFTEST=close --switch --disable-backgrounding-occluded-windows)" \
+  --env MEDUSA_RELEASE_NOTES=1 --env MEDUSA_PIP_SELFTEST=close --switch --disable-backgrounding-occluded-windows)" \
   || { echo "error: the app didn't start" >&2; exit 1; }
 pid="$(sed -n 's/^pid \([0-9]*\) .*/\1/p' <<<"$launched")"
 [ -n "$pid" ] || { echo "error: the app didn't start ($launched)" >&2; exit 1; }
@@ -182,7 +182,7 @@ else
     sleep 1
     exited="$(grep -o ">:$pid\] termination reported by launchd ([0-9, ]*)" "$work/exit.log" | head -1 | sed 's/.*launchd //' || true)"
     report="$(find ~/Library/Logs/DiagnosticReports ~/Library/Logs/DiagnosticReports/Retired -maxdepth 1 \
-      -name 'Ardia-*.ips' -newer "$work/quit-marker" -exec grep -l "\"pid\" : $pid," {} + 2>/dev/null | head -1 || true)"
+      -name 'Medusa-*.ips' -newer "$work/quit-marker" -exec grep -l "\"pid\" : $pid," {} + 2>/dev/null | head -1 || true)"
     [ -n "$report" ] && break
     [ "$exited" = "(0, 0, 0)" ] && break
   done
@@ -198,7 +198,7 @@ fi
 logger=""
 kill -KILL "$pid" 2>/dev/null || true
 pid=""
-node "$root/packages/ardiacore/scripts/popup-check.mjs" "$app" "$work/popup-check" || status=1
+node "$root/packages/medusacore/scripts/popup-check.mjs" "$app" "$work/popup-check" || status=1
 codesign --verify --deep --strict "$app" && echo "PASS  bundle still sealed after running" || { echo "FAIL  running the app changed its bundle"; status=1; }
 "$here/feed.sh" "$version" --before-publish "$app" || status=1
 exit $status

@@ -1,4 +1,4 @@
-import { WebView } from "@medusa/ardiacore";
+import { WebView } from "@medusa/medusacore";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Animated, Easing, Image, PanResponder, StyleSheet, Text, View } from "react-native";
 import { layout, useTheme } from "../../lib/theme";

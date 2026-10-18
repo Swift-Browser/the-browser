@@ -79,10 +79,10 @@ public enum ShellScripting {
 
   static func perform(_ body: [String: Any], transform: @escaping ([String: Any]) -> Any? = { _ in nil }) -> Any? {
     #if DEBUG
-    if !Thread.isMainThread { NSLog("Ardia: an Apple event is being handled off the main thread") }
+    if !Thread.isMainThread { NSLog("Medusa: an Apple event is being handled off the main thread") }
     #endif
     guard let send else {
-      NSScriptCommand.current()?.setError("Ardia isn't ready yet.")
+      NSScriptCommand.current()?.setError("Medusa isn't ready yet.")
       return nil
     }
     seq += 1
@@ -99,14 +99,14 @@ public enum ShellScripting {
       if refused { command?.refuseJavaScriptFromAppleEvents() }
       let value = error == nil && !refused ? transform(answer) : nil
       if let failure = ACTryCatch({ command?.resumeExecution(withResult: value) }) {
-        NSLog("Ardia: AppleScript reply failed: \(failure)")
+        NSLog("Medusa: AppleScript reply failed: \(failure)")
       }
     }
     var request = body
     request["id"] = id
     send(request)
     DispatchQueue.main.asyncAfter(deadline: .now() + 20) {
-      reply(id, result: nil, error: "Ardia didn't respond in time.")
+      reply(id, result: nil, error: "Medusa didn't respond in time.")
     }
     return nil
   }
@@ -282,7 +282,7 @@ final class ScriptCreateCommand: NSCreateCommand {
       }
       return ShellScripting.perform(body) { ($0["tabId"] as? String).flatMap { ScriptTab(id: $0).objectSpecifier } }
     default:
-      setError("Ardia can't make a new \(createClassDescription.className).")
+      setError("Medusa can't make a new \(createClassDescription.className).")
       return nil
     }
   }

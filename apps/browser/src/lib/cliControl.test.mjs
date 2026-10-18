@@ -6,7 +6,7 @@ globalThis.__DEV__ = false;
 registerHooks({
   resolve(specifier, context, next) {
     if (!context.parentURL?.endsWith("/lib/cliControl.ts") || specifier !== "../components/pages") return next(specifier, context);
-    const stub = "export const isInternalTab = (t) => /^ardia:\\/\\//i.test(t.navigation?.url ?? t.url ?? '');";
+    const stub = "export const isInternalTab = (t) => /^medusa:\\/\\//i.test(t.navigation?.url ?? t.url ?? '');";
     return { url: `data:text/javascript,${encodeURIComponent(stub)}`, shortCircuit: true };
   },
 });
@@ -45,7 +45,7 @@ test("a failure from a superseded enable doesn't turn off a newer retry", async 
 });
 
 test("a failure of the current start still turns the setting off and keeps the reason", async () => {
-  emit({ state: "off", generation: 2, reason: "Couldn't write ArdiaControl.json: is a directory" });
+  emit({ state: "off", generation: 2, reason: "Couldn't write MedusaControl.json: is a directory" });
   await settle();
   assert.equal(useBrowser.getState().settings.cliControl, false);
   assert.match(cli.useCli.getState().server?.reason ?? "", /is a directory/);
@@ -78,7 +78,7 @@ test("the engine hears which page the user is looking at while control is on", a
   assert.deepEqual(active, [41, 42, -1], "nothing is sent while control is off");
 });
 
-test("a page parked behind New Tab or an Ardia page is not what the user is looking at", async () => {
+test("a page parked behind New Tab or an Medusa page is not what the user is looking at", async () => {
   const active = [];
   globalThis.acTestCliActive = (id) => (active.push(id), Promise.resolve({}));
   const { patchPage } = await import("../components/layout/pageState.ts");
@@ -100,9 +100,9 @@ test("a page parked behind New Tab or an Ardia page is not what the user is look
   S().updateTab(a, { url: tab.url, title: tab.title });
   await settle();
   assert.deepEqual(active, [51, -1, 51], "Forward shows the page again");
-  S().updateTab(a, { url: "ardia://settings", navigation: { ...S().tabs[a].navigation, url: "ardia://settings" } });
+  S().updateTab(a, { url: "medusa://settings", navigation: { ...S().tabs[a].navigation, url: "medusa://settings" } });
   await settle();
-  assert.deepEqual(active, [51, -1, 51, -1], "an Ardia page over a parked WebContents");
+  assert.deepEqual(active, [51, -1, 51, -1], "an Medusa page over a parked WebContents");
   emit({ state: "off", generation: 4 });
   await settle();
 });

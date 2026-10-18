@@ -2,15 +2,15 @@
 import PackageDescription
 
 let package = Package(
-  name: "ArdiaSyncCore",
+  name: "MedusaSyncCore",
   platforms: [.macOS(.v14)],
   products: [
-    .library(name: "ArdiaSyncCore", targets: ["ArdiaSyncCore"]),
+    .library(name: "MedusaSyncCore", targets: ["MedusaSyncCore"]),
     .executable(name: "legacy-migration", targets: ["LegacyMigrationTool"]),
   ],
   targets: [
-    .target(name: "ArdiaSyncCore", path: "ios/Core"),
-    .executableTarget(name: "LegacyMigrationTool", dependencies: ["ArdiaSyncCore"], path: "tools/legacy-migration"),
-    .testTarget(name: "ArdiaSyncCoreTests", dependencies: ["ArdiaSyncCore"], path: "tests", exclude: ["fixtures"]),
+    .target(name: "MedusaSyncCore", path: "ios/Core"),
+    .executableTarget(name: "LegacyMigrationTool", dependencies: ["MedusaSyncCore"], path: "tools/legacy-migration"),
+    .testTarget(name: "MedusaSyncCoreTests", dependencies: ["MedusaSyncCore"], path: "tests", exclude: ["fixtures"]),
   ]
 )

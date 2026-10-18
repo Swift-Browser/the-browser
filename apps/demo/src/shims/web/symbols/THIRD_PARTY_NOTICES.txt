@@ -1,6 +1,6 @@
-Third-party notices for the Ardia demo symbol artwork (apps/demo/src/shims/web/symbols/data.ts)
+Third-party notices for the Medusa demo symbol artwork (apps/demo/src/shims/web/symbols/data.ts)
 
-The demo draws its icons from the open icon sets below, rescaled and repositioned, and from original geometry drawn for Ardia. It contains no SF Symbols artwork.
+The demo draws its icons from the open icon sets below, rescaled and repositioned, and from original geometry drawn for Medusa. It contains no SF Symbols artwork.
 
 ==============================================================================
 Lucide (lucide-static 1.56.0, ISC) https://lucide.dev

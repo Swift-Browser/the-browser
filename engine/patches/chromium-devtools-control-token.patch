@@ -13,23 +13,23 @@ diff --git a/content/browser/devtools/devtools_http_handler.cc b/content/browser
  extern const int kCcompressedProtocolJSON;
  #endif
  
-+#include "ardia/core/ac_content_hooks.h"  // nogncheck
++#include "medusa/core/ac_content_hooks.h"  // nogncheck
 +
-+bool (*g_ardia_devtools_token_factory)(
++bool (*g_medusa_devtools_token_factory)(
 +    const content::DevToolsSocketFactory* factory) = nullptr;
-+bool (*g_ardia_devtools_token_accepts)(
++bool (*g_medusa_devtools_token_accepts)(
 +    const content::DevToolsSocketFactory* factory,
 +    std::string_view token) = nullptr;
-+void (*g_ardia_devtools_token_server)(
++void (*g_medusa_devtools_token_server)(
 +    const content::DevToolsSocketFactory* factory,
 +    std::string_view browser_path,
 +    int port,
 +    size_t connections) = nullptr;
-+bool (*g_ardia_devtools_active_target)(
++bool (*g_medusa_devtools_active_target)(
 +    const content::DevToolsSocketFactory* factory,
 +    std::string_view token,
 +    std::string* target_id) = nullptr;
-+std::unique_ptr<ArdiaDevToolsTokenClient> (*g_ardia_devtools_token_client)(
++std::unique_ptr<MedusaDevToolsTokenClient> (*g_medusa_devtools_token_client)(
 +    const content::DevToolsSocketFactory* factory,
 +    content::DevToolsAgentHostClient* client,
 +    content::DevToolsAgentHost* host) = nullptr;
@@ -42,7 +42,7 @@ diff --git a/content/browser/devtools/devtools_http_handler.cc b/content/browser
            "Not implemented, only used in Devtools and is behind a switch."
        })");
 +
-+void SplitArdiaPath(std::string_view full,
++void SplitMedusaPath(std::string_view full,
 +                    std::string_view* path,
 +                    std::string_view* token) {
 +  *path = full;
@@ -68,9 +68,9 @@ diff --git a/content/browser/devtools/devtools_http_handler.cc b/content/browser
          std::unique_ptr<DevToolsSocketFactory>(socket_factory),
          std::move(ip_address));
    } else {
-+    if (handler && handler->ardia_token_mode_ &&
-+        g_ardia_devtools_token_server) {
-+      g_ardia_devtools_token_server(socket_factory, "", 0, 0);
++    if (handler && handler->medusa_token_mode_ &&
++        g_medusa_devtools_token_server) {
++      g_medusa_devtools_token_server(socket_factory, "", 0, 0);
 +    }
      TerminateOnUI(std::move(thread),
                    std::unique_ptr<ServerWrapper>(server_wrapper),
@@ -81,18 +81,18 @@ diff --git a/content/browser/devtools/devtools_http_handler.cc b/content/browser
        int connection_id,
 -      scoped_refptr<DevToolsAgentHost> agent_host)
 +      scoped_refptr<DevToolsAgentHost> agent_host,
-+      const DevToolsSocketFactory* ardia_token_factory = nullptr)
++      const DevToolsSocketFactory* medusa_token_factory = nullptr)
        : task_runner_(std::move(task_runner)),
          server_wrapper_(server_wrapper),
          connection_id_(connection_id),
          agent_host_(agent_host) {
      CHECK_CURRENTLY_ON(BrowserThread::UI, base::NotFatalUntil::M159);
-+    if (ardia_token_factory) {
-+      if (g_ardia_devtools_token_client) {
-+        ardia_token_client_ = g_ardia_devtools_token_client(
-+            ardia_token_factory, this, agent_host_.get());
++    if (medusa_token_factory) {
++      if (g_medusa_devtools_token_client) {
++        medusa_token_client_ = g_medusa_devtools_token_client(
++            medusa_token_factory, this, agent_host_.get());
 +      }
-+      if (!ardia_token_client_) {
++      if (!medusa_token_client_) {
 +        agent_host_ = nullptr;
 +        return;
 +      }
@@ -105,26 +105,26 @@ diff --git a/content/browser/devtools/devtools_http_handler.cc b/content/browser
 +  bool attached() const { return attached_; }
 +
 +  bool MayAttachToURL(const GURL& url, bool is_webui) override {
-+    return ardia_token_client_
-+               ? ardia_token_client_->MayAttachToURL(url, is_webui)
++    return medusa_token_client_
++               ? medusa_token_client_->MayAttachToURL(url, is_webui)
 +               : DevToolsAgentHostClient::MayAttachToURL(url, is_webui);
    }
  
 +  bool MayAttachToRenderFrameHost(
 +      RenderFrameHost* render_frame_host) override {
-+    return ardia_token_client_
-+               ? ardia_token_client_->MayAttachToRenderFrameHost(
++    return medusa_token_client_
++               ? medusa_token_client_->MayAttachToRenderFrameHost(
 +                     render_frame_host)
 +               : DevToolsAgentHostClient::MayAttachToRenderFrameHost(
 +                     render_frame_host);
 +  }
 +
 +  bool MayReadLocalFiles() override {
-+    return !ardia_token_client_ && DevToolsAgentHostClient::MayReadLocalFiles();
++    return !medusa_token_client_ && DevToolsAgentHostClient::MayReadLocalFiles();
 +  }
 +
 +  bool MayWriteLocalFiles() override {
-+    return !ardia_token_client_ &&
++    return !medusa_token_client_ &&
 +           DevToolsAgentHostClient::MayWriteLocalFiles();
 +  }
 +
@@ -141,7 +141,7 @@ diff --git a/content/browser/devtools/devtools_http_handler.cc b/content/browser
 -                       base::Unretained(server_wrapper_), connection_id_,
 -                       std::string(message.begin(), message.end())));
 +    std::string text(message.begin(), message.end());
-+    if (ardia_token_client_ && !ardia_token_client_->FilterEvent(text)) {
++    if (medusa_token_client_ && !medusa_token_client_->FilterEvent(text)) {
 +      return;
 +    }
 +    SendToSocket(std::move(text));
@@ -154,14 +154,14 @@ diff --git a/content/browser/devtools/devtools_http_handler.cc b/content/browser
 +    if (!agent_host_) {
 +      return;
 +    }
-+    if (ardia_token_client_) {
++    if (medusa_token_client_) {
 +      std::string command(message.begin(), message.end());
 +      std::string reply;
-+      if (!ardia_token_client_->FilterCommand(command, &reply)) {
++      if (!medusa_token_client_->FilterCommand(command, &reply)) {
 +        if (!reply.empty()) {
 +          SendToSocket(std::move(reply));
 +        }
-+        if (ardia_token_client_->ShouldClose()) {
++        if (medusa_token_client_->ShouldClose()) {
 +          task_runner_->PostTask(
 +              FROM_HERE, base::BindOnce(&ServerWrapper::Close,
 +                                        base::Unretained(server_wrapper_),
@@ -180,7 +180,7 @@ diff --git a/content/browser/devtools/devtools_http_handler.cc b/content/browser
    const raw_ptr<ServerWrapper> server_wrapper_;
    const int connection_id_;
    scoped_refptr<DevToolsAgentHost> agent_host_;
-+  std::unique_ptr<ArdiaDevToolsTokenClient> ardia_token_client_;
++  std::unique_ptr<MedusaDevToolsTokenClient> medusa_token_client_;
 +  bool attached_ = false;
 +
 +  void SendToSocket(std::string text) {
@@ -197,8 +197,8 @@ diff --git a/content/browser/devtools/devtools_http_handler.cc b/content/browser
    // by the targets. It is essential that this happens before we issue delete
    // soon for the server wrapper.
    connection_to_client_.clear();
-+  if (ardia_token_mode_ && socket_factory_ && g_ardia_devtools_token_server) {
-+    g_ardia_devtools_token_server(socket_factory_.get(), "", 0, 0);
++  if (medusa_token_mode_ && socket_factory_ && g_medusa_devtools_token_server) {
++    g_medusa_devtools_token_server(socket_factory_.get(), "", 0, 0);
 +  }
    TerminateOnUI(std::move(thread_), std::move(server_wrapper_),
                  std::move(socket_factory_));
@@ -208,9 +208,9 @@ diff --git a/content/browser/devtools/devtools_http_handler.cc b/content/browser
  
    server_->SetSendBufferSize(connection_id, kSendBufferSizeForDevTools);
 +
-+  if (base::StartsWith(info.path, "/ardia/", base::CompareCase::SENSITIVE)) {
++  if (base::StartsWith(info.path, "/medusa/", base::CompareCase::SENSITIVE)) {
 +    GetUIThreadTaskRunner({})->PostTask(
-+        FROM_HERE, base::BindOnce(&DevToolsHttpHandler::OnArdiaRequest,
++        FROM_HERE, base::BindOnce(&DevToolsHttpHandler::OnMedusaRequest,
 +                                  handler_, connection_id, info));
 +    return;
 +  }
@@ -223,7 +223,7 @@ diff --git a/content/browser/devtools/devtools_http_handler.cc b/content/browser
    if (mode_ ==
 -      DevToolsAgentHost::RemoteDebuggingServerMode::kWithApprovalOnly) {
 +          DevToolsAgentHost::RemoteDebuggingServerMode::kWithApprovalOnly ||
-+      ardia_token_mode_) {
++      medusa_token_mode_) {
      Send404(connection_id);
      return;
    }
@@ -233,17 +233,17 @@ diff --git a/content/browser/devtools/devtools_http_handler.cc b/content/browser
    SendJson(connection_id, net::HTTP_OK, list_value, "");
 +}
 +
-+void DevToolsHttpHandler::OnArdiaRequest(
++void DevToolsHttpHandler::OnMedusaRequest(
 +    int connection_id,
 +    const net::HttpServerRequestInfo& info) {
 +  std::string_view path;
 +  std::string_view token;
-+  SplitArdiaPath(info.path, &path, &token);
++  SplitMedusaPath(info.path, &path, &token);
 +  std::string target_id;
-+  if (!ardia_token_mode_ || info.method != "GET" ||
-+      info.headers.count("origin") || path != "/ardia/active" ||
-+      !g_ardia_devtools_active_target ||
-+      !g_ardia_devtools_active_target(socket_factory_.get(), token,
++  if (!medusa_token_mode_ || info.method != "GET" ||
++      info.headers.count("origin") || path != "/medusa/active" ||
++      !g_medusa_devtools_active_target ||
++      !g_medusa_devtools_active_target(socket_factory_.get(), token,
 +                                      &target_id)) {
 +    Send404(connection_id);
 +    return;
@@ -261,7 +261,7 @@ diff --git a/content/browser/devtools/devtools_http_handler.cc b/content/browser
    if (mode_ ==
 -      DevToolsAgentHost::RemoteDebuggingServerMode::kWithApprovalOnly) {
 +          DevToolsAgentHost::RemoteDebuggingServerMode::kWithApprovalOnly ||
-+      ardia_token_mode_) {
++      medusa_token_mode_) {
      Send404(connection_id);
      return;
    }
@@ -271,7 +271,7 @@ diff --git a/content/browser/devtools/devtools_http_handler.cc b/content/browser
    if (mode_ ==
 -      DevToolsAgentHost::RemoteDebuggingServerMode::kWithApprovalOnly) {
 +          DevToolsAgentHost::RemoteDebuggingServerMode::kWithApprovalOnly ||
-+      ardia_token_mode_) {
++      medusa_token_mode_) {
      Send404(connection_id);
      return;
    }
@@ -279,7 +279,7 @@ diff --git a/content/browser/devtools/devtools_http_handler.cc b/content/browser
    if (!thread_)
      return;
  
-+  if (ardia_token_mode_ && request.headers.count("origin")) {
++  if (medusa_token_mode_ && request.headers.count("origin")) {
 +    Send403(connection_id, "Connection rejected");
 +    return;
 +  }
@@ -293,13 +293,13 @@ diff --git a/content/browser/devtools/devtools_http_handler.cc b/content/browser
      return;
 +  }
 +
-+  net::HttpServerRequestInfo ardia_routed;
-+  if (ardia_token_mode_) {
++  net::HttpServerRequestInfo medusa_routed;
++  if (medusa_token_mode_) {
 +    std::string_view path;
 +    std::string_view token;
-+    SplitArdiaPath(request.path, &path, &token);
-+    if (!g_ardia_devtools_token_accepts ||
-+        !g_ardia_devtools_token_accepts(socket_factory_.get(), token)) {
++    SplitMedusaPath(request.path, &path, &token);
++    if (!g_medusa_devtools_token_accepts ||
++        !g_medusa_devtools_token_accepts(socket_factory_.get(), token)) {
 +      Send403(connection_id, "Connection rejected");
 +      return;
 +    }
@@ -310,11 +310,11 @@ diff --git a/content/browser/devtools/devtools_http_handler.cc b/content/browser
 +      Send500(connection_id, "Invalid WebSocket handshake");
 +      return;
 +    }
-+    ardia_routed = request;
-+    ardia_routed.path = std::string(path);
++    medusa_routed = request;
++    medusa_routed.path = std::string(path);
    }
 +  const net::HttpServerRequestInfo& routed =
-+      ardia_token_mode_ ? ardia_routed : request;
++      medusa_token_mode_ ? medusa_routed : request;
  
    // If we require user approval, we do not require guid.
    if (mode_ ==
@@ -337,8 +337,8 @@ diff --git a/content/browser/devtools/devtools_http_handler.cc b/content/browser
 -    AcceptWebSocket(connection_id, request);
 +    auto browser_client = std::make_unique<DevToolsAgentHostClientImpl>(
 +        thread_->task_runner(), server_wrapper_.get(), connection_id,
-+        browser_agent, ardia_token_mode_ ? socket_factory_.get() : nullptr);
-+    if (ardia_token_mode_ && !browser_client->attached()) {
++        browser_agent, medusa_token_mode_ ? socket_factory_.get() : nullptr);
++    if (medusa_token_mode_ && !browser_client->attached()) {
 +      Send403(connection_id, "Connection rejected");
 +      return;
 +    }
@@ -368,8 +368,8 @@ diff --git a/content/browser/devtools/devtools_http_handler.cc b/content/browser
 -          thread_->task_runner(), server_wrapper_.get(), connection_id, agent);
 +  auto client = std::make_unique<DevToolsAgentHostClientImpl>(
 +      thread_->task_runner(), server_wrapper_.get(), connection_id, agent,
-+      ardia_token_mode_ ? socket_factory_.get() : nullptr);
-+  if (ardia_token_mode_ && !client->attached()) {
++      medusa_token_mode_ ? socket_factory_.get() : nullptr);
++  if (medusa_token_mode_ && !client->attached()) {
 +    Send403(connection_id, "Connection rejected");
 +    return;
 +  }
@@ -384,8 +384,8 @@ diff --git a/content/browser/devtools/devtools_http_handler.cc b/content/browser
  
  void DevToolsHttpHandler::OnClose(int connection_id) {
    auto removed_count = connection_to_client_.erase(connection_id);
-+  if (removed_count > 0 && ardia_token_mode_) {
-+    ReportArdiaTokenServer();
++  if (removed_count > 0 && medusa_token_mode_) {
++    ReportMedusaTokenServer();
 +  }
    if (delegate_ && removed_count > 0 &&
        mode_ ==
@@ -394,8 +394,8 @@ diff --git a/content/browser/devtools/devtools_http_handler.cc b/content/browser
      const base::FilePath& debug_frontend_dir,
      DevToolsAgentHost::RemoteDebuggingServerMode mode)
      : mode_(mode), delegate_(delegate) {
-+  ardia_token_mode_ = g_ardia_devtools_token_factory &&
-+                      g_ardia_devtools_token_factory(socket_factory.get());
++  medusa_token_mode_ = g_medusa_devtools_token_factory &&
++                      g_medusa_devtools_token_factory(socket_factory.get());
    browser_guid_ =
        delegate_->IsBrowserTargetDiscoverable()
            ? kBrowserUrlPrefix
@@ -403,14 +403,14 @@ diff --git a/content/browser/devtools/devtools_http_handler.cc b/content/browser
    server_wrapper_ = std::move(server_wrapper);
    socket_factory_ = std::move(socket_factory);
    server_ip_address_ = std::move(ip_address);
-+  if (ardia_token_mode_) {
-+    ReportArdiaTokenServer();
++  if (medusa_token_mode_) {
++    ReportMedusaTokenServer();
 +  }
  }
  
-+void DevToolsHttpHandler::ReportArdiaTokenServer() {
-+  if (g_ardia_devtools_token_server && socket_factory_) {
-+    g_ardia_devtools_token_server(
++void DevToolsHttpHandler::ReportMedusaTokenServer() {
++  if (g_medusa_devtools_token_server && socket_factory_) {
++    g_medusa_devtools_token_server(
 +        socket_factory_.get(), browser_guid_,
 +        server_ip_address_ ? server_ip_address_->port() : 0,
 +        connection_to_client_.size());
@@ -424,8 +424,8 @@ diff --git a/content/browser/devtools/devtools_http_handler.cc b/content/browser
        DevToolsAgentHost::RemoteDebuggingServerMode::kWithApprovalOnly) {
      delegate_->SetActiveWebSocketConnections(connection_to_client_.size());
    }
-+  if (ardia_token_mode_) {
-+    ReportArdiaTokenServer();
++  if (medusa_token_mode_) {
++    ReportMedusaTokenServer();
 +  }
    thread_->task_runner()->PostTask(
        FROM_HERE, base::BindOnce(&ServerWrapper::AcceptWebSocket,
@@ -437,7 +437,7 @@ diff --git a/content/browser/devtools/devtools_http_handler.h b/content/browser/
                           const std::string& host,
                           DevToolsAgentHost::List agent_hosts,
                           bool for_tab);
-+  void OnArdiaRequest(int connection_id,
++  void OnMedusaRequest(int connection_id,
 +                      const net::HttpServerRequestInfo& info);
    void OnDiscoveryPageRequest(int connection_id);
    void OnFrontendResourceRequest(int connection_id, std::string_view path);
@@ -446,7 +446,7 @@ diff --git a/content/browser/devtools/devtools_http_handler.h b/content/browser/
        DevToolsManagerDelegate::AcceptConnectionResult result);
  
    void DecompressAndSendJsonProtocol(int connection_id);
-+  void ReportArdiaTokenServer();
++  void ReportMedusaTokenServer();
  
    // Returns the front end url without the host at the beginning.
    std::string GetFrontendURLInternal(
@@ -454,7 +454,7 @@ diff --git a/content/browser/devtools/devtools_http_handler.h b/content/browser/
        const std::string& host);
  
    DevToolsAgentHost::RemoteDebuggingServerMode mode_;
-+  bool ardia_token_mode_ = false;
++  bool medusa_token_mode_ = false;
    std::set<std::string> remote_allow_origins_;
    // The thread used by the devtools handler to run server socket.
    std::unique_ptr<base::Thread> thread_;
@@ -466,9 +466,9 @@ diff --git a/content/browser/devtools/devtools_agent_host_impl.cc b/content/brow
  #include <io.h>
  #endif
 +
-+#include "ardia/core/ac_content_hooks.h"  // nogncheck
++#include "medusa/core/ac_content_hooks.h"  // nogncheck
 +
-+bool (*g_ardia_devtools_may_attach)(content::DevToolsAgentHostClient* root_client,
++bool (*g_medusa_devtools_may_attach)(content::DevToolsAgentHostClient* root_client,
 +                                    content::DevToolsAgentHost* host) = nullptr;
  
  namespace content {
@@ -477,8 +477,8 @@ diff --git a/content/browser/devtools/devtools_agent_host_impl.cc b/content/brow
        !manager->delegate()->AllowInspectingTarget(this)) {
      return false;
    }
-+  if (g_ardia_devtools_may_attach &&
-+      !g_ardia_devtools_may_attach(session->GetRootSession()->GetClient(),
++  if (g_medusa_devtools_may_attach &&
++      !g_medusa_devtools_may_attach(session->GetRootSession()->GetClient(),
 +                                   this)) {
 +    return false;
 +  }
@@ -492,21 +492,21 @@ diff --git a/content/browser/devtools/protocol/input_handler.cc b/content/browse
  #include "ui/gfx/geometry/point_f.h"
  #include "ui/gfx/range/range.h"
  
-+#include "ardia/core/ac_content_hooks.h"  // nogncheck
++#include "medusa/core/ac_content_hooks.h"  // nogncheck
 +#include "content/browser/devtools/devtools_session.h"
 +#include "content/public/browser/web_contents.h"
 +
-+bool (*g_ardia_devtools_may_input)(content::DevToolsAgentHostClient* root_client,
++bool (*g_medusa_devtools_may_input)(content::DevToolsAgentHostClient* root_client,
 +                                   content::RenderFrameHost* frame) = nullptr;
 +
  namespace content::protocol {
 +
 +namespace {
 +
-+bool ArdiaMayInject(DevToolsSession* session,
++bool MedusaMayInject(DevToolsSession* session,
 +                    RenderFrameHostImpl* host,
 +                    RenderWidgetHostImpl* widget) {
-+  if (!g_ardia_devtools_may_input) {
++  if (!g_medusa_devtools_may_input) {
 +    return true;
 +  }
 +  WebContents* contents = host ? WebContents::FromRenderFrameHost(host) : nullptr;
@@ -519,7 +519,7 @@ diff --git a/content/browser/devtools/protocol/input_handler.cc b/content/browse
 +  contents->ForEachRenderFrameHost([&](RenderFrameHost* frame) {
 +    if (frame->GetRenderWidgetHost() == widget) {
 +      found = true;
-+      allowed = allowed && g_ardia_devtools_may_input(client, frame);
++      allowed = allowed && g_medusa_devtools_may_input(client, frame);
 +    }
 +  });
 +  return found && allowed;
@@ -533,7 +533,7 @@ diff --git a/content/browser/devtools/protocol/input_handler.cc b/content/browse
      return;
    }
    auto* host = RenderWidgetHostImpl::From(view->GetRenderWidgetHost());
-+  if (!ArdiaMayInject(handler_->session(), handler_->host_, host)) {
++  if (!MedusaMayInject(handler_->session(), handler_->host_, host)) {
 +    CancelDragging(
 +        base::BindOnce(&FailSafe<DispatchMouseEventCallback>::sendFailure,
 +                       std::move(callback), Response::InvalidParams("Not allowed")));
@@ -548,7 +548,7 @@ diff --git a/content/browser/devtools/protocol/input_handler.cc b/content/browse
        widget_host = target_host;
 +  }
 +
-+  if (!ArdiaMayInject(session(), host_, widget_host)) {
++  if (!MedusaMayInject(session(), host_, widget_host)) {
 +    callback->sendFailure(Response::InvalidParams("Not allowed"));
 +    return;
    }
@@ -558,7 +558,7 @@ diff --git a/content/browser/devtools/protocol/input_handler.cc b/content/browse
        widget_host = target_host;
    }
  
-+  if (!ArdiaMayInject(session(), host_, widget_host)) {
++  if (!MedusaMayInject(session(), host_, widget_host)) {
 +    callback->sendFailure(Response::InvalidParams("Not allowed"));
 +    return;
 +  }
@@ -570,7 +570,7 @@ diff --git a/content/browser/devtools/protocol/input_handler.cc b/content/browse
  
    RenderWidgetHostImpl* widget_host =
        RenderWidgetHostImpl::From(target->GetRenderWidgetHost());
-+  if (!ArdiaMayInject(session(), host_, widget_host)) {
++  if (!MedusaMayInject(session(), host_, widget_host)) {
 +    callback->sendFailure(Response::InvalidParams("Not allowed"));
 +    return;
 +  }
@@ -581,9 +581,9 @@ diff --git a/content/browser/devtools/protocol/input_handler.cc b/content/browse
      std::optional<double> timestamp,
      std::unique_ptr<DispatchTouchEventCallback> callback) {
    if (base::FeatureList::IsEnabled(features::kSyntheticPointerActions)) {
-+    if (g_ardia_devtools_may_input &&
++    if (g_medusa_devtools_may_input &&
 +        (!session() ||
-+         !g_ardia_devtools_may_input(session()->GetRootSession()->GetClient(),
++         !g_medusa_devtools_may_input(session()->GetRootSession()->GetClient(),
 +                                     nullptr))) {
 +      callback->sendFailure(Response::InvalidParams("Not allowed"));
 +      return;
@@ -595,7 +595,7 @@ diff --git a/content/browser/devtools/protocol/input_handler.cc b/content/browse
    }
    RenderWidgetHostImpl* widget_host =
        RenderWidgetHostImpl::From(target->GetRenderWidgetHost());
-+  if (!ArdiaMayInject(session(), host_, widget_host)) {
++  if (!MedusaMayInject(session(), host_, widget_host)) {
 +    callback->sendFailure(Response::InvalidParams("Not allowed"));
 +    return;
 +  }

@@ -1,4 +1,4 @@
-import { faviconsFor, fetchFavicon, onHistoryChanged, removeLegacyFavicons } from "@medusa/ardiacore";
+import { faviconsFor, fetchFavicon, onHistoryChanged, removeLegacyFavicons } from "@medusa/medusacore";
 import { iconTheme, readDocument, removeDocument, type IconTheme } from "@medusa/shell";
 import { useEffect } from "react";
 import { create } from "zustand";

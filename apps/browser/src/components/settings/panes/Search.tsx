@@ -56,7 +56,7 @@ export function SearchPane() {
 
       {fromExtensions.length > 0 && (
         <>
-          <SectionHeader title="Extensions" description="Some extensions can add search engines to Ardia." />
+          <SectionHeader title="Extensions" description="Some extensions can add search engines to Medusa." />
           <Group>
             {fromExtensions.map((e) => (
               <EngineRow key={e.id} engine={e} selected={selectedId === e.id} locked={locked} />

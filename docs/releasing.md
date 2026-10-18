@@ -1,33 +1,33 @@
 # Releasing
 
-Releases are GitHub releases of `mantrakp04/ardia`, tagged `v<version>`, on two channels: **stable** (`0.2.37`, a full
+Releases are GitHub releases of `mantrakp04/medusa`, tagged `v<version>`, on two channels: **stable** (`0.2.37`, a full
 release) and **nightly** (`0.2.37-nightly.1`, a GitHub prerelease: one fix, shipped the day it's made; "Channels" below).
 Each has three assets, four when the engine changed:
 
-- `Ardia-<version>.dmg`: what people download (the app and an `/Applications` link, in a window with the
+- `Medusa-<version>.dmg`: what people download (the app and an `/Applications` link, in a window with the
   site's poster behind them: `scripts/dmg`, where `render.sh` redraws the picture and `layout.sh` the layout).
-- `Ardia-<version>.zip`: the archive Sparkle installs updates from.
+- `Medusa-<version>.zip`: the archive Sparkle installs updates from.
 - `appcast.xml`: the Sparkle feed, both channels' items in one file. The latest stable release's appcast is the feed
   (a nightly rewrites that asset; "Channels" below). Builds after 0.2.13 poll
-  `https://ardia.dev/appcast.xml` (`SUFeedURL`), which counts the check by version and day (and whether
+  `https://medusa.dev/appcast.xml` (`SUFeedURL`), which counts the check by version and day (and whether
   it's the copy's first) and redirects to
-  `https://github.com/mantrakp04/ardia/releases/latest/download/appcast.xml`, the URL 0.2.13 and
+  `https://github.com/mantrakp04/medusa/releases/latest/download/appcast.xml`, the URL 0.2.13 and
   earlier poll directly. The count can't block an update: see `infra/site/nginx.conf` and `docs/growth.md`
   › Installs.
-- `ArdiaCore-<engine tree>.tar.xz`, only when `engine/` changed since the last one: the release's engine (Chrome's
-  framework, stripped), so the app builds without a Chromium tree. `packages/ardiacore/prebuilt-engines.tsv` maps
-  `engine/`'s git tree to the release and the archive's SHA-256; `packages/ardiacore/scripts/fetch-engine.sh` downloads
+- `MedusaCore-<engine tree>.tar.xz`, only when `engine/` changed since the last one: the release's engine (Chrome's
+  framework, stripped), so the app builds without a Chromium tree. `packages/medusacore/prebuilt-engines.tsv` maps
+  `engine/`'s git tree to the release and the archive's SHA-256; `packages/medusacore/scripts/fetch-engine.sh` downloads
   it (the app's build runs it when there's no local engine build).
 
 Each version's notes are a file in the repo, `docs/release-notes/<version>.md` (how to write one:
 `docs/release-notes/README.md`). The GitHub release, the update dialog and the website's
-`https://ardia.dev/release-notes` all come from it. The first launch after an update opens
+`https://medusa.dev/release-notes` all come from it. The first launch after an update opens
 `/release-notes#<version>` in a new tab (`apps/browser/src/lib/releaseNotesPage.ts`), so the site has to be
 deployed with the new entry by the time the update reaches people.
 
 ## Channels
 
-Ardia is one app with two Sparkle channels. A stable item in the appcast has no channel; a nightly item carries
+Medusa is one app with two Sparkle channels. A stable item in the appcast has no channel; a nightly item carries
 `<sparkle:channel>nightly</sparkle:channel>` (`generate_appcast --channel nightly`). Sparkle skips items on a channel the
 app doesn't allow, and allows none by default, so every shipped build (all on Sparkle 2.9.6, which has channels) and
 every copy on Stable sees only stable items. A copy on Nightly allows `nightly` (`allowedChannels(for:)` in
@@ -42,9 +42,9 @@ every copy on Stable sees only stable items. A copy on Nightly allows `nightly` 
   every release on either channel; the version string is only shown. A nightly is `<next stable>-nightly.<n>`, so
   0.2.36 (44) < 0.2.37-nightly.1 (45) < 0.2.37-nightly.2 (46) < 0.2.37 (47). Sparkle's comparator can't order the
   strings themselves (it reads `0.2.37-nightly.1` and `0.2.37-nightly.2` as equal), which is why it never sees them.
-  `release.sh` refuses a build number that isn't above every build already in the feed, nightly or stable. About Ardia
+  `release.sh` refuses a build number that isn't above every build already in the feed, nightly or stable. About Medusa
   and Settings show a nightly as "0.2.37 Nightly 1".
-- **The feed.** It stays where every shipped build reads it: `https://ardia.dev/appcast.xml` redirects to
+- **The feed.** It stays where every shipped build reads it: `https://medusa.dev/appcast.xml` redirects to
   `releases/latest/download/appcast.xml`, and GitHub's "latest" skips prereleases, so it's always the newest stable
   release's `appcast.xml`. A stable release publishes the merged feed as its own asset and becomes latest; a nightly
   re-uploads the merged feed onto that same latest stable release (`gh release upload … --clobber`). Nothing moved:
@@ -52,11 +52,11 @@ every copy on Stable sees only stable items. A copy on Nightly allows `nightly` 
   same file. Both flows build on the published feed (`release.sh` fetches it and refuses to go on without it), and
   `appcast-merge.sh` puts the new item onto the feed as published at that moment, so a nightly that shipped while a
   stable was being tested isn't dropped. `generate_appcast` keeps 3 items per channel.
-- **Downloads.** Stable keeps its versioned link (`releases/latest/download/Ardia-<version>.dmg`, from
-  `apps/site/src/data/release.ts`). Nightly has one fixed link, `https://ardia.dev/nightly` (`infra/site/nginx.conf`),
-  which redirects to the `nightly` prerelease's `Ardia-Nightly.dmg`; each nightly re-uploads that asset, so the site
+- **Downloads.** Stable keeps its versioned link (`releases/latest/download/Medusa-<version>.dmg`, from
+  `apps/site/src/data/release.ts`). Nightly has one fixed link, `https://medusa.dev/nightly` (`infra/site/nginx.conf`),
+  which redirects to the `nightly` prerelease's `Medusa-Nightly.dmg`; each nightly re-uploads that asset, so the site
   never redeploys for a nightly.
-- **Proof.** `.claude/skills/release/scripts/channel-test.sh dist/<stable>/export/Ardia.app` runs that build's own
+- **Proof.** `.claude/skills/release/scripts/channel-test.sh dist/<stable>/export/Medusa.app` runs that build's own
   Sparkle against local feeds made by `generate_appcast`: on stable it isn't offered a nightly, and with a newer
   nightly in the feed it takes the stable; on nightly it takes the nightly, a newer stable, and the newest of both. It
   also checks the build-number order with Sparkle's comparator. `update-test.sh` does the stable-ignores-it half for
@@ -68,46 +68,46 @@ every copy on Stable sees only stable items. A copy on Nightly allows `nightly` 
   signed in to the team: the export fetches the Developer ID provisioning profile
   (`-allowProvisioningUpdates`) that the keychain-group entitlements need.
 - The **Sparkle EdDSA key**, a login keychain item (service `https://sparkle-project.org`, account
-  `ardia`, or the app's old name in lower case on the Mac that made it before the rename: `LegacyName.appName`;
+  `medusa`, or the app's old name in lower case on the Mac that made it before the rename: `LegacyName.appName`;
   release.sh finds either, `SPARKLE_ACCOUNT` overrides). Its public half is `SUPublicEDKey` in
-  `apps/browser/macos/Ardia-macOS/Info.plist`. Every update must be signed with it, so keep a backup:
+  `apps/browser/macos/Medusa-macOS/Info.plist`. Every update must be signed with it, so keep a backup:
   `apps/browser/macos/Pods/Sparkle/bin/generate_keys --account <account> -x <file>` exports it, and `-f <file>`
   imports it on another machine.
 - For notarization, an App Store Connect API key (Team Keys, Developer role). Keep `AuthKey_<id>.p8`
   outside the repo (e.g. `~/.private_keys/`, mode 600) and point `scripts/.notary.env` (untracked) at it:
   `NOTARY_KEY=<path>`, `NOTARY_KEY_ID=<id>`, `NOTARY_ISSUER=<issuer id>`. release.sh prefers it to the
   keychain profile below, which notarytool keeps in the data-protection keychain: that reads as
-  missing while the screen is locked. Otherwise, a notarytool profile named `ardia`:
-  `xcrun notarytool store-credentials ardia --apple-id <id> --team-id U5L5T3NGVV` (it asks for an
+  missing while the screen is locked. Otherwise, a notarytool profile named `medusa`:
+  `xcrun notarytool store-credentials medusa --apple-id <id> --team-id U5L5T3NGVV` (it asks for an
   app-specific password). Without it, the script still builds and signs, but the release is unnotarized and
   Gatekeeper blocks the first launch.
-- The engine: ArdiaCore's `Chromium Framework.framework` built in `~/chromium-build` (`scripts/agent/engine-build`;
+- The engine: MedusaCore's `Chromium Framework.framework` built in `~/chromium-build` (`scripts/agent/engine-build`;
   `docs/engine-build.md`), and `pod install` in `apps/browser/macos`.
 
 ## Cutting a release
 
 1. Bump `MARKETING_VERSION` (the version) and `CURRENT_PROJECT_VERSION` (the build number, which Sparkle
-   compares: it must go up every release) in both configurations of the `Ardia-macOS` target in
-   `apps/browser/macos/Ardia.xcodeproj`. The helpers and the Dock tile plug-in take the same values.
+   compares: it must go up every release) in both configurations of the `Medusa-macOS` target in
+   `apps/browser/macos/Medusa.xcodeproj`. The helpers and the Dock tile plug-in take the same values.
 2. Write `docs/release-notes/<version>.md` from `git log v<previous>..HEAD` (`docs/release-notes/README.md`)
    and check it on the site: `pnpm -C apps/site build && pnpm -C apps/site preview`, then
    `http://localhost:4321/release-notes#<version>`.
 3. `scripts/release.sh <version>` (`--channel nightly` for a nightly). It stops right away if the notes file is missing or lacks its `date` and
    `headline`, if the tree under `apps/browser`, `packages`, `engine` or `scripts/dmg` has uncommitted changes, or if the engine
-   framework is older than the tree's ArdiaCore sources or the Chromium tree differs from `engine/ardiacore`
+   framework is older than the tree's MedusaCore sources or the Chromium tree differs from `engine/medusacore`
    (`apply.sh --check`), if the version doesn't fit the channel or the notes' `channel`, if it can't read the published
    appcast, or if the build number isn't above every build in it. It writes `dist/<version>/`:
    - archives the Release configuration of `apps/browser/macos` (arm64 only), staging the engine into its own
      derived data so a development build restaging can't change it mid-build, and exports it with Developer ID,
    - signs Chrome's framework inside out as Chrome signs its own (`chrome/installer/mac/signing/parts.py`): the
      helpers under the hardened runtime with library validation, except the renderer and GPU ones (Aperitif's too),
-     which get `allow-jit` (`packages/ardiacore/scripts/signing`) instead; then the framework, then the app again with
+     which get `allow-jit` (`packages/medusacore/scripts/signing`) instead; then the framework, then the app again with
      the entitlements the export gave it,
-   - checks what an in-place update depends on: bundle id `com.ardia.browser`, executable `Ardia`, the
+   - checks what an in-place update depends on: bundle id `com.medusa.browser`, executable `Medusa`, the
      designated requirement (our team), the keychain groups, Sparkle's feed and key and the usage strings in
      `Info.plist`; that every piece of code is Developer ID with a timestamp and no `get-task-allow`; and that the app
      isn't signed with `com.apple.developer.web-browser.public-key-credential` (Apple hasn't granted it yet;
-     `Ardia-ICloudPasskeys.entitlements` is the future entitlements file),
+     `Medusa-ICloudPasskeys.entitlements` is the future entitlements file),
    - launches the app once in the background (throwaway data dir), waits for uBlock's rulesets to be indexed,
      quits it and checks the signature again: the app must never write into its own bundle,
    - notarizes and staples the app and the DMG,
@@ -124,21 +124,21 @@ every copy on Stable sees only stable items. A copy on Nightly allows `nightly` 
    lists the uncommitted files it included).
 4. Commit (the notes file with the version bump), tag and publish. A nightly publishes with
    `.claude/skills/release/scripts/publish-nightly.sh <version>` after the tag is pushed (`--dry-run` prints what it would
-   do): a prerelease, the merged feed onto the latest stable release, and `Ardia-Nightly.dmg` on the `nightly` release.
+   do): a prerelease, the merged feed onto the latest stable release, and `Medusa-Nightly.dmg` on the `nightly` release.
    A stable release:
 
    ```bash
    git tag v<version> && git push origin main v<version>
    .claude/skills/release/scripts/appcast-merge.sh <version>
-   gh release create v<version> -R mantrakp04/ardia --title "Ardia <version>" \
+   gh release create v<version> -R mantrakp04/medusa --title "Medusa <version>" \
      --notes-file dist/<version>/release-notes.md \
-     dist/<version>/Ardia-<version>.dmg dist/<version>/Ardia-<version>.zip dist/<version>/appcast.xml \
-     $(ls dist/<version>/ArdiaCore-*.tar.xz 2>/dev/null)
+     dist/<version>/Medusa-<version>.dmg dist/<version>/Medusa-<version>.zip dist/<version>/appcast.xml \
+     $(ls dist/<version>/MedusaCore-*.tar.xz 2>/dev/null)
    ```
-   With a new engine, then append `dist/<version>/prebuilt-engine.tsv` to `packages/ardiacore/prebuilt-engines.tsv` and
+   With a new engine, then append `dist/<version>/prebuilt-engine.tsv` to `packages/medusacore/prebuilt-engines.tsv` and
    commit it.
 5. Deploy the site so `/release-notes` shows the new version (for a nightly too: the updated app opens its entry) (the updated app opens it on its first launch):
-   `pnpm -C apps/site run deploy` builds `apps/site` with `SITE_URL=https://ardia.dev` and ships it
+   `pnpm -C apps/site run deploy` builds `apps/site` with `SITE_URL=https://medusa.dev` and ships it
    (`infra/site/hexclave.deploy.ts`). Also bump `VERSION` and `DMG_SIZE` in `apps/site/src/data/release.ts`
    first so the download button points at the new DMG. The owner has authorized releases to go all the way
    through, so an agent cutting a release deploys too; a site deploy outside a release needs the owner's OK.
@@ -149,31 +149,31 @@ Before publishing, run the smoke test: `.claude/skills/release/scripts/smoke.sh 
 previous build's designated requirement, a higher build number), the appcast's EdDSA signature of the zip, Gatekeeper
 on the app and the DMG, Sparkle actually updating a copy of the previous build (`update-test.sh`) and the previous
 build's data opening in the new one (`carryover.sh`). By hand, check the build the way the script can't: launch
-`dist/<version>/export/Ardia.app` with `ARDIA_BACKGROUND=1`, a throwaway `ARDIA_DATA_DIR` and
-`ARDIA_REMOTE_DEBUGGING_PORT`, and load a page over CDP. Afterwards `codesign --verify --deep --strict` must still
+`dist/<version>/export/Medusa.app` with `MEDUSA_BACKGROUND=1`, a throwaway `MEDUSA_DATA_DIR` and
+`MEDUSA_REMOTE_DEBUGGING_PORT`, and load a page over CDP. Afterwards `codesign --verify --deep --strict` must still
 pass on it.
 
 To check the after-update tab too: in that data dir, set `lastVersion` in `release-notes.json` to the
 previous version (`{"version":1,"lastVersion":"<previous>","pending":null}`) and relaunch with
-`ARDIA_RELEASE_NOTES=1` added (test instances skip the tab without it). `curl localhost:<port>/json` must
+`MEDUSA_RELEASE_NOTES=1` added (test instances skip the tab without it). `curl localhost:<port>/json` must
 list one `…/release-notes#<version>` page; a second launch opens none.
 
 ## The engine switch (0.2.21 → 0.2.22)
 
-0.2.22 is the first release on ArdiaCore; 0.2.21 and earlier ran on CEF. It's the same app to macOS and Sparkle (bundle
+0.2.22 is the first release on MedusaCore; 0.2.21 and earlier ran on CEF. It's the same app to macOS and Sparkle (bundle
 id, executable, Developer ID team, designated requirement, feed and key), so Sparkle updates a CEF copy in place and
 macOS keeps its permissions, keychain items and passkeys.
 
-Nothing is migrated. A release build without `ARDIA_DATA_DIR` opens the CEF build's data where it is
-(`InstalledDataDirectory` in `packages/ardiacore/ios/ArdiaCoreHost.mm`): Chrome's user data dir
-`~/Library/Application Support/com.ardia.browser/Chromium` (profiles `Default` and `Profile <id>`), with the app's
+Nothing is migrated. A release build without `MEDUSA_DATA_DIR` opens the CEF build's data where it is
+(`InstalledDataDirectory` in `packages/medusacore/ios/MedusaCoreHost.mm`): Chrome's user data dir
+`~/Library/Application Support/com.medusa.browser/Chromium` (profiles `Default` and `Profile <id>`), with the app's
 own documents (session, settings) in the folder above. Both engines are Chromium 154.0.8037.58, so every store keeps its
-format, and both read the same "Ardia Safe Storage" keychain item, which trusts the app by its designated
-requirement. Only Developer ID builds use the login keychain; test instances (`ARDIA_DATA_DIR` or
-`ARDIA_BACKGROUND`) and ad hoc builds use Chrome's mock keychain. `carryover.sh` checks it: the previous build makes
+format, and both read the same "Medusa Safe Storage" keychain item, which trusts the app by its designated
+requirement. Only Developer ID builds use the login keychain; test instances (`MEDUSA_DATA_DIR` or
+`MEDUSA_BACKGROUND`) and ad hoc builds use Chrome's mock keychain. `carryover.sh` checks it: the previous build makes
 two profiles with tabs, persistent and session cookies, localStorage, saved passwords, bookmarks, history, an address,
-a site permission, a zoom level and an unpacked extension, and the new build, started without `ARDIA_DATA_DIR`,
-must find and read all of it. Both run as test copies (bundle id `com.ardia.browser.carryover`, signed ad hoc) in
+a site permission, a zoom level and an unpacked extension, and the new build, started without `MEDUSA_DATA_DIR`,
+must find and read all of it. Both run as test copies (bundle id `com.medusa.browser.carryover`, signed ad hoc) in
 a fake home (`HOME` and `CFFIXED_USER_HOME`), so the real app's data, defaults and keychain are never touched.
 `rollback.sh <previous app> <new app>` (not part of smoke.sh) checks going back on the same setup: the previous build,
 then the new one adding a second session, then the previous one again must show both sessions' data without crashing
@@ -189,23 +189,23 @@ are involved; the real identity and signature are what smoke.sh's other update c
 The framework and its helpers keep Chrome's names (`Chromium Framework`, `Chromium Helper (Renderer)`): they are
 compiled in from the branding file, so renaming them is a full engine rebuild. Their bundle ids and team are ours,
 and the keychain and macOS permissions belong to the app itself, so only Activity Monitor shows the names. Their
-icon is Ardia's (the Alerts helpers' shows on every notification): `engine/chromium` replaces Chromium's logo.
+icon is Medusa's (the Alerts helpers' shows on every notification): `engine/chromium` replaces Chromium's logo.
 
 ## The rename (0.2.32 → 0.2.33)
 
-Netnyahoo became Ardia. 0.2.32 and earlier are `com.netnyahoo.browser`, executable `Netnyahoo`, polling
-`https://netnyahoo.com/appcast.xml`; 0.2.33 is `com.ardia.browser`, `Ardia` and `https://ardia.dev/appcast.xml`. What
+Netnyahoo became Medusa. 0.2.32 and earlier are `com.netnyahoo.browser`, executable `Netnyahoo`, polling
+`https://netnyahoo.com/appcast.xml`; 0.2.33 is `com.medusa.browser`, `Medusa` and `https://medusa.dev/appcast.xml`. What
 Sparkle still needs stays: the EdDSA key, the Developer ID team and certificate, and a higher build number. The update
 zip's top folder keeps the installed name (`Netnyahoo.app`: Sparkle finds the new app only under it), and at its first
-launch the app renames itself to `Ardia.app` and moves its data, keychain items and settings across
-(`packages/sync/ios/Core/LegacyMigration.swift`, the only Swift file that spells the old names). A Dock tile pinned under the old name is pointed at Ardia.app in place (or dropped when Ardia is pinned too) and the Dock restarted, once, by the installed copy only (`LegacyDockTile.swift` beside it; 0.2.35). `smoke.sh` checks both
+launch the app renames itself to `Medusa.app` and moves its data, keychain items and settings across
+(`packages/sync/ios/Core/LegacyMigration.swift`, the only Swift file that spells the old names). A Dock tile pinned under the old name is pointed at Medusa.app in place (or dropped when Medusa is pinned too) and the Dock restarted, once, by the installed copy only (`LegacyDockTile.swift` beside it; 0.2.35). `smoke.sh` checks both
 feeds lead to the same appcast and the designated requirement holds under the new id; `update-test.sh` keeps the
 bundle ids apart; `carryover.mjs` drives the old build in its own names. netnyahoo.com stays attached to the site for
 good (`infra/site/hexclave.deploy.ts`).
 
 ## Unnotarized builds
 
-Releases are notarized since 0.2.1 (the `ardia` profile holds an App Store Connect API key; with an
+Releases are notarized since 0.2.1 (the `medusa` profile holds an App Store Connect API key; with an
 Apple ID it's `--apple-id … --team-id …` and an app-specific password, which also works but locks the
 Apple ID after repeated failures). If a build ever ships unnotarized, Gatekeeper refuses to open the download. Either open it once from System Settings › Privacy &
-Security › Open Anyway, or run `xattr -dr com.apple.quarantine /Applications/Ardia.app`.
+Security › Open Anyway, or run `xattr -dr com.apple.quarantine /Applications/Medusa.app`.

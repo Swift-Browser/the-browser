@@ -545,7 +545,7 @@ function SiteLogo({ width }: { width: number }) {
           fontSize: 20.8 * s, lineHeight: `${28 * s}px`, color: color.ink,
         }}
       >
-        ardia
+        medusa
       </p>
       {clear(840, 64, 432, 26)}
       <div style={{ ...at(840, 64, 424.5, 26), display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 26 * s }}>
@@ -565,13 +565,13 @@ function SiteLogo({ width }: { width: number }) {
           maskImage: "linear-gradient(90deg, #000 80%, transparent)", WebkitMaskImage: "linear-gradient(90deg, #000 80%, transparent)",
         }}
       >
-        Ardia · the sidebar browser for Mac
+        Medusa · the sidebar browser for Mac
       </p>
     </>
   );
 }
 
-const TYPED = ["a", "ar", "ard", "ardi", "ardia", "ardia.", "ardia.d", "ardia.de", "ardia.dev"];
+const TYPED = ["a", "ar", "ard", "ardi", "medusa", "medusa.", "medusa.d", "medusa.de", "medusa.dev"];
 
 function Typing() {
   const b = useBeat();

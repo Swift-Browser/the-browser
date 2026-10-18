@@ -9,18 +9,18 @@ export const REFUSED_PAGE_THEME: { light: PageTheme; dark: PageTheme } = {
   dark: { color: "#1C1A1B", source: "background" },
 };
 
-const DOWNLOAD_URL = "https://ardia.dev";
+const DOWNLOAD_URL = "https://medusa.dev";
 
 export function RefusedPage({ host }: { host: string }) {
   const theme = useTheme();
   return (
     <View style={[StyleSheet.absoluteFill, { backgroundColor: REFUSED_PAGE_THEME[theme.dark ? "dark" : "light"].color, alignItems: "center", justifyContent: "center", padding: 24 }]}>
       <Symbol name="macwindow" size={30} weight="light" color={theme.textSecondary} style={{ width: 44, height: 40, marginBottom: 14 }} />
-      <Text style={{ fontSize: 17, fontWeight: "600", color: theme.textPrimary, marginBottom: 6 }}>This one opens in Ardia, not in a demo</Text>
+      <Text style={{ fontSize: 17, fontWeight: "600", color: theme.textPrimary, marginBottom: 6 }}>This one opens in Medusa, not in a demo</Text>
       <Text style={{ fontSize: 13, color: theme.textSecondary, textAlign: "center", maxWidth: 340, marginBottom: 18 }}>
-        {host} won't load inside another web page. In Ardia it's a tab like any other.
+        {host} won't load inside another web page. In Medusa it's a tab like any other.
       </Text>
-      <PromptButton title="Download Ardia" primary onPress={() => void window.open(DOWNLOAD_URL, "_blank", "noopener")} />
+      <PromptButton title="Download Medusa" primary onPress={() => void window.open(DOWNLOAD_URL, "_blank", "noopener")} />
     </View>
   );
 }

@@ -1,15 +1,15 @@
-import ArdiaSyncCore
+import MedusaSyncCore
 import Foundation
 
 switch CommandLine.arguments.dropFirst().first {
 case "names":
   FileHandle.standardOutput.write(LegacyMigration.namesJSON())
 case "run":
-  guard ProcessInfo.processInfo.environment["ARDIA_DATA_DIR"] != nil else {
-    FileHandle.standardError.write(Data("set ARDIA_DATA_DIR and ARDIA_LEGACY_SOURCE\n".utf8))
+  guard ProcessInfo.processInfo.environment["MEDUSA_DATA_DIR"] != nil || ProcessInfo.processInfo.environment["MEDUSA_DATA_DIR"] != nil else {
+    FileHandle.standardError.write(Data("set MEDUSA_DATA_DIR and MEDUSA_LEGACY_SOURCE\n".utf8))
     exit(2)
   }
-  exit(LegacyMigration.runAtLaunch(bundleId: "com.ardia.browser") ? 0 : 3)
+  exit(LegacyMigration.runAtLaunch(bundleId: "com.medusa.browser") ? 0 : 3)
 case "move":
   let args = CommandLine.arguments
   if args.count == 4, args[2] == "--wait" {

@@ -28,9 +28,9 @@ export function CliStep() {
     : installing
       ? "Installing in the background. You can keep going."
       : failed
-        ? "Couldn't download the ardia command. Try again from Settings › Advanced."
+        ? "Couldn't download the medusa command. Try again from Settings › Advanced."
         : installed
-          ? "Installed. Open a new Terminal window and run ardia --help."
+          ? "Installed. Open a new Terminal window and run medusa --help."
           : null;
 
   return (
@@ -49,21 +49,21 @@ export function CliStep() {
     >
       <Reveal delay={60}>
         <StepTitle
-          title="Drive Ardia from the terminal"
-          subtitle="The ardia command lets scripts and coding agents open tabs, click, type and read pages in Ardia."
+          title="Drive Medusa from the terminal"
+          subtitle="The medusa command lets scripts and coding agents open tabs, click, type and read pages in Medusa."
         />
       </Reveal>
       <Reveal delay={140} style={{ gap: 12 }}>
         <CheckRow
           icon="terminal"
-          title="Let the ardia command control Ardia"
+          title="Let the medusa command control Medusa"
           subtitle="Stays on after you quit. Turn it off in Settings."
           value={control}
           disabled={started}
           onChange={setControl}
         />
         <Text style={{ fontSize: 11.5, lineHeight: 16, color: colors.footnote }}>
-          {"While it's on, the command can open, read and act in every page you're signed in to. ardia exec runs any Python you give it."}
+          {"While it's on, the command can open, read and act in every page you're signed in to. medusa exec runs any Python you give it."}
         </Text>
         {status ? <Text style={{ fontSize: 12.5, lineHeight: 17, color: colors.subtitle }}>{status}</Text> : null}
       </Reveal>
@@ -104,7 +104,7 @@ function Terminal() {
         <Text style={{ flex: 1, textAlign: "center", marginRight: 39, fontSize: 11, color: colors.steps }}>zsh</Text>
       </View>
       <View style={{ paddingHorizontal: 12, paddingVertical: 12, gap: 2 }}>
-        {line(`$ ardia exec 'await tab.go_to("https://ardia.dev")'`, colors.title)}
+        {line(`$ medusa exec 'await tab.go_to("https://medusa.dev")'`, colors.title)}
         <View style={{ flexDirection: "row", alignItems: "center", gap: 2 }}>
           {line("$", colors.title)}
           <View style={{ width: 7, height: 13, marginLeft: 4, backgroundColor: colors.title, opacity: 0.6 }} />

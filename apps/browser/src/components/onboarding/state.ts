@@ -101,7 +101,7 @@ export function maybeStartOnboarding() {
   if (saved?.completedAt) return;
   if (saved?.startedAt) return startOnboarding(null, "defaultBrowser");
   if (readDocument("session.json")) return markCompleted();
-  if (__DEV__ && launchEnvironment("ARDIA_ONBOARDING") !== "1") return;
+  if (__DEV__ && launchEnvironment("MEDUSA_ONBOARDING") !== "1") return;
   save({ startedAt: Date.now() });
   startOnboarding();
 }

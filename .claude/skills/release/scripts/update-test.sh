@@ -4,7 +4,7 @@ set -euo pipefail
 old="${1:?usage: update-test.sh <previous app> <new app> <appcast.xml> <version>}"
 new="${2:?}" appcast="${3:?}" version="${4:?}"
 here="$(cd "$(dirname "$0")" && pwd)"
-test_id="com.ardia.browser.updatetest"
+test_id="com.medusa.browser.updatetest"
 new_test_id="$test_id"
 [ "$(/usr/libexec/PlistBuddy -c "Print :CFBundleIdentifier" "$old/Contents/Info.plist")" = \
   "$(/usr/libexec/PlistBuddy -c "Print :CFBundleIdentifier" "$new/Contents/Info.plist")" ] || new_test_id="$test_id.renamed"
@@ -46,7 +46,7 @@ swiftc -O "$here/sparkle-host.swift" -F "$pods" -framework Sparkle -Xlinker -rpa
   -o "$work/sparkle-host" 2>"$work/swiftc.log" || { cat "$work/swiftc.log" >&2; exit 1; }
 codesign --force --timestamp=none --sign "$identity" "$work/sparkle-host" 2>/dev/null
 
-zip="$work/feed/Ardia-$version.zip"
+zip="$work/feed/Medusa-$version.zip"
 ditto -c -k --keepParent "$work/new/$zip_name" "$zip"
 signature="$("$work/ed25519" sign "$zip" "$work/key")"
 python3 - "$appcast" "$version" "http://127.0.0.1:$port/$(basename "$zip")" "$(stat -f %z "$zip")" "$signature" > "$work/feed/appcast.xml" <<'PY'

@@ -9,7 +9,7 @@ import { launch, reporter, session, sleep } from "../../../scripts/lib/instance.
 const args = process.argv.slice(2);
 const appArg = args.find((a) => !a.startsWith("--"));
 if (!appArg) {
-  console.error("usage: node tab-drag-test.mjs <Debug Ardia.app> [--port=<DevTools port>] [--keep-data]");
+  console.error("usage: node tab-drag-test.mjs <Debug Medusa.app> [--port=<DevTools port>] [--keep-data]");
   process.exit(2);
 }
 const appPath = resolve(appArg);
@@ -38,7 +38,7 @@ const fixture = () => session({
 let app = null;
 
 const HELPERS = `
-const C = globalThis.expo.modules.ArdiaCEF;
+const C = globalThis.expo.modules.MedusaCEF;
 const st = () => ac.store.getState();
 const win = (id) => C.chromeWindows().then((ws) => { const f = st().windows[id].frame; const w = ws.filter((w) => w.hasRoot).find((w) => { const r = w.frame.match(/[-\\d.]+/g).map(Number); return Math.abs(r[0] - f[0]) < 2 && Math.abs(r[2] - f[2]) < 2; }); return w && w.window; });
 const act = (id, a) => win(id).then((n) => C.devWindow(n, a));
@@ -106,7 +106,7 @@ try {
   assert.equal(strip.length, 6, `strip items ${JSON.stringify(strip)}`);
   const mid = (i) => Math.round((strip[i][0] + strip[i][1]) / 2);
 
-  const PREVIEW = `const preview = () => globalThis.expo.modules.ArdiaShell.devDragPreviewState();`;
+  const PREVIEW = `const preview = () => globalThis.expo.modules.MedusaShell.devDragPreviewState();`;
   const watch = (w, path, ms) => run(`${PREVIEW}
     const seen = [];
     const iv = setInterval(() => preview().then((p) => seen.push(p)), 30);
@@ -131,7 +131,7 @@ try {
       return wait(100);`);
     const path = [[at(2), 21], [at(2) + 20, 21], [at(3), 21], [at(3) + 40, 21]];
     const seen = await run(`
-      const cef = globalThis.expo.modules.ArdiaCEF;
+      const cef = globalThis.expo.modules.MedusaCEF;
       const send = cef.tabStripCommand;
       const t0 = performance.now();
       const log = { commands: [], windows: [], drag: [], picture: [] };

@@ -1,4 +1,4 @@
-# Music brief: Ardia launch film
+# Music brief: Medusa launch film
 
 A one-page brief for a composer replacing or re-producing the score. The edit is locked to the beat grid below; `src/lib/ac-launch/cuts.json` is the source of truth for every beat (this page was generated from it).
 

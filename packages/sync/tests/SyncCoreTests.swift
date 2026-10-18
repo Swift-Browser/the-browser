@@ -1,6 +1,6 @@
 import Foundation
 import XCTest
-@testable import ArdiaSyncCore
+@testable import MedusaSyncCore
 
 final class RecoveryPhraseTests: XCTestCase {
   func testReferenceVectors() throws {

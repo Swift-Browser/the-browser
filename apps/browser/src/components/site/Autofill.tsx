@@ -1,4 +1,4 @@
-import { showAutofillSuggestions, type CardNetwork } from "@medusa/ardiacore";
+import { showAutofillSuggestions, type CardNetwork } from "@medusa/medusacore";
 import { Symbol } from "@medusa/shell";
 import { Text, View } from "react-native";
 import { useBrowser } from "../../store/browser";

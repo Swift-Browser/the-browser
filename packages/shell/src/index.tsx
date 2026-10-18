@@ -10,8 +10,8 @@ export type BrowserCommand =
   | "newTab"
   | "newWindow"
   | "newIncognitoWindow"
-  | "newLittleArdia"
-  | "toggleOpenLinksInLittleArdia"
+  | "newLittleMedusa"
+  | "toggleOpenLinksInLittleMedusa"
   | "reopenClosedTab"
   | "reopenClosedWindow"
   | "restoreClosed"
@@ -243,7 +243,7 @@ const Shell = requireNativeModule<{
   replyToTerminate(ok: boolean): Promise<void>;
   confirm(options: ConfirmOptions): Promise<{ confirmed: boolean; suppressed: boolean }>;
   prompt(options: PromptOptions): Promise<string | null>;
-}>("ArdiaShell");
+}>("MedusaShell");
 
 export const readDocument = (name: string) => Shell.readDocument(name);
 export const writeDocument = (name: string, contents: string) => Shell.writeDocument(name, contents);
@@ -271,7 +271,7 @@ export type WindowProfileProps = ViewProps & {
   selection?: string;
   neighbours: string[];
 };
-export const WindowProfile = requireNativeViewManager<WindowProfileProps>("ArdiaWindowProfile");
+export const WindowProfile = requireNativeViewManager<WindowProfileProps>("MedusaWindowProfile");
 
 export const closeWindow = (id: string) => Shell.closeWindow(id);
 export const focusWindow = (id: string) => Shell.focusWindow(id);
@@ -315,9 +315,9 @@ export const onAppEvent = (listener: (e: AppEvent) => void) => Shell.addListener
 export const onOpenURLs = (listener: (urls: string[]) => void) =>
   Shell.addListener("onOpenURLs", ({ urls }) => listener(urls));
 
-export const WindowDragRegion = requireNativeViewManager<ViewProps & { titleBarDoubleClick?: boolean; onRegionDoubleClick?: () => void }>("ArdiaShell");
+export const WindowDragRegion = requireNativeViewManager<ViewProps & { titleBarDoubleClick?: boolean; onRegionDoubleClick?: () => void }>("MedusaShell");
 
-export const OutsidePressArea = requireNativeViewManager<ViewProps & { onOutsidePress?: () => void }>("ArdiaOutsidePressArea");
+export const OutsidePressArea = requireNativeViewManager<ViewProps & { onOutsidePress?: () => void }>("MedusaOutsidePressArea");
 
 export type SymbolProps = ViewProps & {
   name: string;
@@ -326,7 +326,7 @@ export type SymbolProps = ViewProps & {
   color?: string;
 };
 
-export const Symbol = requireNativeViewManager<SymbolProps>("ArdiaSymbol");
+export const Symbol = requireNativeViewManager<SymbolProps>("MedusaSymbol");
 
 export type FadeLabelProps = ViewProps & {
   text: string;
@@ -336,9 +336,9 @@ export type FadeLabelProps = ViewProps & {
   fadeWidth?: number;
 };
 
-export const FadeLabel = requireNativeViewManager<FadeLabelProps>("ArdiaFadeLabel");
+export const FadeLabel = requireNativeViewManager<FadeLabelProps>("MedusaFadeLabel");
 
-export const ActivitySpinner = requireNativeViewManager<ViewProps>("ArdiaActivitySpinner");
+export const ActivitySpinner = requireNativeViewManager<ViewProps>("MedusaActivitySpinner");
 
 export type ContextMenuAreaProps = ViewProps & {
   onContextMenu?: () => void;
@@ -346,7 +346,7 @@ export type ContextMenuAreaProps = ViewProps & {
 };
 
 const NativeContextMenuArea = requireNativeViewManager<Omit<ContextMenuAreaProps, "onContextMenu"> & { onContextMenu?: () => void }>(
-  "ArdiaContextMenuArea",
+  "MedusaContextMenuArea",
 );
 
 export function ContextMenuArea(props: ContextMenuAreaProps) {
@@ -372,7 +372,7 @@ type NativeSurfaceProps = Omit<SurfaceProps, "shadowColor" | "shadowOpacity" | "
   surfaceShadowOffset?: [number, number];
 };
 
-const NativeSurface = requireNativeViewManager<NativeSurfaceProps>("ArdiaSurface");
+const NativeSurface = requireNativeViewManager<NativeSurfaceProps>("MedusaSurface");
 
 export function Surface({ shadowColor, shadowOpacity, shadowRadius, shadowOffset, ...props }: SurfaceProps) {
   return (
@@ -392,7 +392,7 @@ export type VisualEffectProps = ViewProps & {
   cornerRadius?: number;
 };
 
-export const VisualEffect = requireNativeViewManager<VisualEffectProps>("ArdiaVisualEffect");
+export const VisualEffect = requireNativeViewManager<VisualEffectProps>("MedusaVisualEffect");
 
 export type GlassEffectProps = ViewProps & {
   cornerRadius?: number;
@@ -401,17 +401,17 @@ export type GlassEffectProps = ViewProps & {
   dark?: boolean;
 };
 
-const GlassEffectModule = requireNativeModule<{ isLiquidGlass(): boolean }>("ArdiaGlassEffect");
+const GlassEffectModule = requireNativeModule<{ isLiquidGlass(): boolean }>("MedusaGlassEffect");
 
 export const isLiquidGlass = (): boolean => GlassEffectModule.isLiquidGlass();
 
-export const GlassEffect = requireNativeViewManager<GlassEffectProps>("ArdiaGlassEffect");
+export const GlassEffect = requireNativeViewManager<GlassEffectProps>("MedusaGlassEffect");
 
 export type IconTheme = { kind: "blur" } | { kind: "template"; fill: string; stroke?: string };
 
 const DockSelectionModule = requireNativeModule<{
   iconTheme(uri: string | null, emoji: string | null): Promise<IconTheme | null>;
-}>("ArdiaDockSelection");
+}>("MedusaDockSelection");
 
 export const iconTheme = (source: { uri: string } | { emoji: string }): Promise<IconTheme | null> =>
   DockSelectionModule.iconTheme("uri" in source ? source.uri : null, "emoji" in source ? source.emoji : null);
@@ -429,11 +429,11 @@ export type DockSelectionProps = ViewProps & {
   glass?: boolean;
 };
 
-export const DockSelection = requireNativeViewManager<DockSelectionProps>("ArdiaDockSelection");
+export const DockSelection = requireNativeViewManager<DockSelectionProps>("MedusaDockSelection");
 
 const InlineCompletionModule = requireNativeModule<{
   complete(tag: number, typed: string, completion: string): Promise<InlineWrite>;
-}>("ArdiaInlineCompletion");
+}>("MedusaInlineCompletion");
 
 export type InlineWrite = 0 | 1 | 2;
 
@@ -451,6 +451,6 @@ type TranslationModule = {
   translate(source: string, target: string, texts: string[]): Promise<string[]>;
   translateBlocks(source: string, target: string, blocks: string[][]): Promise<(string[] | null)[]>;
 };
-const TranslationNative = requireNativeModule<TranslationModule>("ArdiaTranslate");
+const TranslationNative = requireNativeModule<TranslationModule>("MedusaTranslate");
 
 export const translation: Omit<TranslationModule, "available"> | null = TranslationNative.available ? TranslationNative : null;

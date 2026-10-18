@@ -1,25 +1,25 @@
 #!/bin/sh
-# Installs the ardia command, which controls a running Ardia from the terminal.
+# Installs the medusa command, which controls a running Medusa from the terminal.
 #
 #   install.sh [--version V] [--sha256 DIGEST] [--uninstall]
 #   install.sh -h | --help
 #
 # --version V        install that release (default: the latest release that ships the CLI).
 # --sha256 DIGEST    the tarball's digest; required for a download (the app passes the one pinned in its signed bundle).
-# --uninstall        remove the installed CLI and its ardia link.
+# --uninstall        remove the installed CLI and its medusa link.
 #
-# Installs into ${ARDIA_CLI_HOME:-~/Library/Application Support/Ardia/CLI}/<version>, points its `current` link
-# there and links ${ARDIA_CLI_BIN_DIR:-~/.local/bin}/ardia to current/bin/ardia. When the default bin dir isn't on
+# Installs into ${MEDUSA_CLI_HOME:-~/Library/Application Support/Medusa/CLI}/<version>, points its `current` link
+# there and links ${MEDUSA_CLI_BIN_DIR:-~/.local/bin}/medusa to current/bin/medusa. When the default bin dir isn't on
 # the login shell's PATH, it adds one PATH line to ~/.zprofile (~/.bash_profile for bash), once.
 # Re-running it upgrades: a version that is already current is left alone; a new one is verified, staged in
-# <version>.partial, renamed, and `current` is swapped atomically (a running ardia keeps its old dir). It keeps the
-# current and the previous version and prunes the rest, except versions a running ardia uses (it leaves a lease in
+# <version>.partial, renamed, and `current` is swapped atomically (a running medusa keeps its old dir). It keeps the
+# current and the previous version and prunes the rest, except versions a running medusa uses (it leaves a lease in
 # <version>/.leases/<pid>, live while that pid runs and started before the lease was written). Two runs never overlap:
-# each holds a flock on $ARDIA_CLI_HOME/.lock (lockf), which the kernel drops when the run exits.
-# The installed version is `basename "$(readlink "$ARDIA_CLI_HOME/current")"`.
+# each holds a flock on $MEDUSA_CLI_HOME/.lock (lockf), which the kernel drops when the run exits.
+# The installed version is `basename "$(readlink "$MEDUSA_CLI_HOME/current")"`.
 # Downloads are https only, and never trust a checksum from the same place as the tarball: without --sha256 it refuses
-# to download. ARDIA_CLI_URL overrides the tarball URL; a file:// one may go without --sha256, and its checksum is read
-# from $ARDIA_CLI_URL.sha256.
+# to download. MEDUSA_CLI_URL overrides the tarball URL; a file:// one may go without --sha256, and its checksum is read
+# from $MEDUSA_CLI_URL.sha256.
 #
 # Prints one line per event: `step resolve|download|verify|install|link`, `version <v>`, `path <rc file>`,
 # then `installed <bin path>` (or `uninstalled`), or `error <message>` and exits 1.
@@ -29,9 +29,9 @@ umask 022
 repo=Swift-Browser/the-browser
 asset_suffix=-macos-arm64.tar.gz
 version_pattern='^[0-9]{1,4}\.[0-9]{1,4}\.[0-9]{1,4}(-[a-z]{1,16}\.[0-9]{1,4})?$'
-cli_home=${MEDUSA_CLI_HOME:-${ARDIA_CLI_HOME:-$HOME/Library/Application Support/Medusa/CLI}}
+cli_home=${MEDUSA_CLI_HOME:-${MEDUSA_CLI_HOME:-$HOME/Library/Application Support/Medusa/CLI}}
 default_bin_dir=$HOME/.local/bin
-bin_dir=${MEDUSA_CLI_BIN_DIR:-${ARDIA_CLI_BIN_DIR:-$default_bin_dir}}
+bin_dir=${MEDUSA_CLI_BIN_DIR:-${MEDUSA_CLI_BIN_DIR:-$default_bin_dir}}
 version=
 pinned_sha=
 uninstall=0
@@ -82,7 +82,7 @@ if [ -n "$pinned_sha" ] && ! printf '%s\n' "$pinned_sha" | grep -Eq '^[0-9a-f]{6
   fail "bad --sha256 digest: $pinned_sha"
 fi
 
-if [ -n "${ARDIA_CLI_URL:-}" ]; then
+if [ -n "${MEDUSA_CLI_URL:-}" ]; then
   protocols==https,file
 else
   protocols==https
@@ -109,19 +109,19 @@ points_into_cli_home() {
 }
 
 check_bin_free() {
-  if { [ -e "$bin_dir/ardia" ] || [ -L "$bin_dir/ardia" ]; } && ! points_into_cli_home "$bin_dir/ardia"; then
-    fail "$bin_dir/ardia already exists and isn't this CLI's link; move it away and run this again"
+  if { [ -e "$bin_dir/medusa" ] || [ -L "$bin_dir/medusa" ]; } && ! points_into_cli_home "$bin_dir/medusa"; then
+    fail "$bin_dir/medusa already exists and isn't this CLI's link; move it away and run this again"
   fi
 }
 
 link_bin() {
-  target=$cli_home/current/bin/ardia
-  [ -L "$bin_dir/ardia" ] && [ "$(readlink "$bin_dir/ardia")" = "$target" ] && return 0
+  target=$cli_home/current/bin/medusa
+  [ -L "$bin_dir/medusa" ] && [ "$(readlink "$bin_dir/medusa")" = "$target" ] && return 0
   printf 'step link\n'
   mkdir -p "$bin_dir" || fail "couldn't create $bin_dir"
   check_bin_free
-  ln -sfh "$target" "$bin_dir/.ardia.$$" || fail "couldn't create the ardia link"
-  mv -fh "$bin_dir/.ardia.$$" "$bin_dir/ardia" || { rm -f "$bin_dir/.ardia.$$"; fail "couldn't link $bin_dir/ardia"; }
+  ln -sfh "$target" "$bin_dir/.medusa.$$" || fail "couldn't create the medusa link"
+  mv -fh "$bin_dir/.medusa.$$" "$bin_dir/medusa" || { rm -f "$bin_dir/.medusa.$$"; fail "couldn't link $bin_dir/medusa"; }
 }
 
 lease_live() {
@@ -159,8 +159,8 @@ check_archive() {
   if grep -q -e '\\' -e ' -> ' -e '[[:cntrl:]]' "$work/names"; then
     fail "the tarball has entry names with control characters, backslashes or arrows"
   fi
-  if grep -Ev "^ardia-cli-$version(/|$)" "$work/names" | grep -q .; then
-    fail "the tarball has entries outside ardia-cli-$version/"
+  if grep -Ev "^medusa-cli-$version(/|$)" "$work/names" | grep -q .; then
+    fail "the tarball has entries outside medusa-cli-$version/"
   fi
   if grep -Eq '(^|/)\.\.(/|$)' "$work/names"; then
     fail "the tarball has .. entries"
@@ -192,8 +192,8 @@ check_tree() {
 
 if [ "$uninstall" -eq 1 ]; then
   printf 'step uninstall\n'
-  if points_into_cli_home "$bin_dir/ardia"; then
-    rm -f "$bin_dir/ardia" || fail "couldn't remove $bin_dir/ardia"
+  if points_into_cli_home "$bin_dir/medusa"; then
+    rm -f "$bin_dir/medusa" || fail "couldn't remove $bin_dir/medusa"
   fi
   if [ -d "$cli_home" ]; then
     take_lock
@@ -212,48 +212,48 @@ if [ "$uninstall" -eq 1 ]; then
   exit 0
 fi
 
-[ "$(uname -s)" = Darwin ] || fail "the ardia CLI runs on macOS only"
-[ "$(uname -m)" = arm64 ] || fail "the ardia CLI needs an Apple silicon Mac"
+[ "$(uname -s)" = Darwin ] || fail "the medusa CLI runs on macOS only"
+[ "$(uname -m)" = arm64 ] || fail "the medusa CLI needs an Apple silicon Mac"
 
 printf 'step resolve\n'
-if [ -n "${ARDIA_CLI_URL:-}" ]; then
-  url=$ARDIA_CLI_URL
+if [ -n "${MEDUSA_CLI_URL:-}" ]; then
+  url=$MEDUSA_CLI_URL
   if [ -z "$version" ]; then
     name=${url##*/}
-    version=${name#ardia-cli-}
+    version=${name#medusa-cli-}
     version=${version%"$asset_suffix"}
   fi
 elif [ -n "$version" ]; then
-  url=https://github.com/$repo/releases/download/v$version/ardia-cli-$version$asset_suffix
+  url=https://github.com/$repo/releases/download/v$version/medusa-cli-$version$asset_suffix
 else
-  pattern="https://github\.com/$repo/releases/download/v[0-9a-z.-]*/ardia-cli-[0-9a-z.-]*-macos-arm64\.tar\.gz"
+  pattern="https://github\.com/$repo/releases/download/v[0-9a-z.-]*/medusa-cli-[0-9a-z.-]*-macos-arm64\.tar\.gz"
   url=$(fetch https://api.github.com/repos/$repo/releases/latest 2>/dev/null | grep -o "$pattern" | head -n 1 || true)
   if [ -z "$url" ]; then
     url=$(fetch "https://api.github.com/repos/$repo/releases?per_page=30" 2>/dev/null | grep -o "$pattern" | head -n 1 || true)
   fi
-  [ -n "$url" ] || fail "no Ardia release ships the CLI yet (or GitHub is unreachable)"
+  [ -n "$url" ] || fail "no Medusa release ships the CLI yet (or GitHub is unreachable)"
   name=${url##*/}
-  version=${name#ardia-cli-}
+  version=${name#medusa-cli-}
   version=${version%"$asset_suffix"}
 fi
 is_version "$version" || fail "bad version: $version"
 case $url in
   file://*) ;;
-  *) [ -n "$pinned_sha" ] || fail "no --sha256: install the ardia command from Ardia (Settings › Advanced), which pins its digest" ;;
+  *) [ -n "$pinned_sha" ] || fail "no --sha256: install the medusa command from Medusa (Settings › Advanced), which pins its digest" ;;
 esac
 printf 'version %s\n' "$version"
 check_bin_free
 
 mkdir -p "$cli_home" || fail "couldn't create $cli_home"
 take_lock
-work=$(mktemp -d "${TMPDIR:-/tmp}/ardia-cli-install.XXXXXX") || fail "couldn't create a temporary folder"
+work=$(mktemp -d "${TMPDIR:-/tmp}/medusa-cli-install.XXXXXX") || fail "couldn't create a temporary folder"
 chmod 700 "$work"
 
 previous=$(readlink "$cli_home/current" 2>/dev/null || true)
-if [ "$previous" = "$version" ] && [ -x "$cli_home/$version/bin/ardia" ]; then
+if [ "$previous" = "$version" ] && [ -x "$cli_home/$version/bin/medusa" ]; then
   link_bin
   reported=1
-  printf 'installed %s\n' "$bin_dir/ardia"
+  printf 'installed %s\n' "$bin_dir/medusa"
   exit 0
 fi
 is_version "$previous" || previous=
@@ -277,13 +277,13 @@ staged=$cli_home/$version.partial
 dest=$cli_home/$version
 rm -rf "$staged"
 mkdir "$staged" || fail "couldn't create $staged"
-tar -xzf "$work/cli.tar.gz" -C "$staged" --strip-components 1 --no-same-owner "ardia-cli-$version" \
-  || fail "couldn't extract ardia-cli-$version from the tarball"
+tar -xzf "$work/cli.tar.gz" -C "$staged" --strip-components 1 --no-same-owner "medusa-cli-$version" \
+  || fail "couldn't extract medusa-cli-$version from the tarball"
 check_tree "$staged"
-[ -x "$staged/bin/ardia" ] || fail "the tarball has no ardia-cli-$version/bin/ardia"
+[ -x "$staged/bin/medusa" ] || fail "the tarball has no medusa-cli-$version/bin/medusa"
 xattr -dr com.apple.quarantine "$staged" 2>/dev/null || true
-"$staged/bin/ardia" --version >"$work/check.out" 2>&1 9>&- || fail "the downloaded ardia doesn't run: $(tail -n 1 "$work/check.out")"
-if [ -d "$dest" ] && ! [ -L "$dest" ] && [ -x "$dest/bin/ardia" ] && in_use "$dest"; then
+"$staged/bin/medusa" --version >"$work/check.out" 2>&1 9>&- || fail "the downloaded medusa doesn't run: $(tail -n 1 "$work/check.out")"
+if [ -d "$dest" ] && ! [ -L "$dest" ] && [ -x "$dest/bin/medusa" ] && in_use "$dest"; then
   rm -rf "$staged"
 else
   if [ -e "$dest" ] || [ -L "$dest" ]; then
@@ -329,4 +329,4 @@ if [ "$bin_dir" = "$default_bin_dir" ]; then
 fi
 
 reported=1
-printf 'installed %s\n' "$bin_dir/ardia"
+printf 'installed %s\n' "$bin_dir/medusa"

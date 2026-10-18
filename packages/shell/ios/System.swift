@@ -5,7 +5,7 @@ import ServiceManagement
 
 public class SystemModule: Module {
   public func definition() -> ModuleDefinition {
-    Name("ArdiaSystem")
+    Name("MedusaSystem")
 
     AsyncFunction("isDefaultBrowser") { () -> Bool in
       guard let probe = URL(string: "https://example.com"),
@@ -159,7 +159,7 @@ final class ShortcutRecorder {
 
 public class FileDragModule: Module {
   public func definition() -> ModuleDefinition {
-    Name("ArdiaFileDrag")
+    Name("MedusaFileDrag")
 
     View(FileDragView.self) {
       Events("onMiddleClick")

@@ -35,7 +35,7 @@ public enum Handoff {
 enum SharePicker {
   private static var current: NSSharingServicePicker?
   private static let delegate = ShareDelegate()
-  private static let background = ProcessInfo.processInfo.environment["ARDIA_BACKGROUND"] == "1"
+  private static let background = ProcessInfo.processInfo.environment["MEDUSA_BACKGROUND"] == "1" || ProcessInfo.processInfo.environment["MEDUSA_BACKGROUND"] == "1"
 
   static func show(url: String, title: String?, windowId: String?, anchor: [Double]?, done: @escaping () -> Void) {
     let window = windowId.flatMap { WindowManager.shared.windows[$0] } ?? NSApp.keyWindow
@@ -75,7 +75,7 @@ enum SharePicker {
   }
 
   static func services() -> [NSSharingService] {
-    let probe: [Any] = [NSURL(string: "https://ardia.dev")!]
+    let probe: [Any] = [NSURL(string: "https://medusa.dev")!]
     let listed = (NSSharingService.self as AnyObject).perform(NSSelectorFromString("sharingServicesForItems:"), with: probe)
     let all = listed?.takeUnretainedValue() as? [NSSharingService] ?? []
     let skipped = Set([NSSharingService.Name.composeEmail, .addToSafariReadingList].compactMap { NSSharingService(named: $0)?.title })
@@ -104,7 +104,7 @@ enum SharePicker {
   }
 
   private static func log(_ line: String) {
-    guard let dir = ProcessInfo.processInfo.environment["ARDIA_DATA_DIR"] else { return }
+    guard let dir = ProcessInfo.processInfo.environment["MEDUSA_DATA_DIR"] ?? ProcessInfo.processInfo.environment["MEDUSA_DATA_DIR"] else { return }
     let path = (dir as NSString).appendingPathComponent("activation.log")
     let stamp = ISO8601DateFormatter().string(from: Date())
     guard let data = "\(stamp) \(line)\n".data(using: .utf8) else { return }

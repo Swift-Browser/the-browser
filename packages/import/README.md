@@ -1,6 +1,6 @@
 # @medusa/import
 
-Imports another browser's data into Ardia. The native code lives in `ios/`; `ios/Core/` is plain Swift with no
+Imports another browser's data into Medusa. The native code lives in `ios/`; `ios/Core/` is plain Swift with no
 Expo dependency, so `Package.swift` builds and tests it on its own. `src/index.ts` is the typed JS wrapper and the UI
 is `apps/browser/src/components/import/`. Every test reads fixtures. Never point anything at a real profile.
 
@@ -39,15 +39,15 @@ Shared code: `Model.swift` (`ImportKind`, `ImportResult` and the other result ty
    above. A failed kind becomes a warning plus an entry in `failed`, and the other kinds still run. Safari, Dia tabs,
    HTML and CSV have their own module functions (`importSafariDirect`, `importSafariExport`, `readDiaTabs`,
    `importBookmarksHTML`, `importPasswordsCSV`).
-3. `ios/ImportModule.swift` (Expo module `ArdiaImport`) encodes the result as a JSON string for JS. It keeps
+3. `ios/ImportModule.swift` (Expo module `MedusaImport`) encodes the result as a JSON string for JS. It keeps
    cookies, addresses and cards back in `ImportVault` (`ios/ImportWriter.swift`) and returns only their counts and
    a one-time `vaultToken`. History can stream in chunks (`onImportEvent`).
 4. `ios/ImportWriter.swift`: `writeImported(token, engineProfile, kinds)` takes the vault entry and sends it to the
-   engine with `ArdiaCoreEngineBridge.callWithSecret` as `ac_cookies_import` and `ac_autofill_import`, in batches of 500
-   (`engine/chromium/src/chrome/browser/ardia/ac_cookies.cc`, `ac_autofill.cc`).
+   engine with `MedusaCoreEngineBridge.callWithSecret` as `ac_cookies_import` and `ac_autofill_import`, in batches of 500
+   (`engine/chromium/src/chrome/browser/medusa/ac_cookies.cc`, `ac_autofill.cc`).
 5. `apps/browser/src/components/import/ImportWindow.tsx` is the wizard: choose, then profiles, then unlock, then
    progress, then done. `apply.ts` writes the JS-side kinds into the store (bookmarks, history, tabs, Arc spaces,
-   Dia profiles) and saves passwords with `savePassword` (`@medusa/ardiacore`). For cookies and autofill it calls
+   Dia profiles) and saves passwords with `savePassword` (`@medusa/medusacore`). For cookies and autofill it calls
    `importNative`, which calls `writeImported`. `module.ts` loads the package lazily.
 
 ## Secrets and the Keychain
@@ -56,7 +56,7 @@ Shared code: `Model.swift` (`ImportKind`, `ImportResult` and the other result ty
   Keychain item. `SafeStorageKeychain.secret` reads it, and macOS shows a system prompt when it does. It runs only from
   `unlockBrowser`, after the user goes through the unlock step (`ENCRYPTED` kinds in `ImportWindow.tsx`).
 - **Agents never trigger it.** The Swift tests pass the fixture key (`Fixtures.chromiumKey`, `importer.setKey`),
-  and app runs set `ARDIA_IMPORT_TEST_SECRET`. Firefox has no Keychain item; its primary password goes through
+  and app runs set `MEDUSA_IMPORT_TEST_SECRET`. Firefox has no Keychain item; its primary password goes through
   `unlockBrowser(id, { primaryPassword })`.
 - Cookie values, addresses and card numbers never reach JS. `ImportResult` and `SafariExport` leave them out of their
   `CodingKeys` and encode only the counts. They're held in `SecretBytes`; `Wire.swift` serialises them into
@@ -91,17 +91,17 @@ sqlite3 CLI: it checkpoints the WAL the tests depend on.
 | Swift tests (`tests/`, against `fixtures/`) | `pnpm --filter @medusa/import test` (`swift test`, scratch path in `$TMPDIR`) |
 | Rebuild fixtures | `pnpm --filter @medusa/import fixtures` |
 | Typecheck the JS wrapper | `pnpm --filter @medusa/import typecheck` |
-| End to end in a hidden Debug instance (cookies, addresses, cards) | `node packages/import/scripts/e2e.mjs <Ardia.app> <scratch dir>` (`--help`) |
+| End to end in a hidden Debug instance (cookies, addresses, cards) | `node packages/import/scripts/e2e.mjs <Medusa.app> <scratch dir>` (`--help`) |
 | Run one script in that instance (`e2e.mjs --keep`) | `scripts/agent/ac eval <scratch dir>/data '<js>'` |
 
 ## Test hooks (`ios/ImportModule.swift`)
 
 | Variable | Effect |
 |---|---|
-| `ARDIA_IMPORT_SOURCE_DIR` | Discovery reads browsers from this folder instead of `~/Library/Application Support`. Point it at `<fake home>/Library/Application Support` |
-| `ARDIA_IMPORT_SAFARI_HOME` | Safari direct reads from this home. If it isn't set, the home is two levels above `ARDIA_IMPORT_SOURCE_DIR`, and only when that is set |
-| `ARDIA_IMPORT_TEST_SECRET` | `unlockBrowser` uses this as every browser's Safe Storage secret and never touches the Keychain |
-| `ARDIA_IMPORT_DIA_BUNDLE_ID` | The Dia tabs functions talk to this bundle ID instead of `company.thebrowser.dia` |
+| `MEDUSA_IMPORT_SOURCE_DIR` | Discovery reads browsers from this folder instead of `~/Library/Application Support`. Point it at `<fake home>/Library/Application Support` |
+| `MEDUSA_IMPORT_SAFARI_HOME` | Safari direct reads from this home. If it isn't set, the home is two levels above `MEDUSA_IMPORT_SOURCE_DIR`, and only when that is set |
+| `MEDUSA_IMPORT_TEST_SECRET` | `unlockBrowser` uses this as every browser's Safe Storage secret and never touches the Keychain |
+| `MEDUSA_IMPORT_DIA_BUNDLE_ID` | The Dia tabs functions talk to this bundle ID instead of `company.thebrowser.dia` |
 
 ## Adding a source or a kind
 

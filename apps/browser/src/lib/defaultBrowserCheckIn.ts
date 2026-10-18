@@ -9,7 +9,7 @@ import { sendFeedback } from "./appIntegration";
 
 export const CHECK_IN_AFTER_MS = 7 * 24 * 60 * 60 * 1000;
 
-export const CHECK_IN_COPY = { title: "How are you liking Ardia?", action: "Leave us feedback" } as const;
+export const CHECK_IN_COPY = { title: "How are you liking Medusa?", action: "Leave us feedback" } as const;
 
 type CheckIn = { trialStartedAt: number | null; doneAt: number | null };
 

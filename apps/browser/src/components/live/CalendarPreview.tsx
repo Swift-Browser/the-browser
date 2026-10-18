@@ -95,7 +95,7 @@ function SignIn({ denied }: { denied: boolean }) {
   if (denied) {
     return (
       <Text style={{ fontSize: 12.5, lineHeight: 17, color: theme.textSecondary, paddingVertical: 4 }}>
-        Allow Ardia in System Settings › Privacy & Security › Calendars to see your meetings here.
+        Allow Medusa in System Settings › Privacy & Security › Calendars to see your meetings here.
       </Text>
     );
   }

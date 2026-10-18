@@ -40,7 +40,7 @@ import { shareTab } from "../components/site/share";
 import { openProfileMenu } from "../components/ProfileIndicator";
 import { groupOf } from "../store/organize";
 import { isSmall, mainWindowFor, originalProfile } from "../store/small";
-import { closeLittleArdia, openInMainWindow, openLittleArdia } from "../components/littleArdia/actions";
+import { closeLittleMedusa, openInMainWindow, openLittleMedusa } from "../components/littleMedusa/actions";
 
 export function runCommand({ command, arg, windowId: requested }: CommandEvent) {
   const s = useBrowser.getState();
@@ -49,17 +49,17 @@ export function runCommand({ command, arg, windowId: requested }: CommandEvent) 
     if (command === "closeTab") return void closeNativeWindow(requested!);
     requested = null;
   }
-  if (isSmall(s, requested) && runLittleArdiaCommand(command, requested!)) return;
+  if (isSmall(s, requested) && runLittleMedusaCommand(command, requested!)) return;
 
   switch (command) {
     case "newWindow":
       return void openWindow({ profileId: arg ?? undefined });
     case "newIncognitoWindow":
       return void openWindow({ incognito: true, profileId: originalProfile(s, s.windows[requested ?? ""]) });
-    case "newLittleArdia":
-      return void openLittleArdia();
-    case "toggleOpenLinksInLittleArdia":
-      return s.updateSettings({ openLinksInLittleArdia: !s.settings.openLinksInLittleArdia });
+    case "newLittleMedusa":
+      return void openLittleMedusa();
+    case "toggleOpenLinksInLittleMedusa":
+      return s.updateSettings({ openLinksInLittleMedusa: !s.settings.openLinksInLittleMedusa });
     case "reopenClosedWindow":
       return s.reopenClosedWindow();
     case "setAppearance":
@@ -96,7 +96,7 @@ export function runCommand({ command, arg, windowId: requested }: CommandEvent) 
     }
   }
 
-  if (isSmall(s, requested) && !LITTLE_ARDIA_PAGE_COMMANDS.has(command)) {
+  if (isSmall(s, requested) && !LITTLE_MEDUSA_PAGE_COMMANDS.has(command)) {
     requested = mainWindowFor(s, s.windows[requested!]!.profileId) ?? null;
     if (requested) focus(requested);
   }
@@ -279,7 +279,7 @@ export function runCommand({ command, arg, windowId: requested }: CommandEvent) 
   }
 }
 
-const LITTLE_ARDIA_PAGE_COMMANDS = new Set<string>([
+const LITTLE_MEDUSA_PAGE_COMMANDS = new Set<string>([
   "print", "printWithSystemDialog", "savePage", "caretBrowsing", "emailPageLocation", "stop", "share", "copyUrl",
   "copyUrlAsMarkdown", "findInPage", "findAndReplace", "jumpToSelection", "useSelectionForFind", "findNext", "findPrevious",
   "reload", "forceReload", "zoomIn", "zoomOut", "zoomReset", "devTools", "toggleDevTools", "inspectElements",
@@ -287,7 +287,7 @@ const LITTLE_ARDIA_PAGE_COMMANDS = new Set<string>([
   "cast", "openExtension", "addExtension", "autofill", "reopenClosedTab", "restoreClosed", "downloads",
 ]);
 
-function runLittleArdiaCommand(command: string, windowId: string): boolean {
+function runLittleMedusaCommand(command: string, windowId: string): boolean {
   const s = useBrowser.getState();
   const tabId = activeTabId(s, windowId);
   const tab = tabId ? s.tabs[tabId] : undefined;
@@ -295,7 +295,7 @@ function runLittleArdiaCommand(command: string, windowId: string): boolean {
     case "closeTab":
       if (s.windowUi[windowId]?.panel.open && tab?.url) s.closePanel(windowId);
       else if (tabId && s.find[tabId]?.open) closeFind(tabId);
-      else closeLittleArdia(windowId);
+      else closeLittleMedusa(windowId);
       return true;
     case "focusCommandBar":
       s.openPanel(windowId, tab?.url ?? "");

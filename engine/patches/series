@@ -1,6 +1,6 @@
-# The order Ardia's changes go into the Chromium tree (docs/engine-build.md › "The patch series").
+# The order Medusa's changes go into the Chromium tree (docs/engine-build.md › "The patch series").
 # The tree is plain Chromium with ungoogled-chromium and domain substitution; CEF's own patches are gone, but for
-# the few ArdiaCore relies on (chromium-cef-carryover.patch).
+# the few MedusaCore relies on (chromium-cef-carryover.patch).
 #
 #   chromium <patch>  a patch to chromium/src, after ungoogled-chromium and domain substitution (step 4)
 #   layer <dir>       our own files, copied in by <dir>/apply.sh (engine/<layer>/src mirrors chromium/src)
@@ -8,7 +8,7 @@
 # Lines run top to bottom; a patch is made against the tree as every line above it leaves it.
 # One concern per patch, named for it; a new patch goes where it belongs, not where its name sorts.
 
-# CEF's patches to Chrome whose behaviour ArdiaCore relies on (each hunk's origin is in the patch's header).
+# CEF's patches to Chrome whose behaviour MedusaCore relies on (each hunk's origin is in the patch's header).
 chromium chromium-cef-carryover.patch
 chromium chromium-autofill-address-bubble-window.patch
 chromium chromium-device-chooser-hook.patch
@@ -26,8 +26,8 @@ chromium chromium-extension-window-hidden.patch
 chromium chromium-component-extension-restricted-urls.patch
 chromium chromium-neterror-game.patch
 chromium chromium-branding.patch
-# Load-bearing for every user's data: the Safe Storage item ("Ardia Safe Storage" / "Ardia") holds the key to
-# their saved passwords and cookies. It must survive any re-sync (plain Chromium for ArdiaCore, a version bump), unchanged.
+# Load-bearing for every user's data: the Safe Storage item ("Medusa Safe Storage" / "Medusa") holds the key to
+# their saved passwords and cookies. It must survive any re-sync (plain Chromium for MedusaCore, a version bump), unchanged.
 chromium chromium-safe-storage-name.patch
 chromium chromium-password-bubble-hook.patch
 chromium chromium-password-generation-local.patch
@@ -40,7 +40,7 @@ chromium chromium-video-super-resolution.patch
 chromium chromium-begin-frame-warm-up.patch
 chromium chromium-safe-browsing-off-file-types.patch
 chromium chromium-background-features-off.patch
-chromium chromium-ardia-layer.patch
+chromium chromium-medusa-layer.patch
 
 layer engine/chromium
-layer engine/ardiacore
+layer engine/medusacore

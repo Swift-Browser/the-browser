@@ -8,7 +8,7 @@ import { constants, gzipSync } from "node:zlib";
 function demo() {
   let base = "/";
   return {
-    name: "ardia:demo",
+    name: "medusa:demo",
     hooks: {
       "astro:config:done": ({ config }) => {
         base = config.base.endsWith("/") ? config.base : `${config.base}/`;
@@ -31,7 +31,7 @@ function dist() {
       return statSync(path).isDirectory() ? walk(path) : [path];
     });
   return {
-    name: "ardia:dist",
+    name: "medusa:dist",
     hooks: {
       "astro:build:done": ({ dir, logger }) => {
         let files = 0;
@@ -49,7 +49,7 @@ function dist() {
 }
 
 export default defineConfig({
-  site: process.env.SITE_URL ?? "https://ardia.dev",
+  site: process.env.SITE_URL ?? "https://medusa.dev",
   base: process.env.SITE_BASE ?? "/",
   output: "static",
   trailingSlash: "ignore",

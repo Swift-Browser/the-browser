@@ -7,7 +7,7 @@ import { useHover } from "../primitives";
 import { introMusicMuted, saveIntroMusicMuted } from "./state";
 import { SecondaryButton, useOnboardingColors } from "./ui";
 
-const WORDMARK = "Ardia";
+const WORDMARK = "Medusa";
 const ICON = require("../../../assets/app-icon.png");
 
 const LETTER = 0.52;

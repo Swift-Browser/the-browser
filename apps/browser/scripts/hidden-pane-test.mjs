@@ -7,14 +7,14 @@ import { evaluate, launch, quit } from "./perf/js-bench.mjs";
 
 const { values: flags, positionals } = parseArgs({ allowPositionals: true, options: { bundle: { type: "string" }, out: { type: "string" }, port: { type: "string" } } });
 if (!positionals[0]) {
-  console.error("usage: node hidden-pane-test.mjs <Ardia.app> [--bundle <main.jsbundle>] [--out <dir>]");
+  console.error("usage: node hidden-pane-test.mjs <Medusa.app> [--bundle <main.jsbundle>] [--out <dir>]");
   process.exit(2);
 }
 const out = resolve(flags.out ?? join(tmpdir(), "ac-hidden-pane"));
 mkdirSync(out, { recursive: true });
 let app = resolve(positionals[0]);
 if (flags.bundle) {
-  const clone = join(out, "app", "Ardia.app");
+  const clone = join(out, "app", "Medusa.app");
   rmSync(dirname(clone), { recursive: true, force: true });
   mkdirSync(dirname(clone), { recursive: true });
   execFileSync("cp", ["-cR", app, clone]);

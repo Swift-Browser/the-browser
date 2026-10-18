@@ -8,7 +8,7 @@ import {
   type SiteSettingType,
   type SiteSettingValue,
   type SiteSettings,
-} from "@medusa/ardiacore";
+} from "@medusa/medusacore";
 import { cleanUrl, displayHost } from "@medusa/core";
 import { confirm, copyText, showMenu, Symbol } from "@medusa/shell";
 import { useEffect, useRef, useState } from "react";

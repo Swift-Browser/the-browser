@@ -2,7 +2,7 @@ type Option = { value: string; label: string; hint?: string; disabled?: boolean 
 type Control =
   | { kind: "choice"; id: string; label: string; value: string; options: Option[] }
   | { kind: "action"; id: string; label: string; hint: string; on?: boolean };
-type Outbound = { type: "ardia-demo:ready" } | { type: "ardia-demo:engaged" } | { type: "ardia-demo:controls"; controls: Control[] };
+type Outbound = { type: "medusa-demo:ready" } | { type: "medusa-demo:engaged" } | { type: "medusa-demo:controls"; controls: Control[] };
 
 const DESKTOP_LOGICAL_WIDTH = 1100;
 const PHONE_LOGICAL_WIDTH = 640;
@@ -73,7 +73,7 @@ function renderControls(frame: HTMLIFrameElement, controls: Control[], target: H
         el.addEventListener("click", () => {
           root?.setAttribute("data-engaged", "");
           if (control.id === "command") frame.focus();
-          frame.contentWindow?.postMessage({ type: "ardia-demo:control", id: control.id }, "*");
+          frame.contentWindow?.postMessage({ type: "medusa-demo:control", id: control.id }, "*");
         });
         actions.append(el);
         continue;
@@ -90,7 +90,7 @@ function renderControls(frame: HTMLIFrameElement, controls: Control[], target: H
         const el = button(control, option);
         el.addEventListener("click", () => {
           root?.setAttribute("data-engaged", "");
-          frame.contentWindow?.postMessage({ type: "ardia-demo:control", id: control.id, value: option.value }, "*");
+          frame.contentWindow?.postMessage({ type: "medusa-demo:control", id: control.id, value: option.value }, "*");
         });
         group.append(el);
       }
@@ -120,7 +120,7 @@ function watchForNudge(frame: HTMLIFrameElement, box: HTMLElement) {
       if (!entries.some((e) => e.isIntersecting)) return;
       timer = setTimeout(() => {
         seen.disconnect();
-        if (root?.dataset.engaged === undefined) frame.contentWindow?.postMessage({ type: "ardia-demo:nudge" }, "*");
+        if (root?.dataset.engaged === undefined) frame.contentWindow?.postMessage({ type: "medusa-demo:nudge" }, "*");
       }, NUDGE_DELAY_MS);
     },
     { threshold: 0.6 },
@@ -131,7 +131,7 @@ function watchForNudge(frame: HTMLIFrameElement, box: HTMLElement) {
 function mount(box: HTMLElement, src: string) {
   const frame = document.createElement("iframe");
   frame.src = src;
-  frame.title = "Ardia, live: try the sidebar, split view and the command bar";
+  frame.title = "Medusa, live: try the sidebar, split view and the command bar";
   frame.className = "demo-frame";
   box.append(frame);
   fit(frame, box);
@@ -153,13 +153,13 @@ function mount(box: HTMLElement, src: string) {
   });
   addEventListener("message", (event: MessageEvent<Outbound>) => {
     if (event.source !== frame.contentWindow || !event.data || typeof event.data !== "object") return;
-    if (event.data.type === "ardia-demo:ready") {
+    if (event.data.type === "medusa-demo:ready") {
       ready = true;
       if (loaded) reveal();
       else setTimeout(reveal, REVEAL_FALLBACK_MS);
     }
-    if (event.data.type === "ardia-demo:engaged") root?.setAttribute("data-engaged", "");
-    if (event.data.type === "ardia-demo:controls" && bar) renderControls(frame, event.data.controls, bar);
+    if (event.data.type === "medusa-demo:engaged") root?.setAttribute("data-engaged", "");
+    if (event.data.type === "medusa-demo:controls" && bar) renderControls(frame, event.data.controls, bar);
   });
 }
 

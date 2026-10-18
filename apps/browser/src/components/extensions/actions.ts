@@ -1,4 +1,4 @@
-import { extensionActionStates } from "@medusa/ardiacore";
+import { extensionActionStates } from "@medusa/medusacore";
 import { useBrowser } from "../../store/browser";
 import { activeTabId } from "../../store/model";
 import { browserIdOf, extensionProfile, useExtensions, windowExtensions } from "./store";

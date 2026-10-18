@@ -50,7 +50,7 @@ type SyncNative = {
   readPasswords(engineProfile: string): Promise<SavedLogin[] | null>;
 };
 
-export const SyncNative = requireOptionalNativeModule<SyncNative>("ArdiaSync");
+export const SyncNative = requireOptionalNativeModule<SyncNative>("MedusaSync");
 
 export const folderTransport = (native: SyncNative, folder: string): Transport => ({
   write: (scope, payload) => native.write(folder, scope, payload),

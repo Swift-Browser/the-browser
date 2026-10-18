@@ -21,10 +21,10 @@ export { showMenu } from "./web/menus";
 export { setTrafficLightsCenter } from "./web/windowChrome";
 
 const SYSTEM_INFO: SystemInfo = {
-  appName: "Ardia",
+  appName: "Medusa",
   appVersion: "demo",
   appBuild: "web",
-  bundleId: "dev.ardia.demo",
+  bundleId: "dev.medusa.demo",
   configuration: "Release",
   osVersion: "web",
   osBuild: "web",
@@ -35,8 +35,8 @@ const SYSTEM_INFO: SystemInfo = {
   updates: false,
 };
 
-provideNativeModule("ArdiaApp", { launchEnvironment: () => null, systemInfo: () => SYSTEM_INFO });
-provideNativeModule("ArdiaCalendar", { authorizationStatus: () => "notDetermined" });
+provideNativeModule("MedusaApp", { launchEnvironment: () => null, systemInfo: () => SYSTEM_INFO });
+provideNativeModule("MedusaCalendar", { authorizationStatus: () => "notDetermined" });
 
 const documents = new Map<string, string>();
 export const readDocument = (name: string) => documents.get(name) ?? null;
@@ -84,6 +84,6 @@ export async function completeInline(tag: number, typed: string, completion: str
   return 1;
 }
 
-export const emitCommand = (event: CommandEvent) => emitNativeEvent("ArdiaShell", "onCommand", event);
-export const emitWindowEvent = (event: WindowEvent) => emitNativeEvent("ArdiaShell", "onWindowEvent", event);
-export const emitAppEvent = (event: AppEvent) => emitNativeEvent("ArdiaShell", "onAppEvent", event);
+export const emitCommand = (event: CommandEvent) => emitNativeEvent("MedusaShell", "onCommand", event);
+export const emitWindowEvent = (event: WindowEvent) => emitNativeEvent("MedusaShell", "onWindowEvent", event);
+export const emitAppEvent = (event: AppEvent) => emitNativeEvent("MedusaShell", "onAppEvent", event);

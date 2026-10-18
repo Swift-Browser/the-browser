@@ -22,7 +22,7 @@ textarea:focus,
   outline: none;
 }
 
-.ardia-desktop {
+.medusa-desktop {
   position: fixed;
   inset: 0;
   display: flex;
@@ -34,7 +34,7 @@ textarea:focus,
     #262a33;
 }
 
-.ardia-window {
+.medusa-window {
   position: relative;
   display: flex;
   width: calc(100% - 32px);
@@ -47,16 +47,16 @@ textarea:focus,
     0 22px 70px rgba(0, 0, 0, 0.45);
 }
 
-.ardia-desktop.with-controls {
+.medusa-desktop.with-controls {
   flex-direction: column;
   gap: 12px;
 }
 
-.ardia-desktop.with-controls .ardia-window {
+.medusa-desktop.with-controls .medusa-window {
   height: calc(100% - 32px - 42px);
 }
 
-.ardia-controls {
+.medusa-controls {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -66,7 +66,7 @@ textarea:focus,
   user-select: none;
 }
 
-.ardia-control-group {
+.medusa-control-group {
   display: flex;
   gap: 2px;
   padding: 2px;
@@ -75,7 +75,7 @@ textarea:focus,
   box-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.14);
 }
 
-.ardia-control {
+.medusa-control {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -90,44 +90,44 @@ textarea:focus,
   transition: background-color 120ms, color 120ms;
 }
 
-.ardia-control:hover:not(:disabled):not([aria-checked="true"]):not([aria-pressed="true"]) {
+.medusa-control:hover:not(:disabled):not([aria-checked="true"]):not([aria-pressed="true"]) {
   background: rgba(255, 255, 255, 0.1);
   color: #fff;
 }
 
-.ardia-control-label {
+.medusa-control-label {
   display: flex;
   align-items: center;
   padding: 0 6px 0 10px;
   color: rgba(255, 255, 255, 0.45);
 }
 
-.ardia-control[role="radio"] {
+.medusa-control[role="radio"] {
   padding: 0 11px;
 }
 
-.ardia-control[aria-pressed="true"],
-.ardia-control[aria-checked="true"] {
+.medusa-control[aria-pressed="true"],
+.medusa-control[aria-checked="true"] {
   background: rgba(255, 255, 255, 0.92);
   color: #1d1f24;
 }
 
-.ardia-control:disabled {
+.medusa-control:disabled {
   opacity: 0.38;
   cursor: default;
 }
 
-.ardia-control:focus-visible {
+.medusa-control:focus-visible {
   outline: 2px solid rgba(255, 255, 255, 0.6);
   outline-offset: 1px;
 }
 
-.ardia-window > div:first-child {
+.medusa-window > div:first-child {
   flex: 1;
   display: flex;
 }
 
-.ardia-menu {
+.medusa-menu {
   position: fixed;
   z-index: 10000;
   padding: 5px;
@@ -143,7 +143,7 @@ textarea:focus,
   user-select: none;
 }
 
-.ardia-menu-item {
+.medusa-menu-item {
   position: relative;
   display: flex;
   align-items: center;
@@ -153,47 +153,47 @@ textarea:focus,
   cursor: default;
 }
 
-.ardia-menu-item:hover:not(.disabled) {
+.medusa-menu-item:hover:not(.disabled) {
   background: #0a63e0;
   color: #fff;
 }
 
-.ardia-menu-item.disabled {
+.medusa-menu-item.disabled {
   color: rgba(0, 0, 0, 0.3);
 }
 
-.ardia-menu-check {
+.medusa-menu-check {
   width: 14px;
   font-size: 11px;
 }
 
-.ardia-menu-swatch {
+.medusa-menu-swatch {
   width: 10px;
   height: 10px;
   border-radius: 5px;
   margin-right: 7px;
 }
 
-.ardia-menu-title {
+.medusa-menu-title {
   flex: 1;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.ardia-menu-key {
+.medusa-menu-key {
   margin-left: 16px;
   opacity: 0.55;
   font-size: 12px;
 }
 
-.ardia-menu-separator {
+.medusa-menu-separator {
   height: 1px;
   margin: 5px 8px;
   background: rgba(0, 0, 0, 0.1);
 }
 
-.ardia-menu.dark {
+.medusa-menu.dark {
   background: rgba(40, 40, 40, 0.78);
   color: #ffffff;
   box-shadow:
@@ -201,11 +201,11 @@ textarea:focus,
     0 10px 30px rgba(0, 0, 0, 0.4);
 }
 
-.ardia-menu.dark .ardia-menu-item.disabled {
+.medusa-menu.dark .medusa-menu-item.disabled {
   color: rgba(255, 255, 255, 0.3);
 }
 
-.ardia-menu.dark .ardia-menu-separator {
+.medusa-menu.dark .medusa-menu-separator {
   background: rgba(255, 255, 255, 0.12);
 }
 
@@ -214,11 +214,11 @@ html.embed body {
   background: transparent;
 }
 
-.ardia-desktop.embed {
+.medusa-desktop.embed {
   background: transparent;
 }
 
-.ardia-desktop.embed .ardia-window {
+.medusa-desktop.embed .medusa-window {
   width: 100%;
   height: 100%;
   box-shadow:
@@ -226,7 +226,7 @@ html.embed body {
     inset 0 0 0 0.5px rgba(255, 255, 255, 0.25);
 }
 
-.ardia-nudge {
+.medusa-nudge {
   position: fixed;
   top: 0;
   left: 0;
@@ -236,17 +236,17 @@ html.embed body {
   filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.3));
 }
 
-.ardia-nudge svg {
+.medusa-nudge svg {
   display: block;
   transform-origin: 5px 3px;
   transition: transform 120ms ease-out;
 }
 
-.ardia-nudge.pressed svg {
+.medusa-nudge.pressed svg {
   transform: scale(0.84);
 }
 
-.ardia-nudge-ring {
+.medusa-nudge-ring {
   position: absolute;
   top: -15px;
   left: -14px;
@@ -258,11 +258,11 @@ html.embed body {
   transform: scale(0.3);
 }
 
-.ardia-nudge.pressed .ardia-nudge-ring {
-  animation: ardia-nudge-ring 520ms ease-out forwards;
+.medusa-nudge.pressed .medusa-nudge-ring {
+  animation: medusa-nudge-ring 520ms ease-out forwards;
 }
 
-@keyframes ardia-nudge-ring {
+@keyframes medusa-nudge-ring {
   0% {
     opacity: 1;
     transform: scale(0.3);

@@ -1,4 +1,4 @@
-import { addHistoryVisits, deleteHistoryUrls, deletePassword, savePassword } from "@medusa/ardiacore";
+import { addHistoryVisits, deleteHistoryUrls, deletePassword, savePassword } from "@medusa/medusacore";
 import { assignPositions, SyncNative, type Adapter, type Extraction, type SavedLogin } from "@medusa/sync";
 import { bookmarkUuidFor, ensureRoots, isBookmarkUuid } from "../store/bookmarks";
 import { MAX_HISTORY, MAX_VISIT_TIMES } from "../store/history";

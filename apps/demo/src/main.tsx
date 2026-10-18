@@ -27,7 +27,7 @@ const params = new URLSearchParams(location.search);
 const embed = params.has("embed");
 const bare = embed || params.has("bare");
 
-Object.assign(globalThis, { ardiaDemo: { store: useBrowser, emitCommand } });
+Object.assign(globalThis, { medusaDemo: { store: useBrowser, emitCommand } });
 
 function warmOtherProfiles() {
   const s = useBrowser.getState();
@@ -43,8 +43,8 @@ idle(warmOtherProfiles);
 
 function DemoWindow() {
   return (
-    <div className={embed ? "ardia-desktop embed" : bare ? "ardia-desktop" : "ardia-desktop with-controls"}>
-      <div className="ardia-window">
+    <div className={embed ? "medusa-desktop embed" : bare ? "medusa-desktop" : "medusa-desktop with-controls"}>
+      <div className="medusa-window">
         <WindowRoot />
         <TrafficLights />
       </div>
@@ -54,6 +54,6 @@ function DemoWindow() {
   );
 }
 
-createRoot(document.getElementById("root")!, { onUncaughtError: (error) => console.error("[ardia demo] crashed", error) }).render(<DemoWindow />);
+createRoot(document.getElementById("root")!, { onUncaughtError: (error) => console.error("[medusa demo] crashed", error) }).render(<DemoWindow />);
 
 if (embed) startEmbed();

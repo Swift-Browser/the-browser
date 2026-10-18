@@ -58,7 +58,7 @@ static void *sampler(void *arg) {
     g_count++;
     usleep(900);
   }
-  const char *dir = getenv("ARDIA_DATA_DIR");
+  const char *dir = getenv("MEDUSA_DATA_DIR");
   if (!dir) return NULL;
   char path[2048];
   snprintf(path, sizeof path, "%s/acsample.txt", dir);
@@ -98,7 +98,7 @@ __attribute__((constructor)) static void start(void) {
   uint32_t size = sizeof exe;
   if (_NSGetExecutablePath(exe, &size) != 0) return;
   const size_t len = strlen(exe);
-  if (len < 12 || strcmp(exe + len - 12, "/MacOS/Ardia") != 0) return;
+  if (len < 12 || strcmp(exe + len - 12, "/MacOS/Medusa") != 0) return;
   g_ms = atoi(ms);
   g_main = mach_thread_self();
   g_t0 = mach_absolute_time();

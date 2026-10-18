@@ -13,7 +13,7 @@ import pip from "../assets/shots/pip.webp";
 import pipPoster from "../assets/shots/pip-loop-poster.webp";
 import pipMp4 from "../assets/shots/pip-loop.mp4";
 import pipWebm from "../assets/shots/pip-loop.webm";
-import littleArdia from "../assets/shots/little-ardia.webp";
+import littleMedusa from "../assets/shots/little-medusa.webp";
 import tabGroup from "../assets/shots/tab-group.webp";
 
 interface Feature {
@@ -35,7 +35,7 @@ export const features: Feature[] = [
     title: "Lose the toolbar.",
     body: "Move the address bar into the sidebar and the page runs all the way to the top of the window.",
     shots: [addressToolbar, addressSidebar],
-    alt: "Two Ardia windows on the same Wikipedia page: behind, the address bar in a toolbar above the page; in front, the address bar in the sidebar under the traffic lights and the page running to the top of the window.",
+    alt: "Two Medusa windows on the same Wikipedia page: behind, the address bar in a toolbar above the page; in front, the address bar in the sidebar under the traffic lights and the page running to the top of the window.",
     hour: "morning",
     sun: { x: 0.18, y: 0.18 },
   },
@@ -44,7 +44,7 @@ export const features: Feature[] = [
     title: "Two pages, one window.",
     body: "Drag a tab onto the page. Up to three panes, side by side or stacked.",
     shots: [split],
-    alt: "Ardia in split view: MDN on the left, Wikipedia on the right, both in one window.",
+    alt: "Medusa in split view: MDN on the left, Wikipedia on the right, both in one window.",
     hour: "morning",
     sun: { x: 0.8, y: 0.14 },
     flip: true,
@@ -54,7 +54,7 @@ export const features: Feature[] = [
     title: "Refuses to leave the picture.",
     body: "Switch tabs mid-video and it floats along in the corner. Go back to its tab and it slips back into the page.",
     shots: [pip],
-    alt: "Ardia on Wikipedia’s article about Big Buck Bunny, while the film keeps playing in a small floating window at the bottom right. Its tab, muted, is in the sidebar, with a player at the foot of the sidebar.",
+    alt: "Medusa on Wikipedia’s article about Big Buck Bunny, while the film keeps playing in a small floating window at the bottom right. Its tab, muted, is in the sidebar, with a player at the foot of the sidebar.",
     hour: "noon",
     sun: { x: 0.5, y: 0.1 },
     loop: { mp4: pipMp4, webm: pipWebm, poster: pipPoster, rect: { x: 2170, y: 1384, w: 672, h: 378 } },
@@ -64,7 +64,7 @@ export const features: Feature[] = [
     title: "Work stays at work.",
     body: "Each profile keeps its own logins, history, extensions and colour. Swipe the sidebar to switch.",
     shots: [sideProject, work, personal],
-    alt: "Three Ardia windows, one per profile, each tinted in its colour with its name next to the window buttons: Side project in orange, Work in blue and, in front, Personal in plum, its New Tab page showing the painted hills in plum.",
+    alt: "Three Medusa windows, one per profile, each tinted in its colour with its name next to the window buttons: Side project in orange, Work in blue and, in front, Personal in plum, its New Tab page showing the painted hills in plum.",
     hour: "noon",
     sun: { x: 0.86, y: 0.2 },
     flip: true,
@@ -72,9 +72,9 @@ export const features: Feature[] = [
   {
     id: "extensions",
     title: "Your extensions come along.",
-    body: "The Chrome Web Store just works, and its button says Add to Ardia.",
+    body: "The Chrome Web Store just works, and its button says Add to Medusa.",
     shots: [extensions],
-    alt: "Dark Reader’s page on the Chrome Web Store, open in Ardia, with an Add to Ardia button.",
+    alt: "Dark Reader’s page on the Chrome Web Store, open in Medusa, with an Add to Medusa button.",
     hour: "golden",
     sun: { x: 0.2, y: 0.3 },
   },
@@ -83,7 +83,7 @@ export const features: Feature[] = [
     title: "Ads and trackers stay out.",
     body: "The full uBlock Origin is built in, not the Lite one. Cookie banners included. Google’s pings are compiled out. Crash reports are opt-in and never carry your sites or searches.",
     shots: [privacy],
-    alt: "Ardia’s Privacy & Security settings: switches to block ads, trackers and cookie banners, and the number of filter rules loaded.",
+    alt: "Medusa’s Privacy & Security settings: switches to block ads, trackers and cookie banners, and the number of filter rules loaded.",
     hour: "golden",
     sun: { x: 0.78, y: 0.4 },
     flip: true,
@@ -92,11 +92,11 @@ export const features: Feature[] = [
 
 export const duo: Feature[] = [
   {
-    id: "little-ardia",
-    title: "Little Ardia.",
+    id: "little-medusa",
+    title: "Little Medusa.",
     body: "⌥⌘N opens a small window with one page and no sidebar. For a quick look that doesn’t need a tab.",
-    shots: [littleArdia],
-    alt: "A Little Ardia window: a small window with a thin bar in the profile’s colour above Wikipedia’s article on John Constable, and no sidebar.",
+    shots: [littleMedusa],
+    alt: "A Little Medusa window: a small window with a thin bar in the profile’s colour above Wikipedia’s article on John Constable, and no sidebar.",
     hour: "golden",
     sun: { x: 0.82, y: 0.22 },
   },
@@ -105,7 +105,7 @@ export const duo: Feature[] = [
     title: "Groups on contact.",
     body: "Drop a tab on a tab and they’re a group, named for you.",
     shots: [tabGroup],
-    alt: "Ardia’s sidebar with a new tab group called Wikipedia, made by dropping one Wikipedia tab onto another. The Hay Wain is open on the right.",
+    alt: "Medusa’s sidebar with a new tab group called Wikipedia, made by dropping one Wikipedia tab onto another. The Hay Wain is open on the right.",
     hour: "golden",
     sun: { x: 0.2, y: 0.26 },
     flip: true,

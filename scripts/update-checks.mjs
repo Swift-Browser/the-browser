@@ -2,7 +2,7 @@
 
 import { clickhouse, hasTelemetryEnv } from "./telemetry-env.mjs";
 
-const REPO = "mantrakp04/ardia";
+const REPO = "mantrakp04/medusa";
 const days = Math.max(1, Number(process.argv[2] ?? 14) || 14);
 const key = hasTelemetryEnv();
 
@@ -51,7 +51,7 @@ console.log("GitHub feed: fetches of that release's appcast.xml, i.e. update che
 console.log("included) while it was the latest release.");
 
 if (!key) {
-  console.log("\nNo ~/.config/ardia/telemetry.env: first launches and daily checks need it (docs/growth.md, Telemetry).");
+  console.log("\nNo ~/.config/medusa/telemetry.env: first launches and daily checks need it (docs/growth.md, Telemetry).");
   process.exit(0);
 }
 console.log(`\nUpdate checks per day, last ${days} days (UTC)`);

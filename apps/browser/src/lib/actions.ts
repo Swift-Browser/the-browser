@@ -1,4 +1,4 @@
-import { listExtensions, stepPager } from "@medusa/ardiacore";
+import { listExtensions, stepPager } from "@medusa/medusacore";
 import { confirm, focusWindow } from "@medusa/shell";
 import { pageToProfile } from "../components/layout/profilePager";
 import { profileNames, requestCreateProfile, type CreateProfilePreset } from "../components/profiles/CreateProfile";

@@ -1,11 +1,11 @@
 let tabId;
-const C = globalThis.expo.modules.ArdiaCEF;
+const C = globalThis.expo.modules.MedusaCEF;
 const nativeWindow = () => C.chromeWindows().then((ws) => ws.filter((w) => w.hasRoot)[0].window);
 const act = (a) => nativeWindow().then((n) => C.devWindow(n, a));
-const TEXT = "ardia.dev";
+const TEXT = "medusa.dev";
 then(() => { unsplit(); return goProfile("default"); });
 then(() => { st().clearHistory("default"); return sleep(300); });
-then(() => { tabId = st().newTab(W, { url: "https://ardia.dev/" }); return sleep(6000).then(() => { st().navigate(tabId, "https://en.wikipedia.org/wiki/Chromium_(web_browser)"); return sleep(4000); }).then(() => picShown()).then(() => snap("before")); });
+then(() => { tabId = st().newTab(W, { url: "https://medusa.dev/" }); return sleep(6000).then(() => { st().navigate(tabId, "https://en.wikipedia.org/wiki/Chromium_(web_browser)"); return sleep(4000); }).then(() => picShown()).then(() => snap("before")); });
 then(() => Promise.resolve(ac.shell.devKeyEquivalent(W, { key: "l", keyCode: 37, modifiers: ["command"] })).then(() => sleep(700)).then(() => snap("focus")));
 Array.from({ length: TEXT.length }, (_, i) => TEXT[i]).forEach((c, i) => then(() => act("type:" + c).then(() => sleep(420)).then(() => snap("type:" + TEXT.slice(0, i + 1)))));
 then(() => { const bar = ac.omnibox.get(W + ":panel"); if (bar) bar.submit(); else return act("type:\r"); });

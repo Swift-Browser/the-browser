@@ -1,14 +1,14 @@
 import AppKit
 import ExpoModulesCore
-import ArdiaImport
+import MedusaImport
 import Security
 
 public class SyncModule: Module {
   private let state = KeyState()
-  private static let work = DispatchQueue(label: "ardia.sync", qos: .utility)
+  private static let work = DispatchQueue(label: "medusa.sync", qos: .utility)
 
   public func definition() -> ModuleDefinition {
-    Name("ArdiaSync")
+    Name("MedusaSync")
 
     AsyncFunction("folderInfo") { (path: String?) -> [String: Any] in
       let url = path.map { URL(fileURLWithPath: $0, isDirectory: true) } ?? Self.defaultFolder
@@ -220,7 +220,7 @@ public class SyncModule: Module {
   }
 
   private func temporaryKit() throws -> URL {
-    let dir = FileManager.default.temporaryDirectory.appendingPathComponent("Ardia Recovery Kit", isDirectory: true)
+    let dir = FileManager.default.temporaryDirectory.appendingPathComponent("Medusa Recovery Kit", isDirectory: true)
     try FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true, attributes: [.posixPermissions: 0o700])
     let url = dir.appendingPathComponent(RecoveryKit.pdfName)
     try Self.kit(try words(), text: false).write(to: url, options: [.atomic])
@@ -247,14 +247,16 @@ public class SyncModule: Module {
   }
 
   private static let environment = ProcessInfo.processInfo.environment
-  private static let dataDirectory = environment["ARDIA_DATA_DIR"].map { URL(fileURLWithPath: $0, isDirectory: true) }
-  private static let testFolder = environment["ARDIA_SYNC_DEFAULT_FOLDER"].map { URL(fileURLWithPath: $0, isDirectory: true) }
+  private static let dataDirectory = (environment["MEDUSA_DATA_DIR"] ?? environment["MEDUSA_DATA_DIR"]).map { URL(fileURLWithPath: $0, isDirectory: true) }
+  private static let testFolder = (environment["MEDUSA_SYNC_DEFAULT_FOLDER"] ?? environment["MEDUSA_SYNC_DEFAULT_FOLDER"]).map { URL(fileURLWithPath: $0, isDirectory: true) }
 
   static var defaultFolder: URL {
     if let testFolder { return testFolder }
-    if let dataDirectory { return dataDirectory.appendingPathComponent("Ardia Sync", isDirectory: true) }
-    let folder = SyncFolder.iCloudDrive.appendingPathComponent("Ardia Sync", isDirectory: true)
+    if let dataDirectory { return dataDirectory.appendingPathComponent("Medusa Sync", isDirectory: true) }
+    let folder = SyncFolder.iCloudDrive.appendingPathComponent("Medusa Sync", isDirectory: true)
+    let medusaFolder = SyncFolder.iCloudDrive.appendingPathComponent("Medusa Sync", isDirectory: true)
     let legacy = SyncFolder.iCloudDrive.appendingPathComponent(LegacyName.syncFolderName, isDirectory: true)
+    if !FileManager.default.fileExists(atPath: folder.path), FileManager.default.fileExists(atPath: medusaFolder.path), SyncFolder.hasSyncData(medusaFolder) { return medusaFolder }
     if !FileManager.default.fileExists(atPath: folder.path), SyncFolder.hasSyncData(legacy) { return legacy }
     return folder
   }
@@ -264,14 +266,15 @@ public class SyncModule: Module {
   static func profileDirectory(_ engineProfile: String) -> URL {
     let root = dataDirectory?.appendingPathComponent("Chromium", isDirectory: true)
       ?? FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
-      .appendingPathComponent(Bundle.main.bundleIdentifier ?? "com.ardia.browser", isDirectory: true)
+      .appendingPathComponent(Bundle.main.bundleIdentifier ?? "com.medusa.browser", isDirectory: true)
       .appendingPathComponent("Chromium", isDirectory: true)
     return root.appendingPathComponent(engineProfile.isEmpty ? "Default" : "Profile \(engineProfile)", isDirectory: true)
   }
 
   static func safeStorageSecret() throws -> Data {
     if dataDirectory != nil || !isTeamSigned { return Data("mock_password".utf8) }
-    return try SafeStorageKeychain.secret(service: "Ardia Safe Storage", account: "Ardia")
+    return (try? SafeStorageKeychain.secret(service: "Medusa Safe Storage", account: "Medusa"))
+      ?? (try SafeStorageKeychain.secret(service: "Medusa Safe Storage", account: "Medusa"))
   }
 
   static let isTeamSigned: Bool = {

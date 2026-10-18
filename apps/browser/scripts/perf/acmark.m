@@ -13,7 +13,7 @@ static void Mark(NSString *key, NSInteger window) {
 }
 
 __attribute__((constructor)) static void Start(void) {
-  const char *dir = getenv("ARDIA_DATA_DIR");
+  const char *dir = getenv("MEDUSA_DATA_DIR");
   if (!dir) return;
   if (![NSBundle.mainBundle.bundlePath hasSuffix:@".app"] || [NSBundle.mainBundle.bundlePath containsString:@"Helper"]) return;
   gOut = fopen([NSString stringWithFormat:@"%s/bench-marks.jsonl", dir].UTF8String, "a");

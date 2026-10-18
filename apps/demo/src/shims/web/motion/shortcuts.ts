@@ -17,7 +17,7 @@ const SHORTCUTS: Shortcut[] = [
   s("KeyT", ["cmd", "shift"], "reopenClosedTab", { reserved: true }),
   s("KeyN", ["cmd"], "newWindow", { reserved: true }),
   s("KeyN", ["cmd", "shift"], "newIncognitoWindow", { reserved: true }),
-  s("KeyN", ["cmd", "alt"], "newLittleArdia"),
+  s("KeyN", ["cmd", "alt"], "newLittleMedusa"),
   s("KeyN", ["cmd", "ctrl"], "newGroupWithTabs"),
   s("KeyO", ["cmd"], "openFile"),
   s("KeyL", ["cmd"], "focusCommandBar"),
@@ -164,7 +164,7 @@ function onBlur() {
   emitAppEvent({ type: "switcherReleased" });
 }
 
-provideNativeModule("ArdiaShell", {
+provideNativeModule("MedusaShell", {
   setSwitcherCapture: async (active: boolean) => void (switcher.capturing = active),
 });
 

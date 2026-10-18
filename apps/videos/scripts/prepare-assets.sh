@@ -6,8 +6,8 @@ F=$V/node_modules/@fontsource-variable
 mkdir -p "$V/public/fonts" "$V/public/brand"
 cp "$F/archivo/files/archivo-latin-wdth-normal.woff2" "$F/martian-mono/files/martian-mono-latin-wdth-normal.woff2" \
   "$F/newsreader/files/newsreader-latin-opsz-normal.woff2" "$F/newsreader/files/newsreader-latin-opsz-italic.woff2" "$V/public/fonts/"
-L=$R/output/brand/ardia/final
-[ -f "$L/mark-trim.png" ] && [ -f "$L/icon-1024.png" ] || (cd "$R" && python3 docs/brand/ardia/build.py > /dev/null)
+L=$R/output/brand/medusa/final
+[ -f "$L/mark-trim.png" ] && [ -f "$L/icon-1024.png" ] || (cd "$R" && python3 docs/brand/medusa/build.py > /dev/null)
 python3 - "$L/icon-1024.png" "$L/mark-trim.png" "$V/public/brand" <<'PY'
 import sys
 import numpy as np

@@ -7,7 +7,7 @@ import { freePort, launch as launchInstance, reporter, sleep } from "../../../sc
 
 const [appArg, scratchArg, ...only] = process.argv.slice(2);
 if (!appArg || !scratchArg) {
-  console.error("usage: activation-acceptance.mjs <Ardia.app> <scratch dir> [check…]");
+  console.error("usage: activation-acceptance.mjs <Medusa.app> <scratch dir> [check…]");
   process.exit(64);
 }
 const scratch = resolve(scratchArg);
@@ -73,7 +73,7 @@ let instance = null;
 async function launch(logName = "app.out.log") {
   instance = await launchInstance(app, {
     data, port: devtoolsPort, log: join(scratch, logName), ready: false,
-    switches: "--ignore-certificate-errors --ardia-test-system-media-permission=ask",
+    switches: "--ignore-certificate-errors --medusa-test-system-media-permission=ask",
   });
   pid = instance.pid;
   writeFileSync(join(scratch, "app.pid"), String(pid));
@@ -125,7 +125,7 @@ const js = async (target, expression) => {
   return r.result.value;
 };
 const pageTarget = (urlPart) => until(urlPart, async () => (await targets()).find((t) => t.type === "page" && t.url.includes(urlPart)) ?? null, 10000);
-const cef = (call) => evalApp(`return globalThis.expo.modules.ArdiaCEF.${call}`);
+const cef = (call) => evalApp(`return globalThis.expo.modules.MedusaCEF.${call}`);
 const browserOf = (tabId) => evalApp(`return Object.entries(ac.pageState.getState().browsers ?? {}).find(([, t]) => t === "${tabId}")?.[0] ?? null`);
 
 const appState = () => evalApp(`const s = ac.store.getState();
@@ -182,7 +182,7 @@ const ext = async (expression) => {
 };
 let extId = null;
 const findWorker = () => until("the extension's worker", async () => {
-  await evalApp(`return globalThis.expo.modules.ArdiaExtensions.list("")`).catch(() => null);
+  await evalApp(`return globalThis.expo.modules.MedusaExtensions.list("")`).catch(() => null);
   for (const t of (await targets()).filter((t) => t.type === "service_worker" && t.url.includes(extId))) {
     const r = await cdp(t, "Runtime.evaluate", { expression: "typeof self.chromeState", returnByValue: true }).catch(() => null);
     if (r?.result?.value === "function") return t;
@@ -240,7 +240,7 @@ async function joinedCall(windowId = mainWindow) {
 const pipState = (t) => js(t, "state()");
 const booted = () => until("the dev harness", async () => {
   try {
-    return await evalApp(`return globalThis.expo.modules.ArdiaCEF.engineInfo()`, 3000);
+    return await evalApp(`return globalThis.expo.modules.MedusaCEF.engineInfo()`, 3000);
   } catch (e) {
     if (!alive()) throw e;
     return null;
@@ -257,7 +257,7 @@ try {
   await check("boot", async () => {
     await booted();
     mainWindow = await until("a window", async () => (await appState()).focused ?? Object.keys((await appState()).windows)[0], 30000);
-    const installed = await evalApp(`return globalThis.expo.modules.ArdiaExtensions.install(${JSON.stringify(extDir)}, "")`);
+    const installed = await evalApp(`return globalThis.expo.modules.MedusaExtensions.install(${JSON.stringify(extDir)}, "")`);
     if (installed?.error) throw new Error(installed.error);
     extId = installed.id;
     worker = await findWorker();
@@ -562,7 +562,7 @@ try {
 
   const typeIntoNewWindow = async (text) => {
     const windowsBefore = Object.keys((await appState()).windows);
-    await evalApp(`const cef = globalThis.expo.modules.ArdiaCEF;
+    await evalApp(`const cef = globalThis.expo.modules.MedusaCEF;
       return cef.chromeWindows().then((list) => {
         const known = new Set(list.map((w) => w.window));
         globalThis.acDevMountDelayMs = 800;
@@ -592,7 +592,7 @@ try {
 
   await check("type-after-new-window", async () => {
     const { tab, t } = await keysPage();
-    const text = "ardia";
+    const text = "medusa";
     let made = null;
     try {
       made = await typeIntoNewWindow(text);

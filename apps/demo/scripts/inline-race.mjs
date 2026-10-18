@@ -29,7 +29,7 @@ try {
   for (let run = 0; run < runs; run++)
     for (const query of QUERIES) {
       await page.send("Page.navigate", { url: `${url}?bare&race=${Date.now()}` });
-      for (let i = 0; i < 100 && !(await page.eval("!!globalThis.ardiaDemo").catch(() => false)); i++) await sleep(100);
+      for (let i = 0; i < 100 && !(await page.eval("!!globalThis.medusaDemo").catch(() => false)); i++) await sleep(100);
       await sleep(800);
       await page.send("Input.dispatchKeyEvent", { type: "rawKeyDown", key: "l", code: "KeyL", modifiers: 4, windowsVirtualKeyCode: 76 });
       await page.send("Input.dispatchKeyEvent", { type: "keyUp", key: "l", code: "KeyL", modifiers: 4 });

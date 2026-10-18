@@ -1,7 +1,7 @@
 import { track } from "./track";
 
-const LINK = "https://ardia.dev/?ref=share";
-const DATA: ShareData = { url: LINK, title: "Ardia", text: "Ardia: real Chromium for the Mac. Open this on your Mac." };
+const LINK = "https://medusa.dev/?ref=share";
+const DATA: ShareData = { url: LINK, title: "Medusa", text: "Medusa: real Chromium for the Mac. Open this on your Mac." };
 
 const root = document.documentElement;
 const inapp = root.dataset.inapp ?? null;

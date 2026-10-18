@@ -40,7 +40,7 @@ Pods/
 .swiftpm/
 .build/
 
-packages/ardiacore/vendor/
+packages/medusacore/vendor/
 
 output/
 

@@ -2,10 +2,10 @@
 set -euo pipefail
 here=$(cd "$(dirname "$0")" && pwd)
 repo=$(cd "$here/../../.." && pwd)
-staged=${ARDIACORE_STAGE_DIR:-$repo/apps/browser/build-ardiacore/ArdiaCoreFramework}/"Chromium Framework.framework"
+staged=${MEDUSACORE_STAGE_DIR:-$repo/apps/browser/build-medusacore/MedusaCoreFramework}/"Chromium Framework.framework"
 frameworks="$TARGET_BUILD_DIR/$FRAMEWORKS_FOLDER_PATH"
 mkdir -p "$frameworks"
-stamp="$DERIVED_FILE_DIR/ardiacore-embedded.stamp"
+stamp="$DERIVED_FILE_DIR/medusacore-embedded.stamp"
 mkdir -p "$DERIVED_FILE_DIR"
 identity="${EXPANDED_CODE_SIGN_IDENTITY:--}"
 [ -z "$identity" ] && identity="-"
@@ -33,7 +33,7 @@ if ! [[ -f "$stamp" && "$(cat "$stamp")" == "$want" && -d "$frameworks/Chromium 
 fi
 
 "$here/ubo.sh"
-ubo="$repo/packages/ardiacore/vendor/ubo/ext"
+ubo="$repo/packages/medusacore/vendor/ubo/ext"
 if [ -n "${UNLOCALIZED_RESOURCES_FOLDER_PATH:-}" ] && [ -f "$ubo/manifest.json" ]; then
   extensions="$TARGET_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/Extensions"
   mkdir -p "$extensions"
@@ -41,5 +41,5 @@ if [ -n "${UNLOCALIZED_RESOURCES_FOLDER_PATH:-}" ] && [ -f "$ubo/manifest.json" 
   rsync -a --delete "$ubo/" "$extensions/ublock/"
   (cd "$extensions/ublock" && find . -type f ! -path './_metadata/*' -print0 | LC_ALL=C sort -z \
     | xargs -0 shasum -a 256 | shasum -a 256 | cut -d' ' -f1) > "$extensions/ublock.fingerprint"
-  rsync -a --delete "$repo/packages/ardiacore/extensions/ublock-lite-settings/" "$extensions/ublock-lite-settings/"
+  rsync -a --delete "$repo/packages/medusacore/extensions/ublock-lite-settings/" "$extensions/ublock-lite-settings/"
 fi

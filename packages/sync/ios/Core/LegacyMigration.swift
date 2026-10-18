@@ -23,34 +23,34 @@ enum Renamed {
   }
 
   static let safeStorage = KeychainItem(
-    oldService: "Netnyahoo Safe Storage", newService: "Ardia Safe Storage", account: ("Netnyahoo", "Ardia"),
-    label: { _ in "Ardia Safe Storage" }, accessible: nil, critical: true)
+    oldService: "Netnyahoo Safe Storage", newService: "Medusa Safe Storage", account: ("Netnyahoo", "Medusa"),
+    label: { _ in "Medusa Safe Storage" }, accessible: nil, critical: true)
   static let connectedAccounts = KeychainItem(
-    oldService: "Netnyahoo Connected Accounts", newService: "Ardia Connected Accounts", account: nil,
-    label: { "Ardia: \($0)" }, accessible: nil, critical: false)
+    oldService: "Netnyahoo Connected Accounts", newService: "Medusa Connected Accounts", account: nil,
+    label: { "Medusa: \($0)" }, accessible: nil, critical: false)
   static let syncKey = KeychainItem(
-    oldService: "Netnyahoo Sync Key", newService: "Ardia Sync Key", account: nil,
-    label: { _ in "Ardia Sync Key" }, accessible: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly, critical: false)
+    oldService: "Netnyahoo Sync Key", newService: "Medusa Sync Key", account: nil,
+    label: { _ in "Medusa Sync Key" }, accessible: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly, critical: false)
   static let keychain = [safeStorage, connectedAccounts, syncKey]
 
   static let paths: [(old: String, new: String)] = [
-    ("Chromium/NetnyahooPictureInPicture.plist", "Chromium/ArdiaPictureInPicture.plist"),
-    ("Chromium/NativeMessagingHosts/.netnyahoo-managed.json", "Chromium/NativeMessagingHosts/.ardia-managed.json"),
-    ("Chromium/*/Netnyahoo Favicons", "Chromium/*/Ardia Favicons"),
+    ("Chromium/NetnyahooPictureInPicture.plist", "Chromium/MedusaPictureInPicture.plist"),
+    ("Chromium/NativeMessagingHosts/.netnyahoo-managed.json", "Chromium/NativeMessagingHosts/.medusa-managed.json"),
+    ("Chromium/*/Netnyahoo Favicons", "Chromium/*/Medusa Favicons"),
   ]
 
   static let jsonKeys = [
-    "openLinksInSmallYahu": "openLinksInLittleArdia",
-    "smallYahuSize": "littleArdiaSize",
-    "newSmallYahu": "newLittleArdia",
-    "toggleOpenLinksInSmallYahu": "toggleOpenLinksInLittleArdia",
+    "openLinksInSmallYahu": "openLinksInLittleMedusa",
+    "smallYahuSize": "littleMedusaSize",
+    "newSmallYahu": "newLittleMedusa",
+    "toggleOpenLinksInSmallYahu": "toggleOpenLinksInLittleMedusa",
     "nn_sync_key": "ac_sync_key",
   ]
 
   static let urls: [(old: String, new: String)] = [
-    ("netnyahoo://yahu", "ardia://game"),
+    ("netnyahoo://yahu", "medusa://game"),
     ("chrome://yahu", "chrome://game"),
-    ("netnyahoo://", "ardia://"),
+    ("netnyahoo://", "medusa://"),
   ]
 
   static let defaultsKeys = [
@@ -59,8 +59,8 @@ enum Renamed {
     "NNPictureInPictureZoom": "ACPictureInPictureZoom",
     "NNUpdateFeedURL": "ACUpdateFeedURL",
   ]
-  static let defaultsKeyPrefixes = [("NSWindow Frame Netnyahoo", "NSWindow Frame Ardia")]
-  static let menuTitleWords = [("Small Yahu", "Little Ardia"), ("Netnyahoo", "Ardia")]
+  static let defaultsKeyPrefixes = [("NSWindow Frame Netnyahoo", "NSWindow Frame Medusa")]
+  static let menuTitleWords = [("Small Yahu", "Little Medusa"), ("Netnyahoo", "Medusa")]
 }
 
 enum SecretRead: Equatable {
@@ -386,7 +386,7 @@ struct LegacyMigrator {
       while context.oldAppRunning() {
         let choice = context.ask(
           "Quit \(LegacyName.appName) to continue",
-          "Ardia is the new name of \(LegacyName.appName). Quit \(LegacyName.appName), then click Continue to bring your tabs, passwords and settings across.",
+          "Medusa is the new name of \(LegacyName.appName). Quit \(LegacyName.appName), then click Continue to bring your tabs, passwords and settings across.",
           ["Continue", "Quit"])
         if choice != 0 { return .quit }
       }
@@ -396,8 +396,8 @@ struct LegacyMigrator {
         log("couldn't copy \(context.oldData.path): \(error)")
         try? fm.removeItem(at: stagingURL)
         let choice = context.ask(
-          "Ardia couldn't bring your data across",
-          "Copying your data from \(LegacyName.appName) failed (\(error.localizedDescription)). Nothing was changed. You can try again, quit, or start Ardia without it; \(LegacyName.appName)'s data stays where it is.",
+          "Medusa couldn't bring your data across",
+          "Copying your data from \(LegacyName.appName) failed (\(error.localizedDescription)). Nothing was changed. You can try again, quit, or start Medusa without it; \(LegacyName.appName)'s data stays where it is.",
           ["Try Again", "Quit", "Start Without It"])
         if choice == 0 { continue }
         if choice == 2 { return finish(Journal(phase: "done", outcome: "fresh")) }
@@ -446,8 +446,8 @@ struct LegacyMigrator {
       } catch {
         log("couldn't move the data in: \(error)")
         let choice = context.ask(
-          "Ardia couldn't finish bringing your data across",
-          "Moving your copied data into place failed (\(error.localizedDescription)). \(LegacyName.appName)'s data is untouched. Try again, or quit and Ardia will finish the next time it opens.",
+          "Medusa couldn't finish bringing your data across",
+          "Moving your copied data into place failed (\(error.localizedDescription)). \(LegacyName.appName)'s data is untouched. Try again, or quit and Medusa will finish the next time it opens.",
           ["Try Again", "Quit"])
         if choice != 0 { return false }
       }
@@ -562,8 +562,8 @@ struct LegacyMigrator {
   private func askAboutKey(_ item: Renamed.KeychainItem, _ why: String) -> SecretsResult {
     log("\(item.oldService): \(why)")
     let choice = context.ask(
-      "Ardia needs your passwords' key",
-      "To keep your saved passwords and website logins, allow Ardia to use “\(item.oldService)” (the key \(LegacyName.appName) kept them with); choose Always Allow when macOS asks. Or start Ardia without \(LegacyName.appName)'s data, which stays where it is.",
+      "Medusa needs your passwords' key",
+      "To keep your saved passwords and website logins, allow Medusa to use “\(item.oldService)” (the key \(LegacyName.appName) kept them with); choose Always Allow when macOS asks. Or start Medusa without \(LegacyName.appName)'s data, which stays where it is.",
       ["Try Again", "Quit", "Start Without It"])
     return choice == 0 ? .copied([:]) : choice == 2 ? .startFresh : .quit
   }
@@ -779,7 +779,7 @@ struct LegacyMigrator {
     return result
   }
 
-  private func log(_ message: String) { NSLog("Ardia: migration from \(LegacyName.appName): \(message)") }
+  private func log(_ message: String) { NSLog("Medusa: migration from \(LegacyName.appName): \(message)") }
 }
 
 struct MigrationError: Error, LocalizedError {
@@ -872,12 +872,12 @@ struct DocumentRewriter {
 public enum LegacyMigration {
   public static func runAtLaunch(bundleId: String? = Bundle.main.bundleIdentifier) -> Bool {
     let env = ProcessInfo.processInfo.environment
-    let bundleId = bundleId ?? "com.ardia.browser"
+    let bundleId = bundleId ?? "com.medusa.browser"
     guard bundleId != LegacyName.bundleId else { return true }
     let context: LegacyMigrator.Context?
-    if let data = env["ARDIA_DATA_DIR"], !data.isEmpty {
-      guard let source = env["ARDIA_LEGACY_SOURCE"], !source.isEmpty else { return true }
-      context = testInstanceContext(dataDir: data, legacyHome: source, bundleId: bundleId, crashAfter: env["ARDIA_LEGACY_CRASH_AFTER"])
+    if let data = env["MEDUSA_DATA_DIR"] ?? env["MEDUSA_DATA_DIR"], !data.isEmpty {
+      guard let source = env["MEDUSA_LEGACY_SOURCE"] ?? env["MEDUSA_LEGACY_SOURCE"], !source.isEmpty else { return true }
+      context = testInstanceContext(dataDir: data, legacyHome: source, bundleId: bundleId, crashAfter: env["MEDUSA_LEGACY_CRASH_AFTER"] ?? env["MEDUSA_LEGACY_CRASH_AFTER"])
     } else {
       context = installedContext(bundleId: bundleId)
     }
@@ -942,7 +942,7 @@ public enum LegacyMigration {
     let inside = { (a: String, b: String) in a == b || a.hasPrefix(b + "/") }
     guard resolved(home) != realHome, !inside(resolved(home), realHome + "/Library"), !inside(resolved(data), resolved(home)),
       !inside(resolved(home), resolved(data)) else {
-      NSLog("Ardia: ARDIA_LEGACY_SOURCE must be a scratch folder apart from the data dir and your home; ignored")
+      NSLog("Medusa: MEDUSA_LEGACY_SOURCE must be a scratch folder apart from the data dir and your home; ignored")
       return nil
     }
     let library = home.appendingPathComponent("Library")
@@ -950,7 +950,7 @@ public enum LegacyMigration {
     let handlers = library.appendingPathComponent("Preferences/\(launchServicesDomain).plist")
     for input in [library, oldData, library.appendingPathComponent("Preferences"), handlers, home.appendingPathComponent("keychain.json")]
     where FileManager.default.fileExists(atPath: input.path) && !inside(resolved(input), resolved(home)) {
-      NSLog("Ardia: \(input.path) leads out of ARDIA_LEGACY_SOURCE; ignored")
+      NSLog("Medusa: \(input.path) leads out of MEDUSA_LEGACY_SOURCE; ignored")
       return nil
     }
     return LegacyMigrator.Context(
@@ -1030,7 +1030,7 @@ extension LegacyMigration {
     let resolvedFolder = String(cString: folder)
     free(folder)
     let new = old.deletingLastPathComponent().appendingPathComponent("\(name).app")
-    let log = { (message: String) in NSLog("Ardia: renaming \(old.path): \(message)") }
+    let log = { (message: String) in NSLog("Medusa: renaming \(old.path): \(message)") }
     var info = stat()
     let isIn = { (bundle: URL) in (running() ?? "").hasPrefix("\(resolvedFolder)/\(bundle.lastPathComponent)/") }
     let isBundle = lstat(old.path, &info) == 0 && info.st_mode & S_IFMT == S_IFDIR && isIn(old)

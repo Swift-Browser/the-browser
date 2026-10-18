@@ -8,7 +8,7 @@ import {
   type StripState,
   type TabStripCommand,
   type TabStripTransaction,
-} from "@medusa/ardiacore";
+} from "@medusa/medusacore";
 import { useBrowser, type BrowserState } from "../store/browser";
 import { changedIds } from "../store/changes";
 import { chromeChanged, groupStep, stripActual, stripPlan, type GroupBindings } from "../store/liveTabs";

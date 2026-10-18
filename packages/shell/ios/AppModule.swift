@@ -4,7 +4,7 @@ import ExpoModulesCore
 
 public class AppModule: Module {
   public func definition() -> ModuleDefinition {
-    Name("ArdiaApp")
+    Name("MedusaApp")
     Constant("apiVersion") { () -> Int in 11 }
     Events("onNotificationResponse", "onScriptCommand")
 
@@ -95,7 +95,7 @@ public class AppModule: Module {
       let configuration = "Release"
       #endif
       return [
-        "appName": info["CFBundleName"] as? String ?? "Ardia",
+        "appName": info["CFBundleName"] as? String ?? "Medusa",
         "appVersion": info["CFBundleShortVersionString"] as? String ?? "",
         "appBuild": info["CFBundleVersion"] as? String ?? "",
         "bundleId": Bundle.main.bundleIdentifier ?? "",
@@ -111,8 +111,8 @@ public class AppModule: Module {
         "feedbackEmail": Self.infoString("ACFeedbackEmail") as Any,
         "videoTourURL": Self.infoString("ACVideoTourURL") as Any,
         "releaseNotesURL": Self.infoString("ACReleaseNotesURL") as Any,
-        "isolatedInstance": env["ARDIA_BACKGROUND"] == "1" || env["ARDIA_DATA_DIR"] != nil,
-        "forceReleaseNotes": env["ARDIA_RELEASE_NOTES"] == "1",
+        "isolatedInstance": env["MEDUSA_BACKGROUND"] == "1" || env["MEDUSA_BACKGROUND"] == "1" || env["MEDUSA_DATA_DIR"] != nil || env["MEDUSA_DATA_DIR"] != nil,
+        "forceReleaseNotes": env["MEDUSA_RELEASE_NOTES"] == "1" || env["MEDUSA_RELEASE_NOTES"] == "1",
         "processStart": Self.processStart as Any,
         "bootTime": Self.bootTime as Any,
         "inApplicationsFolder": Self.inApplicationsFolder,
@@ -243,7 +243,7 @@ public class AppModule: Module {
 
     AsyncFunction("devSetPointer") { (windowId: String, x: Double, y: Double, on: Bool) -> Bool in
       #if DEBUG
-      let select = NSSelectorFromString("ardia_setPointerOverride:")
+      let select = NSSelectorFromString("medusa_setPointerOverride:")
       guard let view = NSClassFromString("RCTView"), (view as AnyObject).responds(to: select) else { return false }
       guard on else {
         _ = (view as AnyObject).perform(select, with: nil)
@@ -287,7 +287,7 @@ public class AppModule: Module {
 
     AsyncFunction("devHoverStats") { (reset: Bool) -> [String: Any] in
       #if DEBUG
-      let select = NSSelectorFromString("ardia_hoverStats:")
+      let select = NSSelectorFromString("medusa_hoverStats:")
       guard let view = NSClassFromString("RCTView"), (view as AnyObject).responds(to: select) else { return [:] }
       return ((view as AnyObject).perform(select, with: NSNumber(value: reset))?.takeUnretainedValue() as? [String: Any]) ?? [:]
       #else
@@ -297,7 +297,7 @@ public class AppModule: Module {
 
     AsyncFunction("devSetMouseButtons") { (pressed: Int) -> Bool in
       #if DEBUG
-      let select = NSSelectorFromString("ardia_setButtonsOverride:")
+      let select = NSSelectorFromString("medusa_setButtonsOverride:")
       guard let view = NSClassFromString("RCTView"), (view as AnyObject).responds(to: select) else { return false }
       _ = (view as AnyObject).perform(select, with: pressed < 0 ? nil : NSNumber(value: pressed > 0))
       return true
@@ -386,10 +386,12 @@ public class AppModule: Module {
   }
 
   private static let killSwitchNames: Set<String> = [
-    "ARDIA_SWITCHES", "ARDIA_EXTENSION_ACTION_POLL", "ARDIA_SLOW_TIMERS",
-    "ARDIA_MEMORY_TRIM", "ARDIA_MEMORY_TRIM_HEAP", "ARDIA_MEMORY_TRIM_ENGINE",
+    "MEDUSA_SWITCHES", "MEDUSA_EXTENSION_ACTION_POLL", "MEDUSA_SLOW_TIMERS",
+    "MEDUSA_MEMORY_TRIM", "MEDUSA_MEMORY_TRIM_HEAP", "MEDUSA_MEMORY_TRIM_ENGINE",
+    "MEDUSA_SWITCHES", "MEDUSA_EXTENSION_ACTION_POLL", "MEDUSA_SLOW_TIMERS",
+    "MEDUSA_MEMORY_TRIM", "MEDUSA_MEMORY_TRIM_HEAP", "MEDUSA_MEMORY_TRIM_ENGINE",
   ]
-  private static let scriptQueue = DispatchQueue(label: "ardia.dev-applescript")
+  private static let scriptQueue = DispatchQueue(label: "medusa.dev-applescript")
 
   static func snapshot(windowId: String, path: String, transparent: Bool = false) -> Bool {
     guard let view = WindowManager.shared.windows[windowId]?.contentView, let layer = view.layer else { return false }

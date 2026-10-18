@@ -1,4 +1,4 @@
-/*! Ardia demo symbol artwork. Drawn from open icon sets, not SF Symbols: Lucide (ISC), Tabler Icons (MIT), Iconoir (MIT), Phosphor Icons (MIT), Material Design Icons by Pictogrammers (Apache-2.0), plus original geometry. Notices: THIRD_PARTY_NOTICES.txt */
+/*! Medusa demo symbol artwork. Drawn from open icon sets, not SF Symbols: Lucide (ISC), Tabler Icons (MIT), Iconoir (MIT), Phosphor Icons (MIT), Material Design Icons by Pictogrammers (Apache-2.0), plus original geometry. Notices: THIRD_PARTY_NOTICES.txt */
 import type { SymbolLayer, SymbolWeight } from "./render";
 
 type EncodedLayer = readonly [body: number, viewBox: number, filled: 0 | 1, opacity: number, knockout: number, fits: readonly (readonly number[])[]];

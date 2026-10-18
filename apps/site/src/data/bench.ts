@@ -18,12 +18,12 @@ type RawRow = {
 type RawMachine = { model?: string; chip?: string; cores?: number | string; ram?: string | number; macOS?: string };
 type RawBench = { date: string; machine: string | RawMachine; method?: string; rows: RawRow[] };
 
-const SHOWN = /^(ardia|dia|helium)\b/i;
+const SHOWN = /^(medusa|dia|helium)\b/i;
 
 export type Figure = { value: number; decimals: number; from: number; suffix: string };
 export type Bar = {
   name: string;
-  isArdia: boolean;
+  isMedusa: boolean;
   isBest: boolean;
   share: number;
   value: Figure;
@@ -63,7 +63,7 @@ const sample = import.meta.env.DEV
   ? import.meta.glob<RawBench>("./bench.sample.json", { eager: true, import: "default" })["./bench.sample.json"]
   : undefined;
 
-const isArdia = (name: string) => /^ardia\b/i.test(name.trim());
+const isMedusa = (name: string) => /^medusa\b/i.test(name.trim());
 const decimalsFor = (v: number) => (Math.abs(v) >= 100 ? 0 : Math.abs(v) >= 1 ? 1 : 2);
 const number = (v: number, decimals: number) =>
   v.toLocaleString("en-US", { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
@@ -100,53 +100,53 @@ function margin(better: number, worse: number, row: RawRow, kind: Kind): Figure 
 const isBetter = (a: number, b: number, lower: boolean) => (lower ? a < b : a > b);
 
 function leadOverDia(row: RawRow, entries: RawBrowser[]): number {
-  const ardia = entries.find((b) => isArdia(b.name))!.median as number;
-  const rival = (entries.find((b) => /^dia\b/i.test(b.name.trim())) ?? entries.find((b) => !isArdia(b.name)))!.median as number;
-  if (ardia <= 0 || rival <= 0) return 0;
-  return Math.log(row.lowerIsBetter ? rival / ardia : ardia / rival);
+  const medusa = entries.find((b) => isMedusa(b.name))!.median as number;
+  const rival = (entries.find((b) => /^dia\b/i.test(b.name.trim())) ?? entries.find((b) => !isMedusa(b.name)))!.median as number;
+  if (medusa <= 0 || rival <= 0) return 0;
+  return Math.log(row.lowerIsBetter ? rival / medusa : medusa / rival);
 }
 
 function callFor(row: RawRow, entries: RawBrowser[], kind: Kind): Call {
   const value = (b: RawBrowser) => b.median as number;
-  const ardia = entries.find((b) => isArdia(b.name))!;
-  const others = entries.filter((b) => b !== ardia);
+  const medusa = entries.find((b) => isMedusa(b.name))!;
+  const others = entries.filter((b) => b !== medusa);
   const ranked = [...others].sort((x, y) => (row.lowerIsBetter ? value(x) - value(y) : value(y) - value(x)));
   const closest = ranked[0];
   const farthest = ranked[ranked.length - 1];
   const dia = others.find((b) => /^dia\b/i.test(b.name.trim()));
-  const headline = dia && isBetter(value(ardia), value(dia), row.lowerIsBetter) ? dia : null;
+  const headline = dia && isBetter(value(medusa), value(dia), row.lowerIsBetter) ? dia : null;
 
   if (headline) {
-    const lead = margin(value(ardia), value(headline), row, kind);
+    const lead = margin(value(medusa), value(headline), row, kind);
     const rest = ranked.filter((b) => b !== headline);
-    const beaten = rest.find((b) => isBetter(value(b), value(ardia), row.lowerIsBetter));
+    const beaten = rest.find((b) => isBetter(value(b), value(medusa), row.lowerIsBetter));
     const kicker = beaten ? `${row.label} · ${beaten.name} wins this one` : row.label;
     const near = rest[0];
     const second = !near
       ? null
       : beaten
         ? (() => {
-            const f = margin(value(beaten), value(ardia), row, kind);
+            const f = margin(value(beaten), value(medusa), row, kind);
             return f ? { figure: f, line: `${kind.word} for ${beaten.name}` } : null;
           })()
         : (() => {
-            const f = margin(value(ardia), value(near), row, kind);
+            const f = margin(value(medusa), value(near), row, kind);
             return f ? { figure: f, line: `${kind.word} than ${near.name}` } : null;
           })();
     if (!lead) return { lost: false, kicker, figure: null, line: `Dead even with ${headline.name}.`, second };
     return { lost: false, kicker, figure: lead, line: `${kind.word} than ${headline.name}`, second };
   }
 
-  if (isBetter(value(closest), value(ardia), row.lowerIsBetter)) {
-    const figure = margin(value(closest), value(ardia), row, kind);
+  if (isBetter(value(closest), value(medusa), row.lowerIsBetter)) {
+    const figure = margin(value(closest), value(medusa), row, kind);
     if (!figure)
       return { lost: true, kicker: row.label, figure: null, line: `Within a hair of ${closest.name}.`, second: null };
-    return { lost: true, kicker: `${row.label} · ${closest.name} wins this one`, figure, line: `${kind.word} than Ardia`, second: null };
+    return { lost: true, kicker: `${row.label} · ${closest.name} wins this one`, figure, line: `${kind.word} than Medusa`, second: null };
   }
 
-  const lead = margin(value(ardia), value(farthest), row, kind);
+  const lead = margin(value(medusa), value(farthest), row, kind);
   if (!lead) return { lost: false, kicker: row.label, figure: null, line: `Dead even with ${farthest.name}.`, second: null };
-  const near = closest !== farthest ? margin(value(ardia), value(closest), row, kind) : null;
+  const near = closest !== farthest ? margin(value(medusa), value(closest), row, kind) : null;
   return {
     lost: false,
     kicker: row.label,
@@ -158,7 +158,7 @@ function callFor(row: RawRow, entries: RawBrowser[], kind: Kind): Call {
 
 function shapeRow(row: RawRow): Omit<Row, "sub"> | null {
   const entries = (row.browsers as RawBrowser[]).filter((b) => typeof b.median === "number" && Number.isFinite(b.median) && b.median >= 0);
-  if (entries.length < 2 || !entries.some((b) => isArdia(b.name))) return null;
+  if (entries.length < 2 || !entries.some((b) => isMedusa(b.name))) return null;
   const kind = kindOf(row);
   const sorted = [...entries].sort((x, y) =>
     row.lowerIsBetter ? (x.median as number) - (y.median as number) : (y.median as number) - (x.median as number),
@@ -178,7 +178,7 @@ function shapeRow(row: RawRow): Omit<Row, "sub"> | null {
         : null;
     return {
       name: b.name,
-      isArdia: isArdia(b.name),
+      isMedusa: isMedusa(b.name),
       isBest: v === best,
       share: v / top,
       value: { value: v, decimals, from: 0, suffix: "" },
@@ -272,10 +272,10 @@ function build(source: RawBench | undefined, isSample: boolean): Bench | null {
     date: formatDate(raw.date),
     machine: raw.machine,
     versions: versionsOf(raw.rows),
-    rivals: [...new Set(raw.rows.flatMap((r) => (r.browsers as RawBrowser[]).map((b) => b.name)))].filter((n) => !isArdia(n)),
+    rivals: [...new Set(raw.rows.flatMap((r) => (r.browsers as RawBrowser[]).map((b) => b.name)))].filter((n) => !isMedusa(n)),
   };
 }
 
 export const bench: Bench | null = real ? build(real, false) : build(sample, true);
 export const display = (f: Figure) => number(f.value, f.decimals);
-export const BENCH_METHOD = "https://github.com/mantrakp04/ardia/blob/main/docs/perf/vs-browsers.md";
+export const BENCH_METHOD = "https://github.com/mantrakp04/medusa/blob/main/docs/perf/vs-browsers.md";

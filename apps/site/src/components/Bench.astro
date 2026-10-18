@@ -25,7 +25,7 @@ const tick = "M3 13.5c2.2 1.4 4.3 3.6 6.4 6.6C13 13 17.6 7.4 25 2.6";
             Receipts.
           </h2>
           <p class="lede" data-reveal style="--i: 1">
-            Ardia against {named}. Same Mac, same pages, every release. Medians, so one lucky run doesn’t count.
+            Medusa against {named}. Same Mac, same pages, every release. Medians, so one lucky run doesn’t count.
           </p>
           {bench.sample && <p class="label sample">Sample numbers. Not measured. Dev only.</p>}
         </header>
@@ -131,7 +131,7 @@ const tick = "M3 13.5c2.2 1.4 4.3 3.6 6.4 6.6C13 13 17.6 7.4 25 2.6";
                 </div>
                 <div class="bars" aria-hidden="true">
                   {r.bars.map((b, j) => (
-                    <div class:list={["b", { us: b.isArdia, best: b.isBest }]} style={`--i: ${j}; --w: ${b.share.toFixed(4)}`}>
+                    <div class:list={["b", { us: b.isMedusa, best: b.isBest }]} style={`--i: ${j}; --w: ${b.share.toFixed(4)}`}>
                       <span class="name">{b.name}</span>
                       <span class="track">
                         <span class="bar" />

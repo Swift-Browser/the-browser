@@ -111,7 +111,7 @@ type NativeExtensions = {
   chooseFolder(): Promise<string | null>;
 };
 
-const Native = requireNativeModule<NativeExtensions>("ArdiaExtensions");
+const Native = requireNativeModule<NativeExtensions>("MedusaExtensions");
 
 if (__DEV__) (globalThis as { acExtensions?: unknown }).acExtensions = Native;
 

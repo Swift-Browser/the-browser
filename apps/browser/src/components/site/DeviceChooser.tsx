@@ -5,7 +5,7 @@ import {
   refreshDeviceChooser,
   selectDevice,
   type DeviceChooser as Chooser,
-} from "@medusa/ardiacore";
+} from "@medusa/medusacore";
 import { Symbol } from "@medusa/shell";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, Pressable, ScrollView, Text, View } from "react-native";
@@ -107,7 +107,7 @@ export function DeviceChooser({ tabId, left, top }: { tabId: string; left: numbe
     body = (
       <Notice
         icon="lock"
-        text="Ardia needs access to Bluetooth to find devices."
+        text="Medusa needs access to Bluetooth to find devices."
         link="Open Bluetooth Settings"
         onLink={() => void openBluetoothSettings(chooser.id)}
       />

@@ -1,6 +1,6 @@
 import { forwardRef, useEffect, useImperativeHandle, useLayoutEffect, useRef, useState } from "react";
 import { View } from "react-native";
-import type { NavigationState, WebViewHandle, WebViewProps } from "@medusa-real/ardiacore";
+import type { NavigationState, WebViewHandle, WebViewProps } from "@medusa-real/medusacore";
 import { hostOf, isFrameable } from "../../frameable";
 import { faviconFor, PAGE_THEMES, pageTitle } from "../../pages";
 import { useBrowser } from "../../../../browser/src/store/browser";

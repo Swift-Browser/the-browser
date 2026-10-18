@@ -1,4 +1,4 @@
-import { setAutoPictureInPicture, setDisplayMediaPicker, setVideoUpscaling } from "@medusa/ardiacore";
+import { setAutoPictureInPicture, setDisplayMediaPicker, setVideoUpscaling } from "@medusa/medusacore";
 import { useRef } from "react";
 import { useBrowser } from "../../store/browser";
 import { useStoreWhile } from "../../store/tabWatch";

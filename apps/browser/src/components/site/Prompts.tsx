@@ -1,4 +1,4 @@
-import { getSiteSettings, resolveExternalApp, setSiteSetting, type AutofillPrompt as ChromeAutofillPrompt, type AutofillPromptAnswer, type PasswordPrompt as ChromePasswordPrompt, type PasswordPromptAnswer } from "@medusa/ardiacore";
+import { getSiteSettings, resolveExternalApp, setSiteSetting, type AutofillPrompt as ChromeAutofillPrompt, type AutofillPromptAnswer, type PasswordPrompt as ChromePasswordPrompt, type PasswordPromptAnswer } from "@medusa/medusacore";
 import { Symbol } from "@medusa/shell";
 import { useState } from "react";
 import { Image, Pressable, Text, View } from "react-native";

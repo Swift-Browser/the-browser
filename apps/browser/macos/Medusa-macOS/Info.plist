@@ -95,7 +95,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Websites may ask to use your camera.</string>
 	<key>NSDockTilePlugIn</key>
-	<string>ArdiaDockTile.plugin</string>
+	<string>MedusaDockTile.plugin</string>
 	<key>NSLocalNetworkUsageDescription</key>
 	<string>Medusa finds Cast devices on your network so you can cast tabs to them.</string>
 	<key>NSLocationUsageDescription</key>

@@ -13,10 +13,10 @@ export function emitNativeEvent(module: string, event: string, payload: unknown)
 }
 
 const moduleValues: Record<string, Record<string, unknown>> = {
-  ArdiaTranslate: { available: false, userLanguages: () => ["en"], languageName: (id: string) => id },
-  ArdiaGlassEffect: { isLiquidGlass: () => true },
-  ArdiaShell: { readDocument: () => null, writeDocument: () => {}, removeDocument: () => {}, copyText: () => {} },
-  ArdiaSystem: { fileExists: () => false, hapticTick: () => {} },
+  MedusaTranslate: { available: false, userLanguages: () => ["en"], languageName: (id: string) => id },
+  MedusaGlassEffect: { isLiquidGlass: () => true },
+  MedusaShell: { readDocument: () => null, writeDocument: () => {}, removeDocument: () => {}, copyText: () => {} },
+  MedusaSystem: { fileExists: () => false, hapticTick: () => {} },
 };
 
 export function provideNativeModule(name: string, values: Record<string, unknown>) {

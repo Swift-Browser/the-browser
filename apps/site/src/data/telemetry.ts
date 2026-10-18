@@ -1,11 +1,11 @@
-export const PRODUCTION_HOSTS = ["ardia.dev", "www.ardia.dev", "netnyahoo.com", "www.netnyahoo.com"];
+export const PRODUCTION_HOSTS = ["medusa.dev", "www.medusa.dev", "netnyahoo.com", "www.netnyahoo.com"];
 
 export const DEV_OPT_IN_KEY = "ac:telemetry";
 
 export const LOGS_PATH = "/otel/v1/logs";
 export const REPLAY_PATH = "/otel/replay";
 
-export const SERVICE_NAME = "ardia-site";
+export const SERVICE_NAME = "medusa-site";
 
 export const LEGACY_VISITOR_ID_KEY = "ph_phc_qzH3gR3HsZEF8fUXnwEdugsZm6Yq5pUPiEUGMqjxL3QY_posthog";
 

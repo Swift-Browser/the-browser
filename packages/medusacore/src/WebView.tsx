@@ -321,7 +321,7 @@ type NativeHandle = Omit<
   discard(unload: boolean): Promise<DiscardOutcome>;
 };
 
-const NativeWebView = requireNativeViewManager<NativeProps>("ArdiaCEF");
+const NativeWebView = requireNativeViewManager<NativeProps>("MedusaCEF");
 
 const VIEW_RETRIES = 3;
 const isViewMissing = (error: unknown) =>

@@ -1,4 +1,4 @@
-import { CastMode, preferredCastMode, startCasting, stopCasting, type CastSink } from "@medusa/ardiacore";
+import { CastMode, preferredCastMode, startCasting, stopCasting, type CastSink } from "@medusa/medusacore";
 import { openExternalURL, showMenu, Symbol } from "@medusa/shell";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, Pressable, ScrollView, Text, View } from "react-native";
@@ -37,7 +37,7 @@ export function CastPicker({ tabId, paneWidth }: { tabId: string; paneWidth: num
 
         {dialog.permissionRejected ? (
           <Message
-            text="Ardia needs Local Network access to find Cast devices."
+            text="Medusa needs Local Network access to find Cast devices."
             link="Open Local Network Settings"
             onLink={() => void openExternalURL("x-apple.systempreferences:com.apple.preference.security?Privacy_LocalNetwork")}
           />

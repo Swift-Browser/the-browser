@@ -13,12 +13,12 @@ if [[ "${1:-}" == --key ]]; then
   exit 0
 fi
 
-src=${ARDIACORE_FRAMEWORK:-$HOME/chromium-build/chromium_git/chromium/src/out/Release_GN_arm64/Chromium Framework.framework}
-if [[ -z "${ARDIACORE_FRAMEWORK:-}" && ! -d "$src" ]]; then
+src=${MEDUSACORE_FRAMEWORK:-$HOME/chromium-build/chromium_git/chromium/src/out/Release_GN_arm64/Chromium Framework.framework}
+if [[ -z "${MEDUSACORE_FRAMEWORK:-}" && ! -d "$src" ]]; then
   src=$("$here/fetch-engine.sh") || exit 1
 fi
-dest=${ARDIACORE_STAGE_DIR:-$repo/apps/browser/build-ardiacore/ArdiaCoreFramework}
-cache=${ARDIACORE_STAGE_CACHE:-$repo/apps/browser/build-ardiacore/staged}
+dest=${MEDUSACORE_STAGE_DIR:-$repo/apps/browser/build-medusacore/MedusaCoreFramework}
+cache=${MEDUSACORE_STAGE_CACHE:-$repo/apps/browser/build-medusacore/staged}
 
 if [[ "${1:-}" == --publish ]]; then
   tmp=$2 key=$3
@@ -38,7 +38,7 @@ if [[ "${1:-}" == --publish ]]; then
   exit 0
 fi
 
-[[ -d "$src" ]] || { echo "error: no ArdiaCore framework at $src (engine/ardiacore/apply.sh, then build chrome_framework)" >&2; exit 1; }
+[[ -d "$src" ]] || { echo "error: no MedusaCore framework at $src (engine/medusacore/apply.sh, then build chrome_framework)" >&2; exit 1; }
 stamp="$dest/.stamp"
 
 fill_cache() {
@@ -71,7 +71,7 @@ fi
 mkdir -p "$cache" "$dest"
 for attempt in 1 2 3; do
   if [[ ! -f "$cache/$key/.complete" ]]; then
-    key=$(fill_cache) || { echo "error: staging ArdiaCore from $src failed" >&2; exit 1; }
+    key=$(fill_cache) || { echo "error: staging MedusaCore from $src failed" >&2; exit 1; }
   fi
   touch "$cache/$key/.used" 2>/dev/null || continue
   rm -rf "$dest/$name.framework.new"
@@ -81,5 +81,5 @@ for attempt in 1 2 3; do
   echo "$key" >"$stamp"
   exit 0
 done
-echo "error: couldn't stage ArdiaCore from $cache (it kept changing under this build)" >&2
+echo "error: couldn't stage MedusaCore from $cache (it kept changing under this build)" >&2
 exit 1

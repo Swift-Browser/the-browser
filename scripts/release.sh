@@ -25,7 +25,7 @@ done
 root="$(cd "$(dirname "$0")/.." && pwd -P)"
 app_dir="$root/apps/browser"
 macos="$app_dir/macos"
-ardiacore="$root/packages/ardiacore"
+medusacore="$root/packages/medusacore"
 repo="Swift-Browser/the-browser"
 notes_page="https://github.com/$repo/releases"
 notary_profile="${NOTARY_PROFILE:-medusa}"
@@ -48,10 +48,10 @@ app="$dist/export/Medusa.app"
 zip="$dist/Medusa-$version.zip"
 dmg="$dist/Medusa-$version.dmg"
 chromium_src="${CHROMIUM_SRC:-$HOME/chromium-build/chromium_git/chromium/src}"
-framework_src="${ARDIACORE_FRAMEWORK:-$chromium_src/out/Release_GN_arm64/Chromium Framework.framework}"
+framework_src="${MEDUSACORE_FRAMEWORK:-$chromium_src/out/Release_GN_arm64/Chromium Framework.framework}"
 die() { echo "error: $*" >&2; exit 1; }
 
-pbx="$macos/Ardia.xcodeproj/project.pbxproj"
+pbx="$macos/Medusa.xcodeproj/project.pbxproj"
 project_version="$(sed -n 's/.*MARKETING_VERSION = "\{0,1\}\([^";]*\)"\{0,1\};/\1/p' "$pbx" | sort -u)"
 project_build="$(sed -n 's/.*CURRENT_PROJECT_VERSION = \(.*\);/\1/p' "$pbx" | sort -u)"
 version_settings=()
@@ -76,7 +76,7 @@ if [ -f "$notes" ]; then
 elif [ "$rc" = 1 ]; then
   headline="Release candidate $version"
   notes_channel="$channel"
-  notes_body() { echo "A release candidate of Ardia $version. Not published."; }
+  notes_body() { echo "A release candidate of Medusa $version. Not published."; }
 else
   die "no release notes: write docs/release-notes/$version.md first"
 fi
@@ -88,13 +88,13 @@ if [ -n "$dirty" ]; then
   echo "$dirty" >&2
 fi
 
-[ -d "$framework_src" ] || die "no ArdiaCore framework at $framework_src (engine/ardiacore/apply.sh, then build chrome_framework)"
-if [ -z "${ARDIACORE_FRAMEWORK:-}" ]; then
-  for layer in ardiacore chromium; do
+[ -d "$framework_src" ] || die "no MedusaCore framework at $framework_src (engine/medusacore/apply.sh, then build chrome_framework)"
+if [ -z "${MEDUSACORE_FRAMEWORK:-}" ]; then
+  for layer in medusacore chromium; do
     "$root/engine/$layer/apply.sh" --check \
       || die "the Chromium tree differs from engine/$layer: run engine/$layer/apply.sh and rebuild chrome_framework"
   done
-  newest="$(find "$chromium_src/ardia" "$chromium_src/chrome/browser/ardia" -type f \
+  newest="$(find "$chromium_src/medusa" "$chromium_src/chrome/browser/medusa" -type f \
     -newer "$framework_src/Versions/Current/Chromium Framework" -print -quit)"
   [ -z "$newest" ] || die "$newest is newer than the framework: rebuild chrome_framework (scripts/agent/engine-build, docs/engine-build.md)"
   framework_newest="$(find "$framework_src/Versions/Current/" -type f -exec stat -f '%m %N' {} + | sort -n | tail -1 | cut -d' ' -f2-)"
@@ -142,13 +142,13 @@ mkdir -p "$dist"
 } > "$dist/provenance.txt"
 
 echo "==> Content blocker"
-"$ardiacore/scripts/ubo.sh"
-[ -f "$ardiacore/vendor/ubo/ext/manifest.json" ] || die "uBlock Origin isn't installed ($ardiacore/scripts/ubo.sh)"
+"$medusacore/scripts/ubo.sh"
+[ -f "$medusacore/vendor/ubo/ext/manifest.json" ] || die "uBlock Origin isn't installed ($medusacore/scripts/ubo.sh)"
 
 echo "==> Archive"
-(cd "$app_dir" && ARDIACORE_FRAMEWORK="$framework_src" "$root/scripts/agent/locked" pod --wait 1800 -- \
-  "$root/scripts/agent/locked" xcodebuild --wait 1800 -- xcodebuild -workspace macos/Ardia.xcworkspace -scheme Ardia-macOS \
-  -configuration Release -destination 'generic/platform=macOS' ARCHS=arm64 ARDIACORE_STAGE_DIR="$build/ArdiaCoreFramework" \
+(cd "$app_dir" && MEDUSACORE_FRAMEWORK="$framework_src" "$root/scripts/agent/locked" pod --wait 1800 -- \
+  "$root/scripts/agent/locked" xcodebuild --wait 1800 -- xcodebuild -workspace macos/Medusa.xcworkspace -scheme Medusa-macOS \
+  -configuration Release -destination 'generic/platform=macOS' ARCHS=arm64 MEDUSACORE_STAGE_DIR="$build/MedusaCoreFramework" \
   ${version_settings[@]+"${version_settings[@]}"} AC_UPDATE_CHANNEL="$channel" \
   -derivedDataPath "$build" -archivePath "$archive" -allowProvisioningUpdates archive) \
   > "$dist/archive.log" 2>&1 || {
@@ -174,7 +174,7 @@ cli_tarball="$dist/medusa-cli-$version-macos-arm64.tar.gz"
 awk '{ print $1 }' "$cli_tarball.sha256" >"$app/Contents/Resources/medusa-cli.sha256"
 
 echo "==> Sign Chrome's framework"
-entitlements_dir="$ardiacore/scripts/signing"
+entitlements_dir="$medusacore/scripts/signing"
 sign() {
   local attempt
   for attempt in 1 2 3 4 5; do
@@ -186,7 +186,7 @@ sign() {
 }
 fw="$app/Contents/Frameworks/Chromium Framework.framework"
 fwv="$(cd "$fw/Versions/Current" && pwd -P)" || die "no Chromium Framework.framework in the export"
-"$ardiacore/scripts/strip-engine.sh" "$app" "$dist/symbols"
+"$medusacore/scripts/strip-engine.sh" "$app" "$dist/symbols"
 for lib in "$fwv"/Libraries/*.dylib; do sign "$lib"; done
 for helper in "$fwv"/Helpers/*.app; do
   case "$(basename "$helper")" in
@@ -204,7 +204,7 @@ sign --preserve-metadata=entitlements,requirements,flags,runtime "$app"
 
 echo "==> Verify"
 codesign --verify --deep --strict "$app"
-[ -d "$archive/dSYMs/Medusa.app.dSYM" ] || [ -d "$archive/dSYMs/Ardia.app.dSYM" ] || die "the archive has no dSYM"
+[ -d "$archive/dSYMs/Medusa.app.dSYM" ] || [ -d "$archive/dSYMs/Medusa.app.dSYM" ] || die "the archive has no dSYM"
 entitlements() { codesign -d --entitlements - --xml "$1" 2>/dev/null; }
 info() { plutil -extract "$1" raw "$app/Contents/Info.plist" 2>/dev/null; }
 [ "$(info CFBundleIdentifier)" = com.medusa.browser ] || die "bundle id is $(info CFBundleIdentifier)"
@@ -217,7 +217,7 @@ for key in NSDockTilePlugIn NSCameraUsageDescription NSMicrophoneUsageDescriptio
   [ -n "$(info "$key")" ] || die "Info.plist has no $key"
 done
 [ -d "$app/Contents/Frameworks/Sparkle.framework" ] || true
-[ -d "$app/Contents/PlugIns/MedusaDockTile.plugin" ] || [ -d "$app/Contents/PlugIns/ArdiaDockTile.plugin" ] || die "no dock tile plug-in"
+[ -d "$app/Contents/PlugIns/MedusaDockTile.plugin" ] || [ -d "$app/Contents/PlugIns/MedusaDockTile.plugin" ] || die "no dock tile plug-in"
 [ -f "$app/Contents/embedded.provisionprofile" ] || die "no Developer ID provisioning profile (keychain groups need it)"
 [ -f "$app/Contents/Resources/Extensions/ublock/manifest.json" ] || die "no uBlock Origin in the app"
 designated="$(codesign -d -r- "$app" 2>&1 | sed -n 's/^designated => //p')"
@@ -239,10 +239,10 @@ done < <(find "$app" \( -name "*.app" -o -name "*.framework" -o -name "*.dylib" 
   -o -path "*/Helpers/*" -type f -perm -u+x -o -path "*/MacOS/*" -type f \) -print0)
 
 engine_tree="$(git -C "$root" rev-parse HEAD:engine)"
-engine_archive="$dist/ArdiaCore-${engine_tree:0:12}.tar.xz"
+engine_archive="$dist/MedusaCore-${engine_tree:0:12}.tar.xz"
 engine_pack=""
-if [ "$rc" = 0 ] && [ -z "${ARDIACORE_FRAMEWORK:-}" ] \
-  && ! awk -v t="$engine_tree" '$1 == t { found = 1 } END { exit !found }' "$ardiacore/prebuilt-engines.tsv"; then
+if [ "$rc" = 0 ] && [ -z "${MEDUSACORE_FRAMEWORK:-}" ] \
+  && ! awk -v t="$engine_tree" '$1 == t { found = 1 } END { exit !found }' "$medusacore/prebuilt-engines.tsv"; then
   echo "==> Pack the engine (background)"
   (
     set -e
@@ -261,13 +261,13 @@ echo "==> Launch check"
 check_data="$(mktemp -d "${TMPDIR:-/tmp}/ac-release.XXXXXX")"
 before="$(pgrep -f "^$app/Contents/MacOS/Medusa" | sort || true)"
 check_port="$(python3 -c 'import socket; s = socket.socket(); s.bind(("127.0.0.1", 0)); print(s.getsockname()[1])')"
-open -g -n --env ARDIA_BACKGROUND=1 --env ARDIA_DATA_DIR="$check_data" --env ARDIA_REMOTE_DEBUGGING_PORT="$check_port" "$app"
+open -g -n --env MEDUSA_BACKGROUND=1 --env MEDUSA_DATA_DIR="$check_data" --env MEDUSA_REMOTE_DEBUGGING_PORT="$check_port" "$app"
 ubo_ok=0
 node "$root/scripts/lib/ubo-ready.mjs" "$check_port" 90 && ubo_ok=1
 sleep 5
 pid=""
 for p in $(pgrep -f "^$app/Contents/MacOS/Medusa\$" || true); do
-  ps -E -ww -o command= -p "$p" 2>/dev/null | grep -qF "ARDIA_DATA_DIR=$check_data" && { pid="$p"; break; }
+  ps -E -ww -o command= -p "$p" 2>/dev/null | grep -qF "MEDUSA_DATA_DIR=$check_data" && { pid="$p"; break; }
 done
 [ -n "$pid" ] || pid="$(comm -13 <(echo "$before") <(pgrep -f "^$app/Contents/MacOS/Medusa" | sort || true) | head -1)"
 [ -n "$pid" ] || die "the app didn't start (or quit)"
@@ -365,7 +365,7 @@ fi
 
 echo
 [ "$notarize" = 1 ] && echo "Notarized and stapled." || echo "NOT notarized."
-[ -n "$engine_pack" ] && echo "New engine: publish $(basename "$engine_archive") with the release, then add prebuilt-engine.tsv's line to packages/ardiacore/prebuilt-engines.tsv."
+[ -n "$engine_pack" ] && echo "New engine: publish $(basename "$engine_archive") with the release, then add prebuilt-engine.tsv's line to packages/medusacore/prebuilt-engines.tsv."
 [ "$rc" = 1 ] && echo "Release candidate: never publish dist/$version-rc."
 [ -n "$phased" ] && echo "Phased rollout: $phased s between steps (the appcast item has phasedRolloutInterval; the whole release takes $((phased * 7)) s)."
 du -sh "$app" "$dmg" "$zip" "$cli_tarball" "$dist/appcast.xml" "$dist/release-notes.md" ${engine_files[@]+"${engine_files[@]}"}

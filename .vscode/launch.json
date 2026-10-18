@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:the-browser}/packages/sync",
+            "name": "Debug legacy-migration (packages/sync)",
+            "target": "legacy-migration",
+            "configuration": "debug",
+            "preLaunchTask": "swift: Build Debug legacy-migration (packages/sync)"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:the-browser}/packages/sync",
+            "name": "Release legacy-migration (packages/sync)",
+            "target": "legacy-migration",
+            "configuration": "release",
+            "preLaunchTask": "swift: Build Release legacy-migration (packages/sync)"
+        }
+    ]
+}

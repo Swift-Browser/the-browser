@@ -4,14 +4,14 @@ import IOKit.ps
 
 public class CefModule: Module {
   public func definition() -> ModuleDefinition {
-    Name("ArdiaCEF")
+    Name("MedusaCEF")
     Events("onDownload", "onPermission", "onPermissionDismissed", "onContentBlocker", "onSystemState", "onEngineEvent", "onTabStrip")
 
     OnCreate {
-      ArdiaCoreEngineBridge.setEventHandler { [weak self] topic, json in self?.sendEvent("onEngineEvent", ["topic": topic, "payload": json]) }
-      ArdiaCoreTabStrip.setHandler { [weak self] tx in self?.sendEvent("onTabStrip", tx) }
-      ArdiaCoreServices.downloadsHandler = { [weak self] download in self?.sendEvent("onDownload", download) }
-      ArdiaCoreHost.eventHandler = { [weak self] name, payload in
+      MedusaCoreEngineBridge.setEventHandler { [weak self] topic, json in self?.sendEvent("onEngineEvent", ["topic": topic, "payload": json]) }
+      MedusaCoreTabStrip.setHandler { [weak self] tx in self?.sendEvent("onTabStrip", tx) }
+      MedusaCoreServices.downloadsHandler = { [weak self] download in self?.sendEvent("onDownload", download) }
+      MedusaCoreHost.eventHandler = { [weak self] name, payload in
         switch name {
         case "permission": self?.sendEvent("onPermission", payload)
         case "permissionDismissed": self?.sendEvent("onPermissionDismissed", payload)
@@ -24,202 +24,202 @@ public class CefModule: Module {
       SystemState.shared.start()
     }
 
-    AsyncFunction("engineInfo") { ArdiaCoreHost.engineInfo }.runOnQueue(.main)
-    AsyncFunction("chromeWindows") { ArdiaCoreHost.chromeWindows }.runOnQueue(.main)
-    AsyncFunction("devExternalLaunches") { ArdiaCoreHost.testExternalLaunches() }.runOnQueue(.main)
-    AsyncFunction("devEvents") { (browserId: Int) in ArdiaCoreWebView.devEvents(browserId: Int32(browserId)) }.runOnQueue(.main)
-    AsyncFunction("devWindowNumber") { (browserId: Int) in ArdiaCoreWebView.devWindowNumber(browserId: Int32(browserId)) }.runOnQueue(.main)
-    AsyncFunction("devPictureInPicture") { ArdiaCoreWebView.devPictureInPicture() }.runOnQueue(.main)
-    AsyncFunction("devPictureInPictureAction") { (action: String) in ArdiaCoreWebView.devPictureInPictureAction(action) }.runOnQueue(.main)
-    AsyncFunction("devFocusPage") { (browserId: Int) in ArdiaCoreWebView.devFocusPage(browserId: Int32(browserId)) }.runOnQueue(.main)
+    AsyncFunction("engineInfo") { MedusaCoreHost.engineInfo }.runOnQueue(.main)
+    AsyncFunction("chromeWindows") { MedusaCoreHost.chromeWindows }.runOnQueue(.main)
+    AsyncFunction("devExternalLaunches") { MedusaCoreHost.testExternalLaunches() }.runOnQueue(.main)
+    AsyncFunction("devEvents") { (browserId: Int) in MedusaCoreWebView.devEvents(browserId: Int32(browserId)) }.runOnQueue(.main)
+    AsyncFunction("devWindowNumber") { (browserId: Int) in MedusaCoreWebView.devWindowNumber(browserId: Int32(browserId)) }.runOnQueue(.main)
+    AsyncFunction("devPictureInPicture") { MedusaCoreWebView.devPictureInPicture() }.runOnQueue(.main)
+    AsyncFunction("devPictureInPictureAction") { (action: String) in MedusaCoreWebView.devPictureInPictureAction(action) }.runOnQueue(.main)
+    AsyncFunction("devFocusPage") { (browserId: Int) in MedusaCoreWebView.devFocusPage(browserId: Int32(browserId)) }.runOnQueue(.main)
     AsyncFunction("devReservedGlobalShortcut") { (shortcut: String) -> Bool in
-      ArdiaCoreHost.devReservedGlobalShortcut(shortcut)
+      MedusaCoreHost.devReservedGlobalShortcut(shortcut)
     }.runOnQueue(.main)
     AsyncFunction("devWindow") { (windowNumber: Int, action: String) -> String in
       guard let window = NSApp.window(withWindowNumber: windowNumber) else { return "" }
       return ACChromeWindowHost.devAction(action, window: window) ?? ""
     }.runOnQueue(.main)
-    Function("prepareTransfer") { (key: String) in ArdiaCoreWebView.prepareTransfer(key) }
-    Function("releaseTransfer") { (key: String) in ArdiaCoreWebView.releaseTransfer(key) }
+    Function("prepareTransfer") { (key: String) in MedusaCoreWebView.prepareTransfer(key) }
+    Function("releaseTransfer") { (key: String) in MedusaCoreWebView.releaseTransfer(key) }
     Function("claimLaunchTab") { (key: String, url: String, profile: String) in
-      ArdiaCoreWebView.claimLaunchTab(key, url: url, profile: profile)
+      MedusaCoreWebView.claimLaunchTab(key, url: url, profile: profile)
     }
-    Function("revealTab") { (key: String) in ArdiaCoreWebView.revealTab(key) }
-    Function("dropTabReveals") { (key: String) in ArdiaCoreWebView.dropTabReveals(key) }
-    Function("revealOffered") { (adoptId: String, key: String) in ArdiaCoreWebView.revealOffered(adoptId, over: key) }
-    AsyncFunction("routeLinkTabs") { (urls: [String]) -> [String: Any] in ArdiaCoreWebView.routeLinkTabs(urls) }.runOnQueue(.main)
-    AsyncFunction("tabStripCommand") { (id: Int, command: [String: Any]) in ArdiaCoreTabStrip.command(id, command: command) }
+    Function("revealTab") { (key: String) in MedusaCoreWebView.revealTab(key) }
+    Function("dropTabReveals") { (key: String) in MedusaCoreWebView.dropTabReveals(key) }
+    Function("revealOffered") { (adoptId: String, key: String) in MedusaCoreWebView.revealOffered(adoptId, over: key) }
+    AsyncFunction("routeLinkTabs") { (urls: [String]) -> [String: Any] in MedusaCoreWebView.routeLinkTabs(urls) }.runOnQueue(.main)
+    AsyncFunction("tabStripCommand") { (id: Int, command: [String: Any]) in MedusaCoreTabStrip.command(id, command: command) }
       .runOnQueue(.main)
-    AsyncFunction("tabStrips") { ArdiaCoreTabStrip.allStrips }.runOnQueue(.main)
-    AsyncFunction("components") { (promise: Promise) in ArdiaCoreServices.components { promise.resolve($0) } }.runOnQueue(.main)
+    AsyncFunction("tabStrips") { MedusaCoreTabStrip.allStrips }.runOnQueue(.main)
+    AsyncFunction("components") { (promise: Promise) in MedusaCoreServices.components { promise.resolve($0) } }.runOnQueue(.main)
 
-    AsyncFunction("beginTracing") { (promise: Promise) in ArdiaCoreHost.beginTracing { promise.resolve($0) } }.runOnQueue(.main)
-    AsyncFunction("endTracing") { (keep: Bool, promise: Promise) in ArdiaCoreHost.endTracing(keep: keep) { promise.resolve($0) } }
+    AsyncFunction("beginTracing") { (promise: Promise) in MedusaCoreHost.beginTracing { promise.resolve($0) } }.runOnQueue(.main)
+    AsyncFunction("endTracing") { (keep: Bool, promise: Promise) in MedusaCoreHost.endTracing(keep: keep) { promise.resolve($0) } }
       .runOnQueue(.main)
-    AsyncFunction("isTracing") { ArdiaCoreHost.isTracing }.runOnQueue(.main)
-    AsyncFunction("setSearchEngineName") { (name: String) in ArdiaCoreWebView.setSearchEngineName(name) }.runOnQueue(.main)
+    AsyncFunction("isTracing") { MedusaCoreHost.isTracing }.runOnQueue(.main)
+    AsyncFunction("setSearchEngineName") { (name: String) in MedusaCoreWebView.setSearchEngineName(name) }.runOnQueue(.main)
     AsyncFunction("forgetOpenedURL") { (id: Int) in }.runOnQueue(.main)
-    AsyncFunction("setDisplayMediaPicker") { (enabled: Bool) in ArdiaCoreWebView.setDisplayMediaPicker(enabled) }.runOnQueue(.main)
-    AsyncFunction("setAutoPictureInPicture") { (enabled: Bool) in ArdiaCoreWebView.setAutoPictureInPictureEnabled(enabled) }.runOnQueue(.main)
-    AsyncFunction("setVideoUpscaling") { (enabled: Bool) in ArdiaCoreWebView.setVideoUpscalingEnabled(enabled) }.runOnQueue(.main)
+    AsyncFunction("setDisplayMediaPicker") { (enabled: Bool) in MedusaCoreWebView.setDisplayMediaPicker(enabled) }.runOnQueue(.main)
+    AsyncFunction("setAutoPictureInPicture") { (enabled: Bool) in MedusaCoreWebView.setAutoPictureInPictureEnabled(enabled) }.runOnQueue(.main)
+    AsyncFunction("setVideoUpscaling") { (enabled: Bool) in MedusaCoreWebView.setVideoUpscalingEnabled(enabled) }.runOnQueue(.main)
     AsyncFunction("setVideoUpscalingTestConditions") { (conditions: [String: Bool]) in
-      ArdiaCoreWebView.setVideoUpscalingTestConditions(conditions.mapValues { NSNumber(value: $0) })
+      MedusaCoreWebView.setVideoUpscalingTestConditions(conditions.mapValues { NSNumber(value: $0) })
     }.runOnQueue(.main)
-    AsyncFunction("videoUpscalingState") { ArdiaCoreWebView.videoUpscalingState() }.runOnQueue(.main)
-    AsyncFunction("displayMediaSources") { ArdiaCoreHost.displayMediaSources }.runOnQueue(.main)
-    AsyncFunction("listTasks") { (promise: Promise) in ArdiaCoreServices.tasks { promise.resolve($0) } }.runOnQueue(.main)
+    AsyncFunction("videoUpscalingState") { MedusaCoreWebView.videoUpscalingState() }.runOnQueue(.main)
+    AsyncFunction("displayMediaSources") { MedusaCoreHost.displayMediaSources }.runOnQueue(.main)
+    AsyncFunction("listTasks") { (promise: Promise) in MedusaCoreServices.tasks { promise.resolve($0) } }.runOnQueue(.main)
     AsyncFunction("systemState") { SystemState.shared.snapshot }.runOnQueue(.main)
     Function("inputIdleSeconds") { () -> Double in
       guard NSRunningApplication.current.isActive else { return 3600 }
       return CGEventSource.secondsSinceLastEventType(.combinedSessionState, eventType: CGEventType(rawValue: UInt32.max)!)
     }
 
-    AsyncFunction("cancelDownload") { (id: String) in ArdiaCoreServices.downloadCommand("cancel", id: id) }.runOnQueue(.main)
-    AsyncFunction("pauseDownload") { (id: String) in ArdiaCoreServices.downloadCommand("pause", id: id) }.runOnQueue(.main)
-    AsyncFunction("resumeDownload") { (id: String) in ArdiaCoreServices.downloadCommand("resume", id: id) }.runOnQueue(.main)
+    AsyncFunction("cancelDownload") { (id: String) in MedusaCoreServices.downloadCommand("cancel", id: id) }.runOnQueue(.main)
+    AsyncFunction("pauseDownload") { (id: String) in MedusaCoreServices.downloadCommand("pause", id: id) }.runOnQueue(.main)
+    AsyncFunction("resumeDownload") { (id: String) in MedusaCoreServices.downloadCommand("resume", id: id) }.runOnQueue(.main)
 
     AsyncFunction("resolvePermission") { (id: String, result: String, remember: Bool?) in
-      ArdiaCoreHost.resolvePermission(id, result: result, remember: remember ?? false)
+      MedusaCoreHost.resolvePermission(id, result: result, remember: remember ?? false)
     }.runOnQueue(.main)
     AsyncFunction("resolveExternalApp") { (id: String, open: Bool, remember: Bool?) in
-      ArdiaCoreHost.resolveExternalApp(id, open: open, remember: remember ?? false)
+      MedusaCoreHost.resolveExternalApp(id, open: open, remember: remember ?? false)
     }.runOnQueue(.main)
     AsyncFunction("getExternalAppAllowances") { (profile: String, promise: Promise) in
-      ArdiaCoreServices.externalAppAllowances(profile: profile) { promise.resolve($0) }
+      MedusaCoreServices.externalAppAllowances(profile: profile) { promise.resolve($0) }
     }.runOnQueue(.main)
     AsyncFunction("removeExternalAppAllowance") { (profile: String, origin: String, scheme: String) in
-      ArdiaCoreServices.removeExternalAppAllowance(profile: profile, origin: origin, scheme: scheme)
+      MedusaCoreServices.removeExternalAppAllowance(profile: profile, origin: origin, scheme: scheme)
     }.runOnQueue(.main)
 
     AsyncFunction("clearBrowsingData") { (profile: String, types: [String], since: Double?, promise: Promise) in
-      ArdiaCoreServices.clearBrowsingData(profile: profile, types: types, since: since ?? 0) { promise.resolve(nil) }
+      MedusaCoreServices.clearBrowsingData(profile: profile, types: types, since: since ?? 0) { promise.resolve(nil) }
     }.runOnQueue(.main)
-    AsyncFunction("releaseProfile") { (profile: String) in ArdiaCoreHost.releaseProfile(profile) }.runOnQueue(.main)
+    AsyncFunction("releaseProfile") { (profile: String) in MedusaCoreHost.releaseProfile(profile) }.runOnQueue(.main)
     AsyncFunction("deleteProfileData") { (profile: String, promise: Promise) in
-      if profile.isEmpty { return ArdiaCoreProfileData.deleteDefault { promise.resolve(["remaining": $0]) } }
-      ArdiaCoreHost.deleteProfileData(profile) { promise.resolve(["remaining": $0]) }
+      if profile.isEmpty { return MedusaCoreProfileData.deleteDefault { promise.resolve(["remaining": $0]) } }
+      MedusaCoreHost.deleteProfileData(profile) { promise.resolve(["remaining": $0]) }
     }.runOnQueue(.main)
 
     AsyncFunction("fetchFavicon") { (url: String, profile: String, promise: Promise) in
-      ArdiaCoreFavicons.fetch(url, profile: profile, name: nil) { promise.resolve($0) }
+      MedusaCoreFavicons.fetch(url, profile: profile, name: nil) { promise.resolve($0) }
     }.runOnQueue(.main)
     AsyncFunction("removeLegacyFavicons") { (profile: String) in }.runOnQueue(.main)
     AsyncFunction("engineCall") { (name: String, profile: String, args: String?, promise: Promise) in
       if !CefModule.engineCalls.contains(name) { return promise.resolve(#"{"error":"not an engine call: \#(name)"}"#) }
       if profile.hasPrefix("incognito") { return promise.resolve(#"{"error":"no engine data for a private profile"}"#) }
-      ArdiaCoreEngineBridge.call(name, profile: profile, args: args) { promise.resolve($0) }
+      MedusaCoreEngineBridge.call(name, profile: profile, args: args) { promise.resolve($0) }
     }.runOnQueue(.main)
 
     AsyncFunction("getContentBlocker") { (promise: Promise) in
-      ArdiaCoreContentBlocker.state { promise.resolve($0) }
+      MedusaCoreContentBlocker.state { promise.resolve($0) }
     }.runOnQueue(.main)
     AsyncFunction("setContentBlockerEnabled") { (enabled: Bool, promise: Promise) in
-      ArdiaCoreContentBlocker.setEnabled(enabled) { CefModule.settle(promise, $0) }
+      MedusaCoreContentBlocker.setEnabled(enabled) { CefModule.settle(promise, $0) }
     }.runOnQueue(.main)
     AsyncFunction("setFilterListEnabled") { (id: String, enabled: Bool, promise: Promise) in
-      ArdiaCoreContentBlocker.setList(id, enabled: enabled) { CefModule.settle(promise, $0) }
+      MedusaCoreContentBlocker.setList(id, enabled: enabled) { CefModule.settle(promise, $0) }
     }.runOnQueue(.main)
     AsyncFunction("isContentBlockerAllowed") { (host: String, promise: Promise) in
-      ArdiaCoreContentBlocker.isAllowed(host: host) { promise.resolve($0) }
+      MedusaCoreContentBlocker.isAllowed(host: host) { promise.resolve($0) }
     }.runOnQueue(.main)
     AsyncFunction("setContentBlockerAllowed") { (host: String, allowed: Bool, promise: Promise) in
-      ArdiaCoreContentBlocker.setAllowed(allowed, host: host) { CefModule.settle(promise, $0) }
+      MedusaCoreContentBlocker.setAllowed(allowed, host: host) { CefModule.settle(promise, $0) }
     }.runOnQueue(.main)
-    AsyncFunction("devContentBlockerFailNextMessage") { ArdiaCoreContentBlocker.devFailNextMessage() }.runOnQueue(.main)
-    AsyncFunction("devContentBlockerDelayNextLoad") { (ms: Double) in ArdiaCoreContentBlocker.devDelayNextLoad(ms) }.runOnQueue(.main)
+    AsyncFunction("devContentBlockerFailNextMessage") { MedusaCoreContentBlocker.devFailNextMessage() }.runOnQueue(.main)
+    AsyncFunction("devContentBlockerDelayNextLoad") { (ms: Double) in MedusaCoreContentBlocker.devDelayNextLoad(ms) }.runOnQueue(.main)
 
     AsyncFunction("setSiteSetting") { (profile: String, origin: String, type: String, value: String) in
-      ArdiaCoreServices.setSiteSetting(value, profile: profile, origin: origin, type: type)
+      MedusaCoreServices.setSiteSetting(value, profile: profile, origin: origin, type: type)
     }.runOnQueue(.main)
     AsyncFunction("getSiteSettings") { (profile: String, origin: String, promise: Promise) in
-      ArdiaCoreServices.siteSettings(profile: profile, origin: origin) { promise.resolve($0) }
+      MedusaCoreServices.siteSettings(profile: profile, origin: origin) { promise.resolve($0) }
     }.runOnQueue(.main)
     AsyncFunction("getSiteSettingsOrigins") { (profile: String, promise: Promise) in
-      ArdiaCoreServices.siteSettingsOrigins(profile: profile) { promise.resolve($0) }
+      MedusaCoreServices.siteSettingsOrigins(profile: profile) { promise.resolve($0) }
     }.runOnQueue(.main)
     AsyncFunction("resetSiteSettings") { (profile: String, origin: String) in
-      ArdiaCoreServices.resetSiteSettings(profile: profile, origin: origin)
+      MedusaCoreServices.resetSiteSettings(profile: profile, origin: origin)
     }.runOnQueue(.main)
     AsyncFunction("clearSiteData") { (profile: String, origin: String, promise: Promise) in
-      ArdiaCoreServices.clearSiteData(profile: profile, origin: origin) { promise.resolve($0) }
+      MedusaCoreServices.clearSiteData(profile: profile, origin: origin) { promise.resolve($0) }
     }.runOnQueue(.main)
 
     AsyncFunction("setZoom") { (profile: String, host: String, zoom: Double) in
-      ArdiaCoreServices.setZoom(zoom, profile: profile, host: host)
+      MedusaCoreServices.setZoom(zoom, profile: profile, host: host)
     }.runOnQueue(.main)
     AsyncFunction("getZoomLevels") { (profile: String, promise: Promise) in
-      ArdiaCoreServices.zoomLevels(profile: profile) { promise.resolve($0) }
+      MedusaCoreServices.zoomLevels(profile: profile) { promise.resolve($0) }
     }.runOnQueue(.main)
     AsyncFunction("devScrollZoom") { (steps: [[String: Any]], browserId: Int?) in
-      ArdiaCoreWebView.devScrollZoom(steps, browserId: Int32(browserId ?? 0))
+      MedusaCoreWebView.devScrollZoom(steps, browserId: Int32(browserId ?? 0))
     }.runOnQueue(.main)
     AsyncFunction("devSwitchPrewarm") { (browserId: Int?, at: String?) in
-      ArdiaCoreWebView.devSwitchPrewarm(browserId: Int32(browserId ?? 0), at: at ?? "sidebar")
+      MedusaCoreWebView.devSwitchPrewarm(browserId: Int32(browserId ?? 0), at: at ?? "sidebar")
     }.runOnQueue(.main)
 
     AsyncFunction("listPasswords") { (profile: String, promise: Promise) in
-      ArdiaCoreServices.listPasswords(profile: profile) { promise.resolve($0) }
+      MedusaCoreServices.listPasswords(profile: profile) { promise.resolve($0) }
     }.runOnQueue(.main)
     AsyncFunction("unlockPasswords") { (profile: String, promise: Promise) in
-      ArdiaCoreServices.unlockPasswords(profile: profile) { promise.resolve($0) }
+      MedusaCoreServices.unlockPasswords(profile: profile) { promise.resolve($0) }
     }.runOnQueue(.main)
     AsyncFunction("getPassword") { (profile: String, origin: String, username: String, promise: Promise) in
-      ArdiaCoreServices.password(profile: profile, origin: origin, username: username) { promise.resolve($0) }
+      MedusaCoreServices.password(profile: profile, origin: origin, username: username) { promise.resolve($0) }
     }.runOnQueue(.main)
     AsyncFunction("savePassword") { (profile: String, origin: String, username: String, password: String, promise: Promise) in
-      ArdiaCoreServices.savePassword(profile: profile, origin: origin, username: username, password: password) { promise.resolve($0) }
+      MedusaCoreServices.savePassword(profile: profile, origin: origin, username: username, password: password) { promise.resolve($0) }
     }.runOnQueue(.main)
     AsyncFunction("updatePassword") {
       (profile: String, origin: String, username: String, newUsername: String?, newPassword: String?, promise: Promise) in
-      ArdiaCoreServices.updatePassword(profile: profile, origin: origin, username: username, newUsername: newUsername,
+      MedusaCoreServices.updatePassword(profile: profile, origin: origin, username: username, newUsername: newUsername,
                                     newPassword: newPassword) { promise.resolve($0) }
     }.runOnQueue(.main)
     AsyncFunction("deletePassword") { (profile: String, origin: String, username: String, promise: Promise) in
-      ArdiaCoreServices.deletePassword(profile: profile, origin: origin, username: username) { promise.resolve($0) }
+      MedusaCoreServices.deletePassword(profile: profile, origin: origin, username: username) { promise.resolve($0) }
     }.runOnQueue(.main)
     AsyncFunction("getNeverSavePasswordOrigins") { (profile: String, promise: Promise) in
-      ArdiaCoreServices.neverSaveOrigins(profile: profile) { promise.resolve($0) }
+      MedusaCoreServices.neverSaveOrigins(profile: profile) { promise.resolve($0) }
     }.runOnQueue(.main)
     AsyncFunction("allowSavingPasswords") { (profile: String, origin: String, promise: Promise) in
-      ArdiaCoreServices.allowSaving(profile: profile, origin: origin) { promise.resolve($0) }
+      MedusaCoreServices.allowSaving(profile: profile, origin: origin) { promise.resolve($0) }
     }.runOnQueue(.main)
     AsyncFunction("exportPasswords") { (profile: String, promise: Promise) in
-      ArdiaCoreServices.exportPasswords(profile: profile, path: nil) { promise.resolve($0) }
+      MedusaCoreServices.exportPasswords(profile: profile, path: nil) { promise.resolve($0) }
     }.runOnQueue(.main)
     AsyncFunction("getPasswordAutofill") { (profile: String) in
-      ArdiaCoreServices.boolPreference("credentials_enable_service", profile: profile)
+      MedusaCoreServices.boolPreference("credentials_enable_service", profile: profile)
     }.runOnQueue(.main)
     AsyncFunction("setPasswordAutofill") { (profile: String, enabled: Bool) in
-      ArdiaCoreServices.setBoolPreference("credentials_enable_service", value: enabled, profile: profile)
+      MedusaCoreServices.setBoolPreference("credentials_enable_service", value: enabled, profile: profile)
     }.runOnQueue(.main)
 
     AsyncFunction("getAutofillSettings") { (profile: String) in
       [
-        "addresses": ArdiaCoreServices.boolPreference("autofill.profile_enabled", profile: profile),
-        "cards": ArdiaCoreServices.boolPreference("autofill.credit_card_enabled", profile: profile),
+        "addresses": MedusaCoreServices.boolPreference("autofill.profile_enabled", profile: profile),
+        "cards": MedusaCoreServices.boolPreference("autofill.credit_card_enabled", profile: profile),
       ]
     }.runOnQueue(.main)
     AsyncFunction("setAutofillSettings") { (profile: String, addresses: Bool?, cards: Bool?) in
-      if let addresses { ArdiaCoreServices.setBoolPreference("autofill.profile_enabled", value: addresses, profile: profile) }
-      if let cards { ArdiaCoreServices.setBoolPreference("autofill.credit_card_enabled", value: cards, profile: profile) }
+      if let addresses { MedusaCoreServices.setBoolPreference("autofill.profile_enabled", value: addresses, profile: profile) }
+      if let cards { MedusaCoreServices.setBoolPreference("autofill.credit_card_enabled", value: cards, profile: profile) }
     }.runOnQueue(.main)
     AsyncFunction("listAddresses") { (profile: String, promise: Promise) in
-      ArdiaCoreServices.addresses(profile: profile) { promise.resolve($0) }
+      MedusaCoreServices.addresses(profile: profile) { promise.resolve($0) }
     }.runOnQueue(.main)
     AsyncFunction("saveAddress") { (profile: String, address: [String: Any], promise: Promise) in
-      ArdiaCoreServices.saveAddress(address, profile: profile) { promise.resolve($0) }
+      MedusaCoreServices.saveAddress(address, profile: profile) { promise.resolve($0) }
     }.runOnQueue(.main)
     AsyncFunction("listCards") { (profile: String, promise: Promise) in
-      ArdiaCoreServices.cards(profile: profile) { promise.resolve($0) }
+      MedusaCoreServices.cards(profile: profile) { promise.resolve($0) }
     }.runOnQueue(.main)
     AsyncFunction("saveCard") { (profile: String, card: [String: Any], number: String?, promise: Promise) in
-      ArdiaCoreServices.saveCard(card, number: number, profile: profile) { promise.resolve($0) }
+      MedusaCoreServices.saveCard(card, number: number, profile: profile) { promise.resolve($0) }
     }.runOnQueue(.main)
     AsyncFunction("deleteAutofillEntry") { (profile: String, id: String, promise: Promise) in
-      ArdiaCoreServices.deleteAutofillEntry(id, profile: profile) { promise.resolve($0) }
+      MedusaCoreServices.deleteAutofillEntry(id, profile: profile) { promise.resolve($0) }
     }.runOnQueue(.main)
     AsyncFunction("revealCardNumber") { (profile: String, id: String, promise: Promise) in
-      ArdiaCoreServices.revealCardNumber(id, profile: profile) { promise.resolve($0) }
+      MedusaCoreServices.revealCardNumber(id, profile: profile) { promise.resolve($0) }
     }.runOnQueue(.main)
 
     View(CefWebView.self) {
@@ -338,7 +338,7 @@ public class CefModule: Module {
   }
 }
 
-final class CefWebView: ExpoView, ArdiaCoreWebViewDelegate {
+final class CefWebView: ExpoView, MedusaCoreWebViewDelegate {
   static let events = [
     "onNavigationChange",
     "onProgress",
@@ -377,7 +377,7 @@ final class CefWebView: ExpoView, ArdiaCoreWebViewDelegate {
     "onPreferredSize",
   ]
 
-  let browser = ArdiaCoreWebView(frame: .zero)
+  let browser = MedusaCoreWebView(frame: .zero)
 
   let onNavigationChange = EventDispatcher()
   let onProgress = EventDispatcher()
@@ -439,7 +439,7 @@ final class CefWebView: ExpoView, ArdiaCoreWebViewDelegate {
     browser.closeBrowser()
   }
 
-  func webView(_ view: ArdiaCoreWebView, event name: String, payload: [String: Any]) {
+  func webView(_ view: MedusaCoreWebView, event name: String, payload: [String: Any]) {
     switch name {
     case "navigation": onNavigationChange(payload)
     case "progress": onProgress(payload)

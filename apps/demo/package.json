@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@medusa/core": "workspace:*",
-    "@medusa/ardiacore": "workspace:*",
+    "@medusa/medusacore": "workspace:*",
     "@medusa/import": "workspace:*",
     "@medusa/shaders": "workspace:*",
     "@medusa/shell": "workspace:*",

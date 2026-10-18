@@ -1,4 +1,4 @@
-import { onDownload, releaseProfile } from "@medusa/ardiacore";
+import { onDownload, releaseProfile } from "@medusa/medusacore";
 import {
   closeWindow,
   isDarkAppearance,
@@ -27,8 +27,8 @@ import { isInternalTab } from "../components/pages/urls";
 import { sidebarMenuState } from "../components/sidebar/commands";
 import { openWindow as createWindow } from "./actions";
 import { windowOpens } from "./windowOpenOrder";
-import { openExternalUrls } from "../components/littleArdia/actions";
-import { LITTLE_ARDIA_DISABLED_COMMANDS } from "../components/littleArdia/menu";
+import { openExternalUrls } from "../components/littleMedusa/actions";
+import { LITTLE_MEDUSA_DISABLED_COMMANDS } from "../components/littleMedusa/menu";
 import { runCommand } from "./commands";
 import { flushPersistence, resumePersistence } from "./persist";
 import { startWindowCloseGuard } from "./windowClose";
@@ -95,7 +95,7 @@ export function startNativeSync() {
       open.add(id);
       titles.set(id, windowTitle(s, id));
       const profile = engineProfile(w.profileId);
-      const small = w.kind === "small" ? { kind: "small" as const, size: s.settings.littleArdiaSize } : {};
+      const small = w.kind === "small" ? { kind: "small" as const, size: s.settings.littleMedusaSize } : {};
       const made = w.chromeWindow ? { chromeWindow: w.chromeWindow } : {};
       void openWindow(id, { frame: w.frame, incognito: w.incognito, title: titles.get(id), focus, profile, ...(behind ? { behind } : {}), ...small, ...made });
     }
@@ -252,14 +252,14 @@ export function menuState(s: BrowserState): MenuState {
     titles.bookmarkPage = "Edit Bookmark…";
   }
 
-  if (!s.settings.openLinksInLittleArdia) titles.toggleOpenLinksInLittleArdia = "Open Links from Other Apps in Little Ardia";
+  if (!s.settings.openLinksInLittleMedusa) titles.toggleOpenLinksInLittleMedusa = "Open Links from Other Apps in Little Medusa";
 
   const sidebar = sidebarMenuState(s, windowId);
   disabled.push(...sidebar.disabled);
   Object.assign(titles, sidebar.titles);
   if (w?.kind === "small") {
-    disabled.push(...LITTLE_ARDIA_DISABLED_COMMANDS);
-    titles.openFile = "Open in Ardia";
+    disabled.push(...LITTLE_MEDUSA_DISABLED_COMMANDS);
+    titles.openFile = "Open in Medusa";
   }
 
   const closed = [

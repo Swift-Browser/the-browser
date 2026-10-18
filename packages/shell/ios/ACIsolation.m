@@ -15,13 +15,14 @@ static NSUserDefaults *IsolatedStandardUserDefaults(id self, SEL _cmd) { return 
 @implementation ACIsolation
 
 + (void)load {
-  const char *dir = getenv("ARDIA_DATA_DIR");
+  const char *dir = getenv("MEDUSA_DATA_DIR");
+  if (!dir || !*dir) dir = getenv("MEDUSA_DATA_DIR");
   if (!dir || !*dir) return;
   NSString *path = @(dir);
   if (!path.absolutePath)
     path = [NSFileManager.defaultManager.currentDirectoryPath stringByAppendingPathComponent:path];
   gDataDirectory = path.stringByStandardizingPath;
-  NSString *domain = NSBundle.mainBundle.bundleIdentifier ?: @"com.ardia.browser";
+  NSString *domain = NSBundle.mainBundle.bundleIdentifier ?: @"com.medusa.browser";
   gDefaults = [[NSUserDefaults alloc]
       initWithSuiteName:[[gDataDirectory stringByAppendingPathComponent:@"Preferences"] stringByAppendingPathComponent:domain]];
   if (!gDefaults) return;

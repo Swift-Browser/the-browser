@@ -122,14 +122,14 @@ const title = (label: string, hint?: string) => (hint ? `${label} (${hint})` : l
 
 function ChoiceGroup({ control }: { control: Extract<Control, { kind: "choice" }> }) {
   return (
-    <div className="ardia-control-group" role="radiogroup" aria-label={control.label}>
-      <span className="ardia-control-label">{control.label}</span>
+    <div className="medusa-control-group" role="radiogroup" aria-label={control.label}>
+      <span className="medusa-control-label">{control.label}</span>
       {control.options.map((o) => (
         <button
           key={o.value}
           type="button"
           role="radio"
-          className="ardia-control"
+          className="medusa-control"
           aria-checked={control.value === o.value}
           disabled={o.disabled}
           title={title(`${control.label}: ${o.label}`, o.hint)}
@@ -147,7 +147,7 @@ function ActionButton({ control }: { control: Extract<Control, { kind: "action" 
   return (
     <button
       type="button"
-      className="ardia-control"
+      className="medusa-control"
       aria-pressed={control.on}
       title={title(control.label, control.hint)}
       onMouseDown={(e) => e.preventDefault()}
@@ -165,12 +165,12 @@ export function Controls() {
   const actions = controls.filter((c) => c.kind === "action");
   const firstAction = actions[0]?.id;
   return (
-    <div className="ardia-controls" role="toolbar" aria-label="Try Ardia">
+    <div className="medusa-controls" role="toolbar" aria-label="Try Medusa">
       {controls.map((c) =>
         c.kind === "choice" ? (
           <ChoiceGroup key={c.id} control={c} />
         ) : c.id === firstAction ? (
-          <div key={c.id} className="ardia-control-group">
+          <div key={c.id} className="medusa-control-group">
             {actions.map((a) => (
               <ActionButton key={a.id} control={a} />
             ))}

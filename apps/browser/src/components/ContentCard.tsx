@@ -1,4 +1,4 @@
-import { WebView, type OpenWindowRequest } from "@medusa/ardiacore";
+import { WebView, type OpenWindowRequest } from "@medusa/medusacore";
 import { memo, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Animated, StyleSheet, View } from "react-native";
 import { useShallow } from "zustand/react/shallow";
@@ -55,7 +55,7 @@ import { NavigationOverlays } from "./layout/SwipeOverlay";
 import "./layout/devExpose";
 import { closeWebNotification, showWebNotification } from "../lib/webNotifications";
 import { isSmallWindow } from "../store/small";
-import { closeLittleArdiaOnEscape } from "./littleArdia/actions";
+import { closeLittleMedusaOnEscape } from "./littleMedusa/actions";
 
 export function ContentCard() {
   const windowId = useWindowId();
@@ -560,7 +560,7 @@ const TabWebView = memo(function TabWebView({ tabId, visible, warm }: { tabId: s
       onCommand={({ command, text, modifiers }) => {
         if (command === "search") searchSelection(tabId, text, modifiers);
         else if (command === "copyLinkToHighlight") void copyLinkToSelection(tabId);
-        else if (command === "escape") closeLittleArdiaOnEscape(tabId);
+        else if (command === "escape") closeLittleMedusaOnEscape(tabId);
       }}
       onPageMessage={(kind, data) => {
         if (kind === "selection") setPageSelection(tabId, data as PageSelection | null);

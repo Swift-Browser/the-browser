@@ -6,7 +6,7 @@ import {
   watchCastRoutes,
   type CastDialog,
   type CastRoute,
-} from "@medusa/ardiacore";
+} from "@medusa/medusacore";
 import { create } from "zustand";
 import { useBrowser, type BrowserState } from "../../store/browser";
 import { activeTabId, engineProfile } from "../../store/model";

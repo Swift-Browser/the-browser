@@ -16,7 +16,7 @@ const USAGE = `Regenerates apps/demo/src/shims/web/symbols/data.ts and THIRD_PAR
   --pt, --weight   the contact sheet's point size and weight
 
 A new symbol needs candidates first: open-icon ids in curated.mjs, or layered recipes and original geometry in recipes.mjs and originals.mjs.
-Native renders, the fit cache and the sheet go to ${SCRATCH} (ARDIA_ICONS_SCRATCH overrides it), never into the repo. Needs macOS with swiftc.`;
+Native renders, the fit cache and the sheet go to ${SCRATCH} (MEDUSA_ICONS_SCRATCH overrides it), never into the repo. Needs macOS with swiftc.`;
 
 const { values } = parseArgs({ options: { only: { type: "string" }, sheet: { type: "boolean" }, pt: { type: "string", default: "13" }, weight: { type: "string", default: "regular" }, help: { type: "boolean", short: "h" } } });
 if (values.help) {

@@ -1,4 +1,4 @@
-import { savePassword } from "@medusa/ardiacore";
+import { savePassword } from "@medusa/medusacore";
 import type { BookmarkNode as ImportedNode, Credential, DiaTabsProfile, ImportedTab, ImportKind, ImportResult, SafariExport, SpaceSuggestion } from "@medusa/import";
 import type { BookmarkDraft } from "../../store/bookmarks";
 import { useBrowser } from "../../store/browser";

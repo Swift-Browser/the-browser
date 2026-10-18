@@ -42,7 +42,7 @@ type Fixture = {
 
 const fixtureMode = (() => {
   try {
-    return typeof __DEV__ !== "undefined" && __DEV__ && launchEnvironment("ARDIA_CALENDAR_FIXTURE") === "1";
+    return typeof __DEV__ !== "undefined" && __DEV__ && launchEnvironment("MEDUSA_CALENDAR_FIXTURE") === "1";
   } catch {
     return false;
   }

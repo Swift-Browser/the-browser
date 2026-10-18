@@ -1,4 +1,4 @@
-import { listTasks, onExtensionsChanged } from "@medusa/ardiacore";
+import { listTasks, onExtensionsChanged } from "@medusa/medusacore";
 import { onAppEvent } from "@medusa/shell";
 import { useTranslate } from "../components/site/translate";
 import { useBrowser } from "../store/browser";

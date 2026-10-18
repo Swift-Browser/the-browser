@@ -8,7 +8,7 @@ public final class AppUpdater: NSObject {
 
   static var feedOverride: String? {
     let env = ProcessInfo.processInfo.environment
-    if let feed = env["MEDUSA_UPDATE_FEED_URL"] ?? env["ARDIA_UPDATE_FEED_URL"] ?? UserDefaults.standard.string(forKey: "ACUpdateFeedURL") { return feed }
+    if let feed = env["MEDUSA_UPDATE_FEED_URL"] ?? env["MEDUSA_UPDATE_FEED_URL"] ?? UserDefaults.standard.string(forKey: "ACUpdateFeedURL") { return feed }
     return nil
   }
 
@@ -37,7 +37,7 @@ public final class AppUpdater: NSObject {
   }
 
   private static var isOff: Bool {
-    ACIsolatedDataDirectory() != nil && ProcessInfo.processInfo.environment["ARDIA_UPDATE_FEED_URL"] == nil
+    ACIsolatedDataDirectory() != nil && ProcessInfo.processInfo.environment["MEDUSA_UPDATE_FEED_URL"] == nil && ProcessInfo.processInfo.environment["MEDUSA_UPDATE_FEED_URL"] == nil
   }
 
   #if canImport(Sparkle)
@@ -83,7 +83,7 @@ public final class AppUpdater: NSObject {
   @objc public func checkForUpdates(_ sender: Any?) {
     #if canImport(Sparkle)
     guard isConfigured else {
-      if ProcessInfo.processInfo.environment["ARDIA_BACKGROUND"] == "1" {
+      if ProcessInfo.processInfo.environment["MEDUSA_BACKGROUND"] == "1" || ProcessInfo.processInfo.environment["MEDUSA_BACKGROUND"] == "1" {
         return NSLog("Medusa: update checks are off in this instance")
       }
       return showNotSetUp()
@@ -202,7 +202,7 @@ enum KillSwitch {
     environment: [String: String] = ProcessInfo.processInfo.environment,
     cache: () -> String? = { DocumentStore.read(cacheDocument) }
   ) -> Bool {
-    for part in (environment["ARDIA_SWITCHES"] ?? "").split(separator: ",") {
+    for part in (environment["MEDUSA_SWITCHES"] ?? environment["MEDUSA_SWITCHES"] ?? "").split(separator: ",") {
       let pair = part.split(separator: "=", maxSplits: 1).map { $0.trimmingCharacters(in: .whitespaces) }
       guard pair.count == 2, pair[0] == name else { continue }
       if ["off", "0", "false"].contains(pair[1]) { return false }
@@ -229,8 +229,9 @@ enum UpdatePrewarm {
     DispatchQueue.global(qos: .utility).async {
       let task = Process()
       task.executableURL = executable
-      var env = ProcessInfo.processInfo.environment.filter { !$0.key.hasPrefix("ARDIA_") && !$0.key.hasPrefix("DYLD_") }
-      env["ARDIA_PREWARM"] = "1"
+      var env = ProcessInfo.processInfo.environment.filter { !$0.key.hasPrefix("MEDUSA_") && !$0.key.hasPrefix("MEDUSA_") && !$0.key.hasPrefix("DYLD_") }
+      env["MEDUSA_PREWARM"] = "1"
+      env["MEDUSA_PREWARM"] = "1"
       task.environment = env
       task.standardInput = FileHandle.nullDevice
       task.standardOutput = FileHandle.nullDevice

@@ -6,10 +6,10 @@ dry=0
 [ "${2:-}" = --dry-run ] && dry=1
 here="$(cd "$(dirname "$0")" && pwd)"
 root="$(git -C "$here" rev-parse --show-toplevel)"
-repo="mantrakp04/ardia"
+repo="mantrakp04/medusa"
 dist="${RELEASE_DIST:-$root/dist/$version}"
 feed_url="https://github.com/$repo/releases/latest/download/appcast.xml"
-nightly_dmg_url="https://github.com/$repo/releases/download/nightly/Ardia-Nightly.dmg"
+nightly_dmg_url="https://github.com/$repo/releases/download/nightly/Medusa-Nightly.dmg"
 die() { echo "error: $*" >&2; exit 1; }
 run() {
   echo "+ $*"
@@ -17,8 +17,8 @@ run() {
 }
 
 [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+-nightly\.[0-9]+$ ]] || die "$version isn't a nightly version (<next stable>-nightly.<n>)"
-dmg="$dist/Ardia-$version.dmg" zip="$dist/Ardia-$version.zip"
-cli="$dist/ardia-cli-$version-macos-arm64.tar.gz"
+dmg="$dist/Medusa-$version.dmg" zip="$dist/Medusa-$version.zip"
+cli="$dist/medusa-cli-$version-macos-arm64.tar.gz"
 for file in "$dmg" "$zip" "$dist/appcast.xml" "$dist/release-notes.md" "$cli" "$cli.sha256"; do
   [ -f "$file" ] || die "no $file (scripts/release.sh $version --channel nightly first)"
 done
@@ -41,15 +41,15 @@ else
 fi
 
 engine=()
-for archive in "$dist"/ArdiaCore-*.tar.xz; do [ -f "$archive" ] && engine+=("$archive"); done
-run gh release create "v$version" -R "$repo" --prerelease --latest=false --verify-tag --title "Ardia $version" \
+for archive in "$dist"/MedusaCore-*.tar.xz; do [ -f "$archive" ] && engine+=("$archive"); done
+run gh release create "v$version" -R "$repo" --prerelease --latest=false --verify-tag --title "Medusa $version" \
   --notes-file "$dist/release-notes.md" "$dmg" "$zip" "$dist/appcast.xml" "$cli" "$cli.sha256" ${engine[@]+"${engine[@]}"}
 if ! gh release view nightly -R "$repo" >/dev/null 2>&1; then
-  run gh release create nightly -R "$repo" --prerelease --latest=false --title "Ardia Nightly" \
-    --notes "The newest nightly, always as Ardia-Nightly.dmg (https://ardia.dev/nightly). Every nightly's notes: https://ardia.dev/release-notes"
+  run gh release create nightly -R "$repo" --prerelease --latest=false --title "Medusa Nightly" \
+    --notes "The newest nightly, always as Medusa-Nightly.dmg (https://medusa.dev/nightly). Every nightly's notes: https://medusa.dev/release-notes"
 fi
-cp -c "$dmg" "$work/Ardia-Nightly.dmg"
-run gh release upload nightly -R "$repo" --clobber "$work/Ardia-Nightly.dmg"
+cp -c "$dmg" "$work/Medusa-Nightly.dmg"
+run gh release upload nightly -R "$repo" --clobber "$work/Medusa-Nightly.dmg"
 run gh release upload "$stable_tag" -R "$repo" --clobber "$dist/appcast.xml"
 
 [ "$dry" = 1 ] && { echo "dry run: nothing published"; exit 0; }
@@ -63,7 +63,7 @@ curl -fsSL --max-time 20 "$feed_url" | grep -q "<sparkle:shortVersionString>$ver
 size="$(curl -fsSLI --max-time 30 "$nightly_dmg_url" | awk 'tolower($1) == "content-length:" { n = $2 } END { print n + 0 }')"
 [ "$size" = "$(stat -f %z "$dmg")" ] && echo "PASS  $nightly_dmg_url is $version's DMG" \
   || { echo "FAIL  $nightly_dmg_url is $version's DMG (size $size, expected $(stat -f %z "$dmg"))"; status=1; }
-to="$(curl -s -o /dev/null --max-time 15 -w '%{redirect_url}' https://ardia.dev/nightly || true)"
-[ "$to" = "$nightly_dmg_url" ] && echo "PASS  https://ardia.dev/nightly leads there" \
-  || { echo "FAIL  https://ardia.dev/nightly leads there (goes to ${to:-nothing}: deploy the site, infra/site/nginx.conf)"; status=1; }
+to="$(curl -s -o /dev/null --max-time 15 -w '%{redirect_url}' https://medusa.dev/nightly || true)"
+[ "$to" = "$nightly_dmg_url" ] && echo "PASS  https://medusa.dev/nightly leads there" \
+  || { echo "FAIL  https://medusa.dev/nightly leads there (goes to ${to:-nothing}: deploy the site, infra/site/nginx.conf)"; status=1; }
 exit $status

@@ -1,4 +1,4 @@
-import { permissionWarnings, WebView, type InstalledExtension, type WebViewHandle } from "@medusa/ardiacore";
+import { permissionWarnings, WebView, type InstalledExtension, type WebViewHandle } from "@medusa/medusacore";
 import { Surface } from "@medusa/shell";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Animated, Easing, Image, Pressable, ScrollView, StyleSheet, Text, View, useWindowDimensions } from "react-native";
@@ -50,17 +50,17 @@ const measure = () => {
   const d = document.documentElement, b = document.body;
   return { w: Math.ceil(Math.max(d.scrollWidth, b ? b.scrollWidth : 0)), h: Math.ceil(Math.max(d.scrollHeight, b ? b.scrollHeight : 0)) };
 };
-const last = window.__ardiaSize;
+const last = window.__medusaSize;
 const now = measure();
 if (!last || last.w !== now.w || last.h !== now.h) {
-  window.__ardiaSize = now;
+  window.__medusaSize = now;
   post("result", JSON.stringify(now));
 } else {
   const ro = new ResizeObserver(() => {
     const m = measure();
-    if (m.w === window.__ardiaSize.w && m.h === window.__ardiaSize.h) return;
+    if (m.w === window.__medusaSize.w && m.h === window.__medusaSize.h) return;
     ro.disconnect();
-    window.__ardiaSize = m;
+    window.__medusaSize = m;
     post("result", JSON.stringify(m));
   });
   ro.observe(document.documentElement);

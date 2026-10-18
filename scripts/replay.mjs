@@ -63,7 +63,7 @@ if (chunks.length === 0) {
 chunks.sort((a, b) => a.seq - b.seq);
 const events = chunks.flatMap((c) => c.events).sort((a, b) => a.timestamp - b.timestamp);
 
-const cache = join(homedir(), ".cache/ardia/rrweb-player", PLAYER_VERSION);
+const cache = join(homedir(), ".cache/medusa/rrweb-player", PLAYER_VERSION);
 mkdirSync(cache, { recursive: true });
 const asset = async (path) => {
   const file = join(cache, path.replaceAll("/", "_"));
@@ -87,7 +87,7 @@ const width = Math.min(window.innerWidth - 32, 1280);
 const Player = rrwebPlayer.Player ?? rrwebPlayer.default ?? rrwebPlayer;
 new Player({ target: document.getElementById("player"), props: { events, width, height: Math.round(width * 0.6), autoPlay: false } });
 </script></body></html>`;
-const out = join(tmpdir(), `ardia-replay-${session}.html`);
+const out = join(tmpdir(), `medusa-replay-${session}.html`);
 writeFileSync(out, html);
 console.log(out);
 if (args.includes("--open")) execFileSync("open", [out]);

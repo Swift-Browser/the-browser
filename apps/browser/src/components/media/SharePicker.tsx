@@ -1,4 +1,4 @@
-import { getDisplayMediaSources, type DisplayMediaRequest, type DisplayMediaSource } from "@medusa/ardiacore";
+import { getDisplayMediaSources, type DisplayMediaRequest, type DisplayMediaSource } from "@medusa/medusacore";
 import { runningAppIcon, Symbol } from "@medusa/shell";
 import { useEffect, useRef, useState } from "react";
 import { Image, Pressable, ScrollView, Text, View } from "react-native";

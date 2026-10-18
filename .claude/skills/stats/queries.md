@@ -1,6 +1,6 @@
 # Stats queries (ClickHouse)
 
-Run with `node scripts/telemetry-sql.mjs "<query>; <query>; …"` (read-only user from `~/.config/ardia/telemetry.env`).
+Run with `node scripts/telemetry-sql.mjs "<query>; <query>; …"` (read-only user from `~/.config/medusa/telemetry.env`).
 Put every query you need in one call, separated by `;` (or pipe them on stdin): they run 4 at a time and print
 in order under `== n` headers. Each request costs about 0.35 s of network on top of the query, so one call with
 ten queries takes about as long as two calls with one each. Most queries take 0.1–0.2 s on the server; the
@@ -9,8 +9,8 @@ slow ones are those without an `event` filter, which decode every row's `propert
 matter: that skips the September history entirely.
 `scripts/stats.mjs` already prints the whole report; these are for what it doesn't cover.
 Everything is in `telemetry.events`: PostHog's event and property naming (`$pageview`, `$lib`…), one row per event, `properties`
-a `Map(String, String)` (booleans are `'true'`/`'false'`). `source` says who sent it: `ardia-site`,
-`ardia-app`, `ardia-feed` (update checks; `netnyahoo-site`, `-app` and `-feed` before the rename) or `posthog-cloud`
+a `Map(String, String)` (booleans are `'true'`/`'false'`). `source` says who sent it: `medusa-site`,
+`medusa-app`, `medusa-feed` (update checks; `netnyahoo-site`, `-app` and `-feed` before the rename) or `posthog-cloud`
 (history only: events from 2026-09-29 09:04 to 2026-09-30 14:31 UTC, before our own pipeline; nothing new
 arrives with it). Times are UTC.
 
@@ -18,10 +18,10 @@ Common filters. They are not SQL macros: paste the expression in place of the na
 
 ```sql
 -- the site, production only (the history has localhost too)
-SITE  = (source IN ('ardia-site', 'netnyahoo-site', 'posthog-cloud') AND properties['$lib'] IN ('web', 'ardia-web', 'netnyahoo-web')
-         AND properties['$host'] IN ('ardia.dev', 'www.ardia.dev', 'netnyahoo.com', 'www.netnyahoo.com'))
+SITE  = (source IN ('medusa-site', 'netnyahoo-site', 'posthog-cloud') AND properties['$lib'] IN ('web', 'medusa-web', 'netnyahoo-web')
+         AND properties['$host'] IN ('medusa.dev', 'www.medusa.dev', 'netnyahoo.com', 'www.netnyahoo.com'))
 -- the Mac app's opted-in telemetry
-APP   = (source IN ('ardia-app', 'netnyahoo-app', 'posthog-cloud') AND properties['$lib'] IN ('ardia-telemetry', 'netnyahoo-telemetry'))
+APP   = (source IN ('medusa-app', 'netnyahoo-app', 'posthog-cloud') AND properties['$lib'] IN ('medusa-telemetry', 'netnyahoo-telemetry'))
 MAC   = (properties['$os'] = 'Mac OS X' AND properties['$device_type'] = 'Desktop')
 PHONE = (properties['$device_type'] IN ('Mobile', 'Tablet'))
 ```

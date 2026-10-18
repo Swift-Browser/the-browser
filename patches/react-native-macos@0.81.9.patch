@@ -6,8 +6,8 @@ index 18bbe64f657a36596563b3eb6d135284e28c674a..d749124efd6f5b0331ac6415845255ff
  
  static void *TextFieldSelectionObservingContext = &TextFieldSelectionObservingContext;
  
-+#if TARGET_OS_OSX // [Ardia: Return and Escape reach a field as commands, never as key equivalents, so keyDownEvents asking for them went unheard
-+static BOOL ArdiaCommandKeyHandledByJS(id<RCTBackedTextInputDelegate> textInputDelegate, NSTextView *editor, SEL commandSelector)
++#if TARGET_OS_OSX // [Medusa: Return and Escape reach a field as commands, never as key equivalents, so keyDownEvents asking for them went unheard
++static BOOL MedusaCommandKeyHandledByJS(id<RCTBackedTextInputDelegate> textInputDelegate, NSTextView *editor, SEL commandSelector)
 +{
 +  NSString *key = commandSelector == @selector(cancelOperation:) ? @"Escape"
 +      : commandSelector == @selector(insertNewline:) || commandSelector == @selector(insertNewlineIgnoringFieldEditor:) ? @"Enter"
@@ -18,7 +18,7 @@ index 18bbe64f657a36596563b3eb6d135284e28c674a..d749124efd6f5b0331ac6415845255ff
 +  }
 +  return ![textInputDelegate textInputShouldHandleKeyEvent:event];
 +}
-+#endif // Ardia]
++#endif // Medusa]
 +
  #if !TARGET_OS_OSX // [macOS]
  @interface RCTBackedTextFieldDelegateAdapter () <UITextFieldDelegate, UITextDropDelegate>
@@ -27,7 +27,7 @@ index 18bbe64f657a36596563b3eb6d135284e28c674a..d749124efd6f5b0331ac6415845255ff
  - (BOOL)control:(NSControl *)control textView:(NSTextView *)fieldEditor doCommandBySelector:(SEL)commandSelector
  {
    id<RCTBackedTextInputDelegate> textInputDelegate = [_backedTextInputView textInputDelegate];
-+  if (ArdiaCommandKeyHandledByJS(textInputDelegate, fieldEditor, commandSelector)) { // [Ardia]
++  if (MedusaCommandKeyHandledByJS(textInputDelegate, fieldEditor, commandSelector)) { // [Medusa]
 +    return YES;
 +  }
    BOOL commandHandled = NO;
@@ -37,7 +37,7 @@ index 18bbe64f657a36596563b3eb6d135284e28c674a..d749124efd6f5b0331ac6415845255ff
  {
    BOOL commandHandled = NO;
    id<RCTBackedTextInputDelegate> textInputDelegate = [_backedTextInputView textInputDelegate];
-+  if (ArdiaCommandKeyHandledByJS(textInputDelegate, textView, commandSelector)) { // [Ardia]
++  if (MedusaCommandKeyHandledByJS(textInputDelegate, textView, commandSelector)) { // [Medusa]
 +    return YES;
 +  }
    // enter/return
@@ -51,10 +51,10 @@ index cac171e70c9fa225cdec45b205086342a0d50f06..b9fefeceb4400f181c5a1c39b73404f8
  #if TARGET_OS_OSX // [macOS avoids duplicating effects of textInputDid(Begin|End)Editing calls
    BOOL _isCurrentlyEditing;
  #endif // macOS]
-+#if TARGET_OS_OSX // [Ardia: the edit in progress (counted), and whether a click began it with its focus props to come
++#if TARGET_OS_OSX // [Medusa: the edit in progress (counted), and whether a click began it with its focus props to come
 +  NSUInteger _editSession;
 +  BOOL _clickFocused;
-+#endif // Ardia]
++#endif // Medusa]
  }
  
  #if !TARGET_OS_OSX // [macOS]
@@ -62,11 +62,11 @@ index cac171e70c9fa225cdec45b205086342a0d50f06..b9fefeceb4400f181c5a1c39b73404f8
      return;
    }
    _isCurrentlyEditing = YES;
-+  // [Ardia
++  // [Medusa
 +  _editSession++;
 +  NSEventType began = NSApp.currentEvent.type;
 +  _clickFocused = began == NSEventTypeLeftMouseDown || began == NSEventTypeRightMouseDown || began == NSEventTypeOtherMouseDown;
-+  // Ardia]
++  // Medusa]
  #endif // macOS]
    
    [_eventDispatcher sendTextEventWithType:RCTTextEventTypeFocus
@@ -74,7 +74,7 @@ index cac171e70c9fa225cdec45b205086342a0d50f06..b9fefeceb4400f181c5a1c39b73404f8
  
  #pragma mark - Focus Control
  
-+#if TARGET_OS_OSX // [Ardia
++#if TARGET_OS_OSX // [Medusa
 +// Being edited: its window's first responder is the field editor (single line) or the view itself (multiline).
 +- (BOOL)ac_isEditing
 +{
@@ -96,11 +96,11 @@ index cac171e70c9fa225cdec45b205086342a0d50f06..b9fefeceb4400f181c5a1c39b73404f8
 +    [self.backedTextInputView selectAll:nil];
 +  }
 +}
-+#endif // Ardia]
++#endif // Medusa]
 +
  - (void)reactFocus
  {
-+#if TARGET_OS_OSX // [Ardia: focus() on a field already being edited leaves the edit as it is. A press in a TextInput
++#if TARGET_OS_OSX // [Medusa: focus() on a field already being edited leaves the edit as it is. A press in a TextInput
 +  // calls focus() (TextInput.js skips its "already focused" check on macOS), and making an editing NSTextField first
 +  // responder again ends its edit (a blur), starts a new one and selects all: a click in the command bar closed it.
 +  // A field a click just focused (AppKit, on mouse-down) gets its focus props once, after that click: run inside the
@@ -116,7 +116,7 @@ index cac171e70c9fa225cdec45b205086342a0d50f06..b9fefeceb4400f181c5a1c39b73404f8
 +    }
 +    return;
 +  }
-+#endif // Ardia]
++#endif // Medusa]
    [self.backedTextInputView reactFocus];
  
    if (_clearTextOnFocus) {
@@ -124,9 +124,9 @@ index cac171e70c9fa225cdec45b205086342a0d50f06..b9fefeceb4400f181c5a1c39b73404f8
      [self.backedTextInputView setSelectedTextRange:NSMakeRange(NSNotFound, 0) notifyDelegate:NO];
  #endif // macOS]
    }
-+#if TARGET_OS_OSX // [Ardia: applied here
++#if TARGET_OS_OSX // [Medusa: applied here
 +  _clickFocused = NO;
-+#endif // Ardia]
++#endif // Medusa]
  }
  
  - (void)reactBlur
@@ -210,7 +210,7 @@ index a37a1c106a04752c1baeb6dd2170402ce5f34f71..fbcdcd5f6eae146da455c26771b12d0c
  }
  
 -- (void)setTransform3D:(CATransform3D)transform3D
-+// [Ardia: the layer transform for transform3D at the view's current size. On macOS, layer.anchorPoint is
++// [Medusa: the layer transform for transform3D at the view's current size. On macOS, layer.anchorPoint is
 +// {0, 0} instead of {0.5, 0.5} as on iOS, so the transform is moved to apply from the view's center; that depends
 +// on the size, so it's worked out again each time it's applied.
 +static CATransform3D RCTUIViewLayerTransform(RCTUIView *view)
@@ -263,7 +263,7 @@ index a37a1c106a04752c1baeb6dd2170402ce5f34f71..fbcdcd5f6eae146da455c26771b12d0c
 +    RCTUIViewApplyTransform3D(self);
 +  }
  }
-+// Ardia]
++// Medusa]
  
  - (NSView *)hitTest:(NSPoint)point
  {
@@ -274,7 +274,7 @@ index a37a1c106a04752c1baeb6dd2170402ce5f34f71..fbcdcd5f6eae146da455c26771b12d0c
 -  if (_hasCustomTransform3D && !CATransform3DEqualToTransform(layer.transform, _transform3D)) {
 -    layer.transform = _transform3D;
 +  if (_hasCustomTransform3D) {
-+    RCTUIViewApplyTransform3D(self); // [Ardia]
++    RCTUIViewApplyTransform3D(self); // [Medusa]
    }
  
    if (_respondsToDisplayLayer) {
@@ -300,12 +300,12 @@ index 3edcc9670a8ccb5eef44524e78445117d2416ed8..1f7951f616996941706f11b380c12051
 +#if !TARGET_OS_OSX // [macOS]
 +static const NSTimeInterval kMinimumSleepInterval = 1;
 +#else // [macOS
-+// [Ardia: sleep on an NSTimer whenever the next timer is more than two frames out, not a second. The display
++// [Medusa: sleep on an NSTimer whenever the next timer is more than two frames out, not a second. The display
 +// link wakes the JS thread every frame (120 times a second on ProMotion), so an app with a few timers a second kept it
 +// running much of the time at idle. The NSTimer fires at the target; the display link stays for what is due within a
 +// couple of frames (requestAnimationFrame, short timeouts).
 +static const NSTimeInterval kMinimumSleepInterval = 2 * kFrameDuration;
-+// Ardia]
++// Medusa]
 +#endif // macOS]
 +
  @interface _RCTTimer : NSObject
@@ -316,10 +316,10 @@ index 3edcc9670a8ccb5eef44524e78445117d2416ed8..1f7951f616996941706f11b380c12051
    BOOL _inBackground;
    id<RCTTimingDelegate> _timingDelegate;
 +#if TARGET_OS_OSX // [macOS]
-+  // [Ardia: whether NSApp is hidden (written on the main thread), and the run loop timers are created on (JS).
++  // [Medusa: whether NSApp is hidden (written on the main thread), and the run loop timers are created on (JS).
 +  std::atomic<bool> _appHidden;
 +  NSRunLoop *_timingRunLoop;
-+  // Ardia]
++  // Medusa]
 +#endif // macOS]
  }
  
@@ -334,7 +334,7 @@ index 3edcc9670a8ccb5eef44524e78445117d2416ed8..1f7951f616996941706f11b380c12051
        [self appDidMoveToBackground];
      }
 +#else // [macOS
-+    // [Ardia: background only while the app is hidden. This read `![NSApp isHidden]`, so a visible app went to
++    // [Medusa: background only while the app is hidden. This read `![NSApp isHidden]`, so a visible app went to
 +    // background at launch and never came back: the display link stopped and every timer, requestAnimationFrame
 +    // included, ran off a one-shot NSTimer, as fast as JS asked (about 1000 frames a second). Observed here, on the
 +    // main thread with the first read, so no hide or unhide falls between them.
@@ -345,7 +345,7 @@ index 3edcc9670a8ccb5eef44524e78445117d2416ed8..1f7951f616996941706f11b380c12051
 +                                                 object:nil];
 +    }
 +    [self appHiddenDidChange];
-+    // Ardia]
++    // Medusa]
 +#endif
    });
  
@@ -355,7 +355,7 @@ index 3edcc9670a8ccb5eef44524e78445117d2416ed8..1f7951f616996941706f11b380c12051
  }
  
 +#if TARGET_OS_OSX // [macOS]
-+// [Ardia: AppKit tells the main thread; the timing thread (JS) switches, where the display link calls in and the
++// [Medusa: AppKit tells the main thread; the timing thread (JS) switches, where the display link calls in and the
 +// sleep timer must live (on the main run loop, default mode only, a menu or a live resize would hold every timer). It
 +// reads the latest state whenever it switches, so a late or repeated nudge can't leave it stale; before the first
 +// timer there's nothing to nudge, and the first createTimer catches up.
@@ -394,7 +394,7 @@ index 3edcc9670a8ccb5eef44524e78445117d2416ed8..1f7951f616996941706f11b380c12051
 +    [self appDidMoveToForeground];
 +  }
 +}
-+// Ardia]
++// Medusa]
 +#endif // [macOS]
 +
  - (void)dealloc
@@ -405,12 +405,12 @@ index 3edcc9670a8ccb5eef44524e78445117d2416ed8..1f7951f616996941706f11b380c12051
  - (void)scheduleSleepTimer:(NSDate *)sleepTarget
  {
 +#if TARGET_OS_OSX // [macOS]
-+  // [Ardia: a hidden app keeps running, with no display link to pace it: a frame apart at least, or a
++  // [Medusa: a hidden app keeps running, with no display link to pace it: a frame apart at least, or a
 +  // requestAnimationFrame loop comes back as fast as the run loop turns.
 +  if (_inBackground) {
 +    sleepTarget = [sleepTarget laterDate:[NSDate dateWithTimeIntervalSinceNow:kFrameDuration]];
 +  }
-+  // Ardia]
++  // Medusa]
 +#endif // [macOS]
    @synchronized(self) {
      if (!_sleepTimer || !_sleepTimer.valid) {
@@ -425,20 +425,20 @@ index 3edcc9670a8ccb5eef44524e78445117d2416ed8..1f7951f616996941706f11b380c12051
      // Immediately dispatch frame, so we don't have to wait on the displaylink.
      [self didUpdateFrame:nil];
 +#else // [macOS
-+    // [Ardia: fire what's due without waking the display link for it, then sleep until the next timer, or start
++    // [Medusa: fire what's due without waking the display link for it, then sleep until the next timer, or start
 +    // the display link if that one is due within a couple of frames (a timer's callback that asks for a frame starts
 +    // it from createTimer).
 +    [self didUpdateFrame:nil];
 +    if (_paused && !_inBackground) {
 +      [self sleepOrStartTimers];
 +    }
-+    // Ardia]
++    // Medusa]
 +#endif // macOS]
 +  }
 +}
 +
 +#if TARGET_OS_OSX // [macOS]
-+// [Ardia
++// [Medusa
 +- (void)sleepOrStartTimers
 +{
 +  NSDate *next = nil;
@@ -453,7 +453,7 @@ index 3edcc9670a8ccb5eef44524e78445117d2416ed8..1f7951f616996941706f11b380c12051
 +    [self scheduleSleepTimer:next];
    }
  }
-+// Ardia]
++// Medusa]
 +#endif // macOS]
  
  /**
@@ -463,7 +463,7 @@ index 3edcc9670a8ccb5eef44524e78445117d2416ed8..1f7951f616996941706f11b380c12051
                          repeats:(BOOL)repeats
  {
 +#if TARGET_OS_OSX // [macOS]
-+  [self syncWithAppHidden]; // [Ardia]
++  [self syncWithAppHidden]; // [Medusa]
 +#endif // macOS]
    NSTimeInterval jsSchedulingOverhead = MAX(-jsSchedulingTime.timeIntervalSinceNow, 0);
  
@@ -473,7 +473,7 @@ index 3edcc9670a8ccb5eef44524e78445117d2416ed8..1f7951f616996941706f11b380c12051
  RCT_EXPORT_METHOD(setSendIdleEvents : (BOOL)sendIdleEvents)
  {
 +#if TARGET_OS_OSX // [macOS]
-+  [self syncWithAppHidden]; // [Ardia]
++  [self syncWithAppHidden]; // [Medusa]
 +#endif // macOS]
    _sendIdleEvents = sendIdleEvents;
    if (sendIdleEvents) {
@@ -487,20 +487,20 @@ index 0a4efc1fff0a6e32ea1634ab5f863c211f452409..34447fbb3fe6fd5e16c1320e53950906
  }
  
 +#if TARGET_OS_OSX // [macOS
-+// [Ardia: hover follows layout. AppKit sends mouseEntered/mouseExited only when the pointer moves, so a view that
++// [Medusa: hover follows layout. AppKit sends mouseEntered/mouseExited only when the pointer moves, so a view that
 +// lays out or scrolls under a still pointer (the next sidebar row after a close) kept its old hover state. Every view
 +// with hover handlers is kept here; layout and scrolling mark hover dirty, and one coalesced check on the main queue,
 +// after the layout that asked for it, compares the pointer with their frames.
-+// Dev-only overrides stand in for the pointer and the mouse buttons in hidden test instances. Ardia]
-+static NSHashTable *ArdiaHoverViews;
-+static BOOL ArdiaHoverDirty;
-+static BOOL ArdiaHoverHeld;
-+static BOOL ArdiaHoverInstalled;
++// Dev-only overrides stand in for the pointer and the mouse buttons in hidden test instances. Medusa]
++static NSHashTable *MedusaHoverViews;
++static BOOL MedusaHoverDirty;
++static BOOL MedusaHoverHeld;
++static BOOL MedusaHoverInstalled;
 +#if DEBUG
-+static NSValue *ArdiaPointerOverride;
-+static NSNumber *ArdiaButtonsOverride;
-+static NSInteger ArdiaHoverPasses;
-+static NSMutableArray *ArdiaHoverLog;
++static NSValue *MedusaPointerOverride;
++static NSNumber *MedusaButtonsOverride;
++static NSInteger MedusaHoverPasses;
++static NSMutableArray *MedusaHoverLog;
 +#endif
 +#endif // macOS]
 +
@@ -511,7 +511,7 @@ index 0a4efc1fff0a6e32ea1634ab5f863c211f452409..34447fbb3fe6fd5e16c1320e53950906
    NSTrackingArea *_trackingArea;
    BOOL _hasMouseOver;
    BOOL _mouseDownCanMoveWindow;
-+  // [Ardia: the clip view whose bounds changes this view observes, if any (viewDidMoveToWindow). Ardia]
++  // [Medusa: the clip view whose bounds changes this view observes, if any (viewDidMoveToWindow). Medusa]
 +  __weak NSClipView *_observedClipView;
 +  BOOL _observesBounds;
  #endif // macOS]
@@ -522,7 +522,7 @@ index 0a4efc1fff0a6e32ea1634ab5f863c211f452409..34447fbb3fe6fd5e16c1320e53950906
    // both of which would not cause the mouseExited to be invoked.
  
 -  if ([self window] == nil) {
-+  // [Ardia: one registration per view. AppKit calls this again whenever a view already in the window is
++  // [Medusa: one registration per view. AppKit calls this again whenever a view already in the window is
 +  // re-added (didUpdateReactSubviews re-adds every subview each time a container's children change), and each call
 +  // added another observer: a long-lived row in a scroll view piled up dozens, every removal scans them all, so
 +  // each view leaving the window cost a little more the longer the app ran (profile switches, which mount and unmount
@@ -546,15 +546,15 @@ index 0a4efc1fff0a6e32ea1634ab5f863c211f452409..34447fbb3fe6fd5e16c1320e53950906
 +    _observesBounds = YES;
 +    _observedClipView = clipView;
    }
-+  // Ardia]
++  // Medusa]
  
    [self reactViewDidMoveToWindow]; // [macOS] Github#1412
  
    [super viewDidMoveToWindow];
  }
  
-+// [Ardia: hover follows layout: a scroll goes through the same check as everything else, so a row under a window
-+// that covers the pointer isn't entered (the old rule looked at bounds alone). Ardia]
++// [Medusa: hover follows layout: a scroll goes through the same check as everything else, so a row under a window
++// that covers the pointer isn't entered (the old rule looked at bounds alone). Medusa]
  - (void)viewBoundsChanged:(NSNotification*)__unused inNotif
  {
 -  // When an enclosing scrollview is scrolled using the scrollWheel or trackpad,
@@ -592,7 +592,7 @@ index 0a4efc1fff0a6e32ea1634ab5f863c211f452409..34447fbb3fe6fd5e16c1320e53950906
 -                     additionalData:nil];
 -    }
 -  }
-+  [RCTView ardia_markHoverDirty];
++  [RCTView medusa_markHoverDirty];
  }
  #endif // macOS]
  
@@ -601,7 +601,7 @@ index 0a4efc1fff0a6e32ea1634ab5f863c211f452409..34447fbb3fe6fd5e16c1320e53950906
  - (void)didUpdateReactSubviews
  {
 +#if TARGET_OS_OSX // [macOS
-+  [RCTView ardia_markHoverDirty]; // [Ardia: hover follows layout. Ardia]
++  [RCTView medusa_markHoverDirty]; // [Medusa: hover follows layout. Medusa]
 +#endif // macOS]
    if (_removeClippedSubviews) {
      [self updateClippedSubviews];
@@ -611,7 +611,7 @@ index 0a4efc1fff0a6e32ea1634ab5f863c211f452409..34447fbb3fe6fd5e16c1320e53950906
    // TODO: detect up-front if re-rendering is necessary
    CGSize oldSize = self.bounds.size;
 +#if TARGET_OS_OSX // [macOS
-+  CGRect oldFrame = self.frame; // [Ardia: hover follows layout. Ardia]
++  CGRect oldFrame = self.frame; // [Medusa: hover follows layout. Medusa]
 +#endif // macOS]
    [super reactSetFrame:frame];
    if (!CGSizeEqualToSize(self.bounds.size, oldSize)) {
@@ -619,7 +619,7 @@ index 0a4efc1fff0a6e32ea1634ab5f863c211f452409..34447fbb3fe6fd5e16c1320e53950906
    }
 +#if TARGET_OS_OSX // [macOS
 +  if (!CGRectEqualToRect(self.frame, oldFrame)) {
-+    [RCTView ardia_markHoverDirty]; // [Ardia: hover follows layout. Ardia]
++    [RCTView medusa_markHoverDirty]; // [Medusa: hover follows layout. Medusa]
 +  }
 +#endif // macOS]
  }
@@ -640,8 +640,8 @@ index 0a4efc1fff0a6e32ea1634ab5f863c211f452409..34447fbb3fe6fd5e16c1320e53950906
 -  }
 -  [layer setTransform:transform];
 -#endif // macOS]
-+  // [Ardia: the anchor point compensation that was here moved to -[RCTUIView setTransform3D:], which
-+  // UIView+React's updateTransform now goes through; doing it here as well applied it twice. Ardia]
++  // [Medusa: the anchor point compensation that was here moved to -[RCTUIView setTransform3D:], which
++  // UIView+React's updateTransform now goes through; doing it here as well applied it twice. Medusa]
  
    if (useIOSBorderRendering) {
      layer.cornerRadius = cornerRadii.topLeftHorizontal;
@@ -649,8 +649,8 @@ index 0a4efc1fff0a6e32ea1634ab5f863c211f452409..34447fbb3fe6fd5e16c1320e53950906
  	return [self focusable] || [super acceptsFirstResponder];
  }
  
-+// [Ardia: AppKit asks for tracking areas only when a view's geometry changes, so handlers set on a view already
-+// laid out (a peek panel getting onMouseLeave as it comes out) had none, and its pointer never left. Ardia]
++// [Medusa: AppKit asks for tracking areas only when a view's geometry changes, so handlers set on a view already
++// laid out (a peek panel getting onMouseLeave as it comes out) had none, and its pointer never left. Medusa]
 +- (void)setOnMouseEnter:(RCTDirectEventBlock)onMouseEnter
 +{
 +  _onMouseEnter = [onMouseEnter copy];
@@ -670,12 +670,12 @@ index 0a4efc1fff0a6e32ea1634ab5f863c211f452409..34447fbb3fe6fd5e16c1320e53950906
    if (!wouldRecreateIdenticalTrackingArea) {
      if (_trackingArea) {
        [self removeTrackingArea:_trackingArea];
-+      // [Ardia: forget it too. Kept, a view that lost its hover handlers and got them back with the same bounds
++      // [Medusa: forget it too. Kept, a view that lost its hover handlers and got them back with the same bounds
 +      // counted the removed area as "identical" and never added one again: no mouseEntered/mouseExited from then on
-+      // (the sidebar's peek panel stayed out after its first peek). Ardia]
++      // (the sidebar's peek panel stayed out after its first peek). Medusa]
 +      _trackingArea = nil;
-+      // [Ardia: and what it knew: a view that is under the pointer when it loses its area never hears it leave, and
-+      // its next scroll (viewBoundsChanged:) would send a leave for it. Ardia]
++      // [Medusa: and what it knew: a view that is under the pointer when it loses its area never hears it leave, and
++      // its next scroll (viewBoundsChanged:) would send a leave for it. Medusa]
 +      _hasMouseOver = NO;
      }
  
@@ -684,75 +684,75 @@ index 0a4efc1fff0a6e32ea1634ab5f863c211f452409..34447fbb3fe6fd5e16c1320e53950906
      }
    }
  
-+  // [Ardia: hover follows layout: the views the check looks at. Ardia]
++  // [Medusa: hover follows layout: the views the check looks at. Medusa]
 +  if (hasMouseHoverEvent) {
-+    if (ArdiaHoverViews == nil) {
-+      ArdiaHoverViews = [NSHashTable weakObjectsHashTable];
++    if (MedusaHoverViews == nil) {
++      MedusaHoverViews = [NSHashTable weakObjectsHashTable];
 +    }
-+    [ArdiaHoverViews addObject:self];
++    [MedusaHoverViews addObject:self];
 +  } else {
-+    [ArdiaHoverViews removeObject:self];
++    [MedusaHoverViews removeObject:self];
 +  }
 +
    [super updateTrackingAreas];
  }
  
-+// [Ardia: hover follows layout. The check: the pointer (or the dev override) against the visible frame of each view
++// [Medusa: hover follows layout. The check: the pointer (or the dev override) against the visible frame of each view
 +// with hover handlers, in the window frontmost under the pointer, as AppKit's tracking areas would see it once the
 +// pointer moved. Frames, not layer transforms: hover follows where a view is laid out, where its clicks land, while an
 +// animation still slides it there. All leaves go out before any enter, innermost first, then the enters, outermost
 +// first, so a row taking another's place under the pointer isn't left by a late leave. Enters wait while a mouse
-+// button is down, as AppKit's do. Ardia]
-++ (void)ardia_markHoverDirty
++// button is down, as AppKit's do. Medusa]
+++ (void)medusa_markHoverDirty
 +{
-+  if (ArdiaHoverDirty || ArdiaHoverViews.count == 0) {
++  if (MedusaHoverDirty || MedusaHoverViews.count == 0) {
 +    return;
 +  }
-+  ArdiaHoverDirty = YES;
-+  if (!ArdiaHoverInstalled) {
-+    ArdiaHoverInstalled = YES;
++  MedusaHoverDirty = YES;
++  if (!MedusaHoverInstalled) {
++    MedusaHoverInstalled = YES;
 +    [NSEvent addLocalMonitorForEventsMatchingMask:NSEventMaskLeftMouseUp | NSEventMaskRightMouseUp | NSEventMaskOtherMouseUp
 +                                          handler:^NSEvent *(NSEvent *event) {
-+                                            if (ArdiaHoverHeld) {
-+                                              [RCTView ardia_markHoverDirty];
++                                            if (MedusaHoverHeld) {
++                                              [RCTView medusa_markHoverDirty];
 +                                            }
 +                                            return event;
 +                                          }];
 +  }
 +  dispatch_async(dispatch_get_main_queue(), ^{
-+    ArdiaHoverDirty = NO;
-+    [RCTView ardia_checkHover];
++    MedusaHoverDirty = NO;
++    [RCTView medusa_checkHover];
 +  });
 +}
 +
 +#if DEBUG
-++ (void)ardia_setPointerOverride:(NSValue *)screenPoint
+++ (void)medusa_setPointerOverride:(NSValue *)screenPoint
 +{
-+  ArdiaPointerOverride = screenPoint;
-+  [self ardia_markHoverDirty];
++  MedusaPointerOverride = screenPoint;
++  [self medusa_markHoverDirty];
 +}
 +
-++ (void)ardia_setButtonsOverride:(NSNumber *)pressed
+++ (void)medusa_setButtonsOverride:(NSNumber *)pressed
 +{
-+  ArdiaButtonsOverride = pressed;
-+  [self ardia_markHoverDirty];
++  MedusaButtonsOverride = pressed;
++  [self medusa_markHoverDirty];
 +}
 +
-++ (NSDictionary *)ardia_hoverStats:(NSNumber *)reset
+++ (NSDictionary *)medusa_hoverStats:(NSNumber *)reset
 +{
-+  NSDictionary *stats = @{@"passes": @(ArdiaHoverPasses), @"log": ArdiaHoverLog ?: @[], @"registered": @(ArdiaHoverViews.count)};
++  NSDictionary *stats = @{@"passes": @(MedusaHoverPasses), @"log": MedusaHoverLog ?: @[], @"registered": @(MedusaHoverViews.count)};
 +  if (reset.boolValue) {
-+    ArdiaHoverPasses = 0;
-+    ArdiaHoverLog = nil;
++    MedusaHoverPasses = 0;
++    MedusaHoverLog = nil;
 +  }
 +  return stats;
 +}
 +#endif
 +
-++ (NSWindow *)ardia_windowUnderPointer:(NSPoint)screen
+++ (NSWindow *)medusa_windowUnderPointer:(NSPoint)screen
 +{
 +#if DEBUG
-+  if (ArdiaPointerOverride != nil) {
++  if (MedusaPointerOverride != nil) {
 +    for (NSWindow *window in NSApp.orderedWindows) {
 +      if (window.isVisible && !window.ignoresMouseEvents && NSPointInRect(screen, window.frame)) {
 +        return window;
@@ -764,7 +764,7 @@ index 0a4efc1fff0a6e32ea1634ab5f863c211f452409..34447fbb3fe6fd5e16c1320e53950906
 +  return [NSApp windowWithWindowNumber:[NSWindow windowNumberAtPoint:screen belowWindowWithWindowNumber:0]];
 +}
 +
-++ (NSArray<RCTView *> *)ardia_byDepth:(NSArray<RCTView *> *)views deepestFirst:(BOOL)deepestFirst
+++ (NSArray<RCTView *> *)medusa_byDepth:(NSArray<RCTView *> *)views deepestFirst:(BOOL)deepestFirst
 +{
 +  NSMapTable<RCTView *, NSNumber *> *depths = [NSMapTable strongToStrongObjectsMapTable];
 +  for (RCTView *view in views) {
@@ -780,26 +780,26 @@ index 0a4efc1fff0a6e32ea1634ab5f863c211f452409..34447fbb3fe6fd5e16c1320e53950906
 +  }];
 +}
 +
-++ (void)ardia_checkHover
+++ (void)medusa_checkHover
 +{
 +#if DEBUG
-+  ArdiaHoverPasses++;
++  MedusaHoverPasses++;
 +#endif
 +  NSPoint screen = [NSEvent mouseLocation];
 +  BOOL pressed = [NSEvent pressedMouseButtons] != 0;
 +#if DEBUG
-+  if (ArdiaPointerOverride != nil) {
-+    screen = ArdiaPointerOverride.pointValue;
++  if (MedusaPointerOverride != nil) {
++    screen = MedusaPointerOverride.pointValue;
 +  }
-+  if (ArdiaButtonsOverride != nil) {
-+    pressed = ArdiaButtonsOverride.boolValue;
++  if (MedusaButtonsOverride != nil) {
++    pressed = MedusaButtonsOverride.boolValue;
 +  }
 +#endif
-+  NSWindow *front = [self ardia_windowUnderPointer:screen];
++  NSWindow *front = [self medusa_windowUnderPointer:screen];
 +  NSMutableArray<RCTView *> *leaving = [NSMutableArray new];
 +  NSMutableArray<RCTView *> *entering = [NSMutableArray new];
 +  BOOL held = NO;
-+  for (RCTView *view in ArdiaHoverViews.allObjects) {
++  for (RCTView *view in MedusaHoverViews.allObjects) {
 +    NSWindow *window = view.window;
 +    if (window == nil) {
 +      continue;
@@ -820,16 +820,16 @@ index 0a4efc1fff0a6e32ea1634ab5f863c211f452409..34447fbb3fe6fd5e16c1320e53950906
 +      [entering addObject:view];
 +    }
 +  }
-+  ArdiaHoverHeld = held;
-+  for (RCTView *view in [self ardia_byDepth:leaving deepestFirst:YES]) {
-+    [view ardia_setMouseOver:NO atScreenPoint:screen];
++  MedusaHoverHeld = held;
++  for (RCTView *view in [self medusa_byDepth:leaving deepestFirst:YES]) {
++    [view medusa_setMouseOver:NO atScreenPoint:screen];
 +  }
-+  for (RCTView *view in [self ardia_byDepth:entering deepestFirst:NO]) {
-+    [view ardia_setMouseOver:YES atScreenPoint:screen];
++  for (RCTView *view in [self medusa_byDepth:entering deepestFirst:NO]) {
++    [view medusa_setMouseOver:YES atScreenPoint:screen];
 +  }
 +}
 +
-+- (void)ardia_setMouseOver:(BOOL)over atScreenPoint:(NSPoint)screen
++- (void)medusa_setMouseOver:(BOOL)over atScreenPoint:(NSPoint)screen
 +{
 +  _hasMouseOver = over;
 +  if (_trackingArea) {
@@ -839,10 +839,10 @@ index 0a4efc1fff0a6e32ea1634ab5f863c211f452409..34447fbb3fe6fd5e16c1320e53950906
 +    [self addTrackingArea:_trackingArea];
 +  }
 +#if DEBUG
-+  if (ArdiaHoverLog == nil) {
-+    ArdiaHoverLog = [NSMutableArray new];
++  if (MedusaHoverLog == nil) {
++    MedusaHoverLog = [NSMutableArray new];
 +  }
-+  [ArdiaHoverLog addObject:@[over ? @"enter" : @"leave", self.reactTag ?: @0, @(CACurrentMediaTime() * 1000)]];
++  [MedusaHoverLog addObject:@[over ? @"enter" : @"leave", self.reactTag ?: @0, @(CACurrentMediaTime() * 1000)]];
 +#endif
 +  NSPoint inWindow = self.window != nil ? [self.window convertPointFromScreen:screen] : screen;
 +  [self sendMouseEventWithBlock:over ? self.onMouseEnter : self.onMouseLeave
@@ -862,24 +862,24 @@ index eb79ff32614392cb16e6eb3dbec6cc5b037fe27a..e0aee0c66030a8e29c279133399f1b0d
    NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
    if ([self window] == nil) {
      // Unregister for bounds change notifications
-+    // [Ardia: every clip view's, as RCTView's removal here used to do for it (it now removes only its own).
++    // [Medusa: every clip view's, as RCTView's removal here used to do for it (it now removes only its own).
      [defaultCenter removeObserver:self
                               name:NSViewBoundsDidChangeNotification
 -                           object:_scrollView.contentView];
 +                           object:nil];
-+    // Ardia]
++    // Medusa]
      [defaultCenter removeObserver:self
                               name:NSPreferredScrollerStyleDidChangeNotification
                             object:nil];
    } else {
-+    // [Ardia: AppKit calls this again each time the view is re-added in the same window: register once.
++    // [Medusa: AppKit calls this again each time the view is re-added in the same window: register once.
 +    [defaultCenter removeObserver:self
 +                             name:NSViewBoundsDidChangeNotification
 +                           object:_scrollView.contentView];
 +    [defaultCenter removeObserver:self
 +                             name:NSPreferredScrollerStyleDidChangeNotification
 +                           object:nil];
-+    // Ardia]
++    // Medusa]
      // Register for bounds change notifications so we can track scrolling
      [defaultCenter addObserver:self
                        selector:@selector(scrollViewDocumentViewBoundsDidChange:)
@@ -891,7 +891,7 @@ index 30c4f1e53e7b94016c8ed1b425587753fc80c2ce..1090fa65bc64e943dd360b4298ce2136
      transform = view.reactTransform;
    }
  
-+#if TARGET_OS_OSX // [Ardia: RCTUIView keeps the transform and puts it back after AppKit resets the layer's.
++#if TARGET_OS_OSX // [Medusa: RCTUIView keeps the transform and puts it back after AppKit resets the layer's.
 +  if ([view isKindOfClass:[RCTUIView class]]) {
 +    ((RCTUIView *)view).transform3D = transform;
 +  } else {
@@ -899,7 +899,7 @@ index 30c4f1e53e7b94016c8ed1b425587753fc80c2ce..1090fa65bc64e943dd360b4298ce2136
 +  }
 +#else
    view.layer.transform = transform;
-+#endif // Ardia]
++#endif // Medusa]
    // Enable edge antialiasing in rotation, skew, or perspective transforms
    view.layer.allowsEdgeAntialiasing = transform.m12 != 0.0f || transform.m21 != 0.0f || transform.m34 != 0.0f;
  }

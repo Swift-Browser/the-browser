@@ -1,4 +1,4 @@
-import { SwipeArea, type SwipeAreaHandle, type SwipeEvent } from "@medusa/ardiacore";
+import { SwipeArea, type SwipeAreaHandle, type SwipeEvent } from "@medusa/medusacore";
 import { WindowBackdrop } from "@medusa/shaders";
 import { useEffect, useMemo, useRef, type ReactNode } from "react";
 import { Animated, StyleSheet, View, type StyleProp, type ViewStyle } from "react-native";

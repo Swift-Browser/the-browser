@@ -352,7 +352,7 @@
   };
   const ensureEye = () => {
     if (eyeHost && eyeHost.isConnected) return;
-    eyeHost = document.createElement("ardia-reveal");
+    eyeHost = document.createElement("medusa-reveal");
     eyeHost.style.cssText = "all:initial;position:fixed;z-index:2147483647;display:none;";
     const root = eyeHost.attachShadow({ mode: "closed" });
     root.innerHTML =

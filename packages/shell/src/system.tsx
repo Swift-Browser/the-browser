@@ -32,7 +32,7 @@ const System = requireNativeModule<{
   menuShortcuts(): Promise<MenuShortcut[]>;
   recordShortcut(): Promise<{ key: string; modifiers: ShortcutModifier[] } | null>;
   cancelRecording(): Promise<void>;
-}>("ArdiaSystem");
+}>("MedusaSystem");
 
 export const isDefaultBrowser = () => System.isDefaultBrowser();
 export const setAsDefaultBrowser = () => System.setAsDefaultBrowser();
@@ -59,7 +59,7 @@ export type MouseAreaProps = ViewProps & {
 
 type NativeMouseAreaProps = Omit<MouseAreaProps, "onMiddleClick"> & { onMiddleClick?: (e: { nativeEvent: MiddleClickEvent }) => void };
 
-const NativeMouseArea = System ? requireNativeViewManager<NativeMouseAreaProps>("ArdiaFileDrag") : null;
+const NativeMouseArea = System ? requireNativeViewManager<NativeMouseAreaProps>("MedusaFileDrag") : null;
 
 export function MouseArea({ path, onMiddleClick, ...props }: MouseAreaProps) {
   if (!NativeMouseArea) return <View {...props} />;

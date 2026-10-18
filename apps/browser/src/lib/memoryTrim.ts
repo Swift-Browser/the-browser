@@ -1,4 +1,4 @@
-import { inputIdleSeconds, trimEngineMemory } from "@medusa/ardiacore";
+import { inputIdleSeconds, trimEngineMemory } from "@medusa/medusacore";
 import { killSwitchEnvironment } from "@medusa/shell";
 import { useBrowser } from "../store/browser";
 import { isQuitting } from "./native";
@@ -17,15 +17,15 @@ const runtime = globalThis as { gc?: () => void; HermesInternal?: { getInstrumen
 
 const heapSize = () => runtime.HermesInternal?.getInstrumentedStats?.().js_heapSize ?? null;
 
-const off = (name: string) => ["off", "0", "false"].includes(killSwitchEnvironment(name) ?? "");
+const off = (name: string) => ["off", "0", "false"].includes(killSwitchEnvironment(name) ?? killSwitchEnvironment(name.replace("MEDUSA_", "ARDIA_")) ?? "");
 
 let started = false;
 
 export function startMemoryTrim() {
   if (started) return;
-  if (off("ARDIA_MEMORY_TRIM")) return;
-  const compactsHeap = !off("ARDIA_MEMORY_TRIM_HEAP") && typeof runtime.gc === "function" && heapSize() !== null;
-  const trimsEngine = !off("ARDIA_MEMORY_TRIM_ENGINE");
+  if (off("MEDUSA_MEMORY_TRIM")) return;
+  const compactsHeap = !off("MEDUSA_MEMORY_TRIM_HEAP") && typeof runtime.gc === "function" && heapSize() !== null;
+  const trimsEngine = !off("MEDUSA_MEMORY_TRIM_ENGINE");
   if (!compactsHeap && !trimsEngine) return;
   started = true;
 

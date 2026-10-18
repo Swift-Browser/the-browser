@@ -1,7 +1,7 @@
 # Agent brief (read first)
 
 You are one of several engineers working **in parallel in the same working tree** on
-Ardia, a macOS browser that must reach **full feature and visual parity with Dia**
+Medusa, a macOS browser that must reach **full feature and visual parity with Dia**
 (The Browser Company). The feature checklist is `docs/dia-feature-parity.md`; the
 visual spec (colors, sizes, animations recovered from Dia's binary) is `docs/dia-spec.md`.
 The user is demanding: no sloppy work, every hover state/animation/detail matters.
@@ -11,25 +11,25 @@ The user is demanding: no sloppy work, every hover state/animation/detail matter
 - `apps/browser`: Expo SDK 54 + react-native-macos 0.81 (Legacy architecture), zustand store,
   inline styles.
 - Native code lives in Expo modules under `packages/*/ios` (Swift / Objective-C++):
-  - `packages/ardiacore`: the web engine, **ArdiaCore**: Chrome's own framework (`Chromium Framework.framework`, plain
+  - `packages/medusacore`: the web engine, **MedusaCore**: Chrome's own framework (`Chromium Framework.framework`, plain
     Chromium 155.0.8059.84 + ungoogled-chromium + our patch series, `docs/engine-build.md`) with our layer linked
-    in, and the Expo modules and JS API the app uses (`docs/ardiacore-spike.md`, `docs/ardiacore-parity.md`).
-    - **Chromium runs the process.** `main.swift` calls `ArdiaCoreHost.run`: `ChromeMain` starts with our
+    in, and the Expo modules and JS API the app uses (`docs/medusacore-spike.md`, `docs/medusacore-parity.md`).
+    - **Chromium runs the process.** `main.swift` calls `MedusaCoreHost.run`: `ChromeMain` starts with our
       `ACMainDelegate`, `NSApp` is Chrome's `BrowserCrApplication`, and the React Native host (`AppDelegate`) starts
       inside Chrome's run loop. Nothing may touch `NSApp` before that.
-    - **Every app window is one `ArdiaCoreWindow`** (a Views-backed `NSWindow`, so Chrome's bubbles, dialogs, menus and
+    - **Every app window is one `MedusaCoreWindow`** (a Views-backed `NSWindow`, so Chrome's bubbles, dialogs, menus and
       autofill dropdowns attach to it) holding a Chrome `Browser` per profile shown in it, each with no
-      `BrowserView`, tab strip or toolbar (`ArdiaCoreChromeWindow.mm`, the `ACChromeWindowHost` packages/shell looks
+      `BrowserView`, tab strip or toolbar (`MedusaCoreChromeWindow.mm`, the `ACChromeWindowHost` packages/shell looks
       up). Paging between profiles changes the active profile; the window stays.
     - Every tab is a real Chrome tab of its window's Browser; its `WebContents` view is hosted in our React Native
-      views (`ArdiaCoreWebView`). Popups, `target=_blank` and ⌘-click keep Chrome's own new `WebContents`.
+      views (`MedusaCoreWebView`). Popups, `target=_blank` and ⌘-click keep Chrome's own new `WebContents`.
     - Passwords, autofill, extensions, zoom and search engines call Chrome's services directly through our
-      own Chromium code, `//chrome/browser/ardia` (`engine/chromium`), exported as plain C
-      (`ArdiaCoreEngineBridge`, `ArdiaCoreServices`); ArdiaCore's own layer is `//ardia/core` (`engine/ardiacore`).
+      own Chromium code, `//chrome/browser/medusa` (`engine/chromium`), exported as plain C
+      (`MedusaCoreEngineBridge`, `MedusaCoreServices`); MedusaCore's own layer is `//medusa/core` (`engine/medusacore`).
       No chrome:// page is scripted.
-    - JS API in `packages/ardiacore/src` (`WebView`, downloads, permissions, profiles, extensions, Chrome UI); its
-      native modules keep their CEF-era names: `ArdiaCEF` is `packages/ardiacore/ios/CefModule.swift`, and
-      `ArdiaExtensions`, `ArdiaSwipe` and `ArdiaChromeUI` are `ExtensionsModule.swift`,
+    - JS API in `packages/medusacore/src` (`WebView`, downloads, permissions, profiles, extensions, Chrome UI); its
+      native modules keep their CEF-era names: `MedusaCEF` is `packages/medusacore/ios/CefModule.swift`, and
+      `MedusaExtensions`, `MedusaSwipe` and `MedusaChromeUI` are `ExtensionsModule.swift`,
       `SwipeModule.swift` and `ChromeUIModule.swift` there.
   - `packages/shell`: menus, shortcuts, windows, native primitives (Surface, Symbol, FadeLabel,
     VisualEffect, WindowDragRegion, ContextMenuArea, ActivitySpinner…).
@@ -46,16 +46,16 @@ The user is demanding: no sloppy work, every hover state/animation/detail matter
   only if a patch adds or removes files). To change one: `pnpm patch <pkg>@<version> --edit-dir <scratch dir>`,
   edit there, then `scripts/agent/locked pod -- pnpm patch-commit <scratch dir>`, and read the new `.patch`:
   pnpm can add bogus `deleted file` entries (drop them and run `pnpm install` again under the same lock).
-  Mark edits `[Ardia: … Ardia]`. Current patches: `react-native-macos` (a view's `transform` survives
+  Mark edits `[Medusa: … Medusa]`. Current patches: `react-native-macos` (a view's `transform` survives
   AppKit layout and applies from its centre; RCTTiming's display link, c7ebd600; a view in a scroll view observes its bounds once, not once per re-add; focus() on a text field being edited keeps its edit, caret and selection) and `expo-modules-core` (the JS
   runtime is prepared on the JS thread only, 364f5f7e).
 
 ## The engine
-- ArdiaCore is built outside the repo in `~/chromium-build` (the tree and its patches: `engine/patches`,
-  `docs/engine-build.md` › "Rebuilding"; `engine/chromium/apply.sh` and `engine/ardiacore/apply.sh` copy our code in).
+- MedusaCore is built outside the repo in `~/chromium-build` (the tree and its patches: `engine/patches`,
+  `docs/engine-build.md` › "Rebuilding"; `engine/chromium/apply.sh` and `engine/medusacore/apply.sh` copy our code in).
   The app's build stages a copy of `out/Release_GN_arm64/Chromium Framework.framework`
-  (`packages/ardiacore/scripts/stage-framework.sh`: copied and signed once per engine build into
-  `apps/browser/build-ardiacore/staged`, then cloned into each build's own derived data, `ARDIACORE_STAGE_DIR`), links it
+  (`packages/medusacore/scripts/stage-framework.sh`: copied and signed once per engine build into
+  `apps/browser/build-medusacore/staged`, then cloned into each build's own derived data, `MEDUSACORE_STAGE_DIR`), links it
   and embeds it (`embed.sh`), so every agent's next build picks up a new framework.
 - One agent at a time edits or builds `~/chromium-build`: hold the chromium lock for the whole edit → build cycle
   (`scripts/agent/locked chromium --take <you>`, then each command as `scripts/agent/locked chromium --as <you> --
@@ -63,57 +63,57 @@ The user is demanding: no sloppy work, every hover state/animation/detail matter
   with `--as`). Builds are incremental only: `scripts/agent/engine-build [--as <you>] [target…]` (default
   `chrome_framework`; `--help`) runs both `apply.sh` and their checks, then autoninja, under the chromium lock; run it
   with `run_in_background`. By hand, after both `apply.sh`:
-  `cd ~/chromium-build/chromium_git/chromium/src && PATH=$HOME/chromium-build/depot_tools:$PATH DEPOT_TOOLS_UPDATE=0 ~/Documents/ardia/scripts/agent/locked chromium [--as <you>] -- autoninja -C out/Release_GN_arm64 chrome_framework`.
+  `cd ~/chromium-build/chromium_git/chromium/src && PATH=$HOME/chromium-build/depot_tools:$PATH DEPOT_TOOLS_UPDATE=0 ~/Documents/medusa/scripts/agent/locked chromium [--as <you>] -- autoninja -C out/Release_GN_arm64 chrome_framework`.
   `apply.sh` copies the whole working tree, so other agents' uncommitted engine files get compiled too.
   A new framework changes every agent's next build, so say so in your report. To try one privately, build the app with
-  `ARDIACORE_FRAMEWORK=<framework> scripts/agent/build-app --as <you>` (it stages into your own derived data).
-- New engine code goes in `//chrome/browser/ardia` (`engine/chromium/src`) or `//ardia/core`
-  (`engine/ardiacore/src`), never straight into the tree (`docs/engine-build.md` › "Our own code in the tree").
+  `MEDUSACORE_FRAMEWORK=<framework> scripts/agent/build-app --as <you>` (it stages into your own derived data).
+- New engine code goes in `//chrome/browser/medusa` (`engine/chromium/src`) or `//medusa/core`
+  (`engine/medusacore/src`), never straight into the tree (`docs/engine-build.md` › "Our own code in the tree").
   `engine/patches/series` is the apply order of our patches to Chromium; `engine/patches/series.py check` proves the
-  series reproduces the tree. Hooks in Chrome's code are `g_ardia_*` pointers ArdiaCore sets (`ac_seams.mm`). CEF
+  series reproduces the tree. Hooks in Chrome's code are `g_medusa_*` pointers MedusaCore sets (`ac_seams.mm`). CEF
   left the tree on 2026-10-09: the few of its patches we keep are `chromium-cef-carryover.patch`, and the seams of its
-  that ArdiaCore used are our hooks H1–H6 in `engine/ardiacore/apply.sh` (`docs/engine-build.md` › "Our hooks in Chrome's
-  code"). Whether a Browser is ArdiaCore's is `WindowHost::ForBrowser`.
+  that MedusaCore used are our hooks H1–H6 in `engine/medusacore/apply.sh` (`docs/engine-build.md` › "Our hooks in Chrome's
+  code"). Whether a Browser is MedusaCore's is `WindowHost::ForBrowser`.
 
-### ArdiaCore code map
-Engine files are in `engine/ardiacore/src/ardia/core`, app files in `packages/ardiacore/ios`, JS in `apps/browser/src`.
+### MedusaCore code map
+Engine files are in `engine/medusacore/src/medusa/core`, app files in `packages/medusacore/ios`, JS in `apps/browser/src`.
 
 | Concern | Engine | App | JS |
 | --- | --- | --- | --- |
-| Windows, tab ownership | `ac_browser.h` (`WindowHost`, `ACWebContentsDelegate`, `TabBridge`), `ac_browser_window.mm` | `ArdiaCoreChromeWindow.mm`, `ArdiaCoreTabStrip.mm` | `lib/chromeTabs.ts`, `store/liveTabs.ts` |
-| Tab activation | `ardiacore_api.mm` `-activateTab:`, `ac_browser.mm` `ActiveTabChanged` | `ArdiaCoreWebView.mm` `-activate`, `ArdiaCoreTabStrip.mm` | same |
-| Focus guard (test instances) | `ac_browser.mm` (`WindowHost` activation) | `ArdiaCoreActivation.mm` (`activation.log`), `ArdiaCoreChromeWindow.mm` | `packages/shell/ios/Windows.swift` |
-| Fullscreen | `ac_browser_window.mm` (`ExclusiveAccessContext`), `ac_browser.mm` `FullscreenChanged` | `ArdiaCoreChromeWindow.mm` (acted out in test instances) | `components/ContentCard.tsx`, `components/layout/pageState.ts` |
-| Picture in Picture | `ac_picture_in_picture.mm`; Dia's window and controls in `engine/chromium/…/ardia/pip/`; the auto-PiP hook in `engine/ardiacore/apply.sh` | `ArdiaCorePictureInPicture.mm` | `components/media/pip.ts` |
-| Password and autofill bubbles | `ac_password_prompt.mm`, `ac_browser_window.h` (`ACAutofillBubbleHandler`), `ac_autofill_trigger.mm` (dropdown) | `ArdiaCoreChromeWindow.mm` (`window:passwordPrompt:forTab:`) → `ArdiaCoreWebView` event | `components/site/Prompts.tsx`, `site/Autofill.tsx` |
-| Share tab, screen share | `ardiacore_api.mm` (`TabSharingDelegateFor`), `ac_desktop_capture.mm` | `ArdiaCoreHost.mm` `shareTabInstead`, `ChromeUIModule.swift` | `components/media/ShareBar.tsx`, `SharePicker.tsx` |
-| Restore, discard | `engine/chromium/…/ac_tab_restore.cc` (closed tabs) | `ArdiaCoreWebView.mm` (`discard:`, `transferKey`) | `lib/tabLifecycle.ts`, `store/windows.ts` |
-| Permissions | `ac_permissions.mm` | `ArdiaCoreHost.mm` (`permissionRequest`) | `components/site/permissions.ts`, `Prompts.tsx` |
-| Page script | `ac_page_channel.mm`, `renderer/ac_content_renderer_client.cc` | `page_script.js`, `ArdiaCoreWebView.mm` | `onPageMessage` (`packages/ardiacore/src/WebView.tsx`) |
+| Windows, tab ownership | `ac_browser.h` (`WindowHost`, `ACWebContentsDelegate`, `TabBridge`), `ac_browser_window.mm` | `MedusaCoreChromeWindow.mm`, `MedusaCoreTabStrip.mm` | `lib/chromeTabs.ts`, `store/liveTabs.ts` |
+| Tab activation | `medusacore_api.mm` `-activateTab:`, `ac_browser.mm` `ActiveTabChanged` | `MedusaCoreWebView.mm` `-activate`, `MedusaCoreTabStrip.mm` | same |
+| Focus guard (test instances) | `ac_browser.mm` (`WindowHost` activation) | `MedusaCoreActivation.mm` (`activation.log`), `MedusaCoreChromeWindow.mm` | `packages/shell/ios/Windows.swift` |
+| Fullscreen | `ac_browser_window.mm` (`ExclusiveAccessContext`), `ac_browser.mm` `FullscreenChanged` | `MedusaCoreChromeWindow.mm` (acted out in test instances) | `components/ContentCard.tsx`, `components/layout/pageState.ts` |
+| Picture in Picture | `ac_picture_in_picture.mm`; Dia's window and controls in `engine/chromium/…/medusa/pip/`; the auto-PiP hook in `engine/medusacore/apply.sh` | `MedusaCorePictureInPicture.mm` | `components/media/pip.ts` |
+| Password and autofill bubbles | `ac_password_prompt.mm`, `ac_browser_window.h` (`ACAutofillBubbleHandler`), `ac_autofill_trigger.mm` (dropdown) | `MedusaCoreChromeWindow.mm` (`window:passwordPrompt:forTab:`) → `MedusaCoreWebView` event | `components/site/Prompts.tsx`, `site/Autofill.tsx` |
+| Share tab, screen share | `medusacore_api.mm` (`TabSharingDelegateFor`), `ac_desktop_capture.mm` | `MedusaCoreHost.mm` `shareTabInstead`, `ChromeUIModule.swift` | `components/media/ShareBar.tsx`, `SharePicker.tsx` |
+| Restore, discard | `engine/chromium/…/ac_tab_restore.cc` (closed tabs) | `MedusaCoreWebView.mm` (`discard:`, `transferKey`) | `lib/tabLifecycle.ts`, `store/windows.ts` |
+| Permissions | `ac_permissions.mm` | `MedusaCoreHost.mm` (`permissionRequest`) | `components/site/permissions.ts`, `Prompts.tsx` |
+| Page script | `ac_page_channel.mm`, `renderer/ac_content_renderer_client.cc` | `page_script.js`, `MedusaCoreWebView.mm` | `onPageMessage` (`packages/medusacore/src/WebView.tsx`) |
 
-- **Call path:** JS (`packages/ardiacore/src`) → `*Module.swift` → `ArdiaCoreHost` / `ArdiaCoreWebView` → `public/ArdiaCore.h` →
-  `ardiacore_api.mm` → `ac_*.mm`. Events come back through an `ArdiaCore*Delegate` method, `-emit:payload:`, and the event
+- **Call path:** JS (`packages/medusacore/src`) → `*Module.swift` → `MedusaCoreHost` / `MedusaCoreWebView` → `public/MedusaCore.h` →
+  `medusacore_api.mm` → `ac_*.mm`. Events come back through an `MedusaCore*Delegate` method, `-emit:payload:`, and the event
   switch in `CefModule.swift`.
-- **Adding to `ArdiaCore.h`:** implement it in `ardiacore_api.mm` (a new file goes in `BUILD.gn` `sources`); a new class
-  must be named `ArdiaCore*` to be exported (the `ardiacore.exports` wildcard). The pod reads `ArdiaCore.h` from the repo and
+- **Adding to `MedusaCore.h`:** implement it in `medusacore_api.mm` (a new file goes in `BUILD.gn` `sources`); a new class
+  must be named `MedusaCore*` to be exported (the `medusacore.exports` wildcard). The pod reads `MedusaCore.h` from the repo and
   the staged framework may be older, so the app guards new selectors with `respondsToSelector:`.
 - **Adding an engine call** (Chrome's services are `ac_*` C calls in `engine/chromium`, which the app finds with
-  dlsym through `ArdiaCoreEngineBridge`): (1) write `AC_ENGINE_CALL(ac_<domain>_<verb>)` in
-  `engine/chromium/src/chrome/browser/ardia/ac_<domain>.cc` (conventions in `public/ac_engine.h`; a new file goes
+  dlsym through `MedusaCoreEngineBridge`): (1) write `AC_ENGINE_CALL(ac_<domain>_<verb>)` in
+  `engine/chromium/src/chrome/browser/medusa/ac_<domain>.cc` (conventions in `public/ac_engine.h`; a new file goes
   in that `BUILD.gn`; `ac_engine.exports` exports every `ac_*`); (2) `scripts/agent/engine-build`; (3) call it with
-  `ArdiaCoreEngineBridge call:` (`callWithSecret:` for secrets), guarded by `exports:`; for JS's `engineCall`, add it to
-  `ArdiaCoreEngineCalls.swift`.
-- **The page script** is `packages/ardiacore/ios/page_script.js`, a pod resource: `ArdiaCoreHost.mm` hands it to the
+  `MedusaCoreEngineBridge call:` (`callWithSecret:` for secrets), guarded by `exports:`; for JS's `engineCall`, add it to
+  `MedusaCoreEngineCalls.swift`.
+- **The page script** is `packages/medusacore/ios/page_script.js`, a pod resource: `MedusaCoreHost.mm` hands it to the
   engine at launch and the renderer runs it in every http(s) and file frame. Changing it needs an app rebuild, not an
-  engine one. Its `post(kind, json)` crosses the page channel to `-[ArdiaCoreWebView tab:didReceivePageMessage:…]`,
+  engine one. Its `post(kind, json)` crosses the page channel to `-[MedusaCoreWebView tab:didReceivePageMessage:…]`,
   which handles it or emits `pageMessage` (JS `onPageMessage`).
 - **CEF-era code** (removed in 6bdf66ce): `git show 6bdf66ce^:packages/cef/ios/<file>`. Comments citing
-  `packages/cef/…` mean: `ACBrowserView.mm`, `ACClient.mm` → `ArdiaCoreWebView.mm`; `ACChromeWindow.mm`,
-  `ACPopupWindow.mm` → `ArdiaCoreChromeWindow.mm`; `ACActivation`, `ACTabStrip`, `ACPictureInPicture`,
-  `ACContentBlocker`, `ACEngineBridge` → `ArdiaCore<same>.mm`; `ACPasswords`, `ACAutofill`, `ACZoom` →
-  `ArdiaCoreServices.mm`; `ACExtensions.mm` → `ExtensionsModule.swift`; `ACCef.mm` → `ArdiaCoreHost.mm`,
-  `ArdiaCoreStartup.mm`; `ACEngine.mm` → `ardiacore_api.mm`; `helper/page_script.js` → `packages/ardiacore/ios/`;
-  `packages/cef/src` → `packages/ardiacore/src`.
+  `packages/cef/…` mean: `ACBrowserView.mm`, `ACClient.mm` → `MedusaCoreWebView.mm`; `ACChromeWindow.mm`,
+  `ACPopupWindow.mm` → `MedusaCoreChromeWindow.mm`; `ACActivation`, `ACTabStrip`, `ACPictureInPicture`,
+  `ACContentBlocker`, `ACEngineBridge` → `MedusaCore<same>.mm`; `ACPasswords`, `ACAutofill`, `ACZoom` →
+  `MedusaCoreServices.mm`; `ACExtensions.mm` → `ExtensionsModule.swift`; `ACCef.mm` → `MedusaCoreHost.mm`,
+  `MedusaCoreStartup.mm`; `ACEngine.mm` → `medusacore_api.mm`; `helper/page_script.js` → `packages/medusacore/ios/`;
+  `packages/cef/src` → `packages/medusacore/src`.
 
 ## Rules
 - **Stay inside the files you own** (listed in your task). If you need a change elsewhere,
@@ -126,12 +126,12 @@ Engine files are in `engine/ardiacore/src/ardia/core`, app files in `packages/ar
   with `git commit --only -- <paths>` (or check `git diff --cached --stat` lists only your files).
 - **Never steal focus from the user.** They are working in other apps.
   - Launch the app only with `open -g` (never plain `open`, never `activate`) **and** with
-    `ARDIA_BACKGROUND=1`: `open -g` alone does not stop LaunchServices from making the app
+    `MEDUSA_BACKGROUND=1`: `open -g` alone does not stop LaunchServices from making the app
     frontmost once its windows appear (this stole the user's keystrokes). With it the process is
-    BackgroundOnly and every activation path is guarded (`packages/ardiacore/ios/ArdiaCoreActivation.mm`); each
-    attempt is logged to `$ARDIA_DATA_DIR/activation.log`. `lsappinfo front` must never show
+    BackgroundOnly and every activation path is guarded (`packages/medusacore/ios/MedusaCoreActivation.mm`); each
+    attempt is logged to `$MEDUSA_DATA_DIR/activation.log`. `lsappinfo front` must never show
     your pid. Its windows never come up over the owner's: every window (Chrome's bubbles and popups, panels, PiP,
-    Little Ardia, sheets) has its level set a band below normal (normal at layer -1000000, floating at -999997), so
+    Little Medusa, sheets) has its level set a band below normal (normal at layer -1000000, floating at -999997), so
     it sits behind every other app's window, above the desktop, in production's order among its own and out of Mission
     Control (same file, "Behind the owner's windows"; `-level` still answers the level asked for).
   - Any standalone test program or prototype window you create must be unable to take focus
@@ -152,12 +152,12 @@ Engine files are in `engine/ardiacore/src/ardia/core`, app files in `packages/ar
     `/tmp/ac-<name>.holder` says who holds a lock. Every `scripts/agent` script takes `--help`.
     When the main session runs the build train (`scripts/agent/train serve`: one shared build of the tree), don't
     build yourself: `train request --as <you>`, then `train wait --as <you>` prints the app to run.
-  - Run: `scripts/agent/ac launch apps/browser/build-<you>/Build/Products/Debug/Ardia.app --data <scratch>/data`
-    (hidden: `open -g -n`, `ARDIA_BACKGROUND=1`, its own data dir and DevTools port; prints the pid and port).
+  - Run: `scripts/agent/ac launch apps/browser/build-<you>/Build/Products/Debug/Medusa.app --data <scratch>/data`
+    (hidden: `open -g -n`, `MEDUSA_BACKGROUND=1`, its own data dir and DevTools port; prints the pid and port).
     `ac eval|page|quit|status` take that data dir (`--help`); scripts use `scripts/lib/instance.mjs` (`launch`,
     `attach`, `session`, `reporter`), whose pid is the DevTools port's listener, never a process-list diff
-    (`ARDIA_DATA_DIR` isolates Chrome's and the app's data; a Debug build refuses to start without one).
-    Quit only your own instance (`ac quit`), never `pkill Ardia`.
+    (`MEDUSA_DATA_DIR` isolates Chrome's and the app's data; a Debug build refuses to start without one).
+    Quit only your own instance (`ac quit`), never `pkill Medusa`.
   - Open a URL in your instance: CDP `Target.createTarget`, or the dev harness
     (`ac.actions.openUrls([url])`); `open -a` routes to whichever instance macOS picks.
   - Metro (JS dev server) is already running on :8081 and serves this working tree to every
@@ -181,9 +181,9 @@ Engine files are in `engine/ardiacore/src/ardia/core`, app files in `packages/ar
     the module provider).
 - **Shared files** several agents must touch — `packages/shell/ios/Menus.swift`,
   `apps/browser/src/lib/commands.ts`, `apps/browser/src/App.tsx`, `apps/browser/src/store/settings.ts`,
-  `apps/browser/src/lib/theme.ts`, `packages/ardiacore/ios/ArdiaCoreInternal.h`, `packages/ardiacore/ios/ArdiaCore.podspec`,
-  `packages/ardiacore/ios/ArdiaCoreWebView.mm`, `packages/ardiacore/scripts/acceptance.mjs`, ArdiaCore's `public/ArdiaCore.h`,
-  `ardiacore_api.mm` and `ac_browser*.mm`, the `expo-module.config.json` files: re-read right before each edit, keep
+  `apps/browser/src/lib/theme.ts`, `packages/medusacore/ios/MedusaCoreInternal.h`, `packages/medusacore/ios/MedusaCore.podspec`,
+  `packages/medusacore/ios/MedusaCoreWebView.mm`, `packages/medusacore/scripts/acceptance.mjs`, MedusaCore's `public/MedusaCore.h`,
+  `medusacore_api.mm` and `ac_browser*.mm`, the `expo-module.config.json` files: re-read right before each edit, keep
   edits small and additive (add your case/item/field; don't restructure), and never undo someone else's lines.
   Native files there compile into everyone's build: check one pod with `scripts/agent/typecheck-pod <Pod>` before saving more.
 - **Scratch files** go in a subdirectory of the session scratchpad named for your task; clean up only that
@@ -200,8 +200,8 @@ Engine files are in `engine/ardiacore/src/ardia/core`, app files in `packages/ar
     (`lib/devHarness.ts`); Expo modules are on `globalThis.expo.modules`. `ac.runCommand` takes an object:
     `ac.runCommand({ command: "importBrowserData", arg: null, windowId: null })`; the utility windows' ids are
     `"settings"` and `"import"`.
-  - The ArdiaCore acceptance run (`docs/ardiacore-parity.md` › "How to build and check it"): `node
-    packages/ardiacore/scripts/acceptance.mjs <Debug app> <scratch dir> --keep [check…]` once, then `--attach <scratch
+  - The MedusaCore acceptance run (`docs/medusacore-parity.md` › "How to build and check it"): `node
+    packages/medusacore/scripts/acceptance.mjs <Debug app> <scratch dir> --keep [check…]` once, then `--attach <scratch
     dir> [check…]` for each try (no boot: seconds). `--list` names every check and what it needs; each check prints
     one line, the details go to `<scratch dir>/data/acceptance.log`.
   - Camera and microphone: a hidden instance captures only from Chrome's fake devices (`docs/testing.md`). Run
@@ -213,23 +213,23 @@ Engine files are in `engine/ardiacore/src/ardia/core`, app files in `packages/ar
     into whatever window is key, and
     `node apps/browser/scripts/shortcuts-test.mjs <Debug app>` checks every shortcut in every focus.
   - Page content: `scripts/agent/ac page <data dir> <url part> '<expression>'`, or CDP on the instance's port
-    (`http://localhost:<port>/json`, `Runtime.evaluate`, `Page.captureScreenshot`). A `ARDIA_BACKGROUND` instance's windows answer NO to
-    `-[NSWindow isOccluded]` (`ArdiaCoreHost.mm`), so a covered window shows a tab at once instead of after Chrome's 1 s
-    occlusion delay; set `ARDIA_ALLOW_OCCLUSION=1` to test occlusion itself.
-  - CDP (`ARDIA_REMOTE_DEBUGGING_PORT`), argv and `ARDIA_CHROMIUM_SWITCHES` only reach Chrome where it runs on its mock
-    keychain: a scratch `ARDIA_DATA_DIR`, or a build without a team signature (ad hoc copies such as carryover.sh's). A
-    team-signed build on its real data dir forwards none of them (`ArdiaCoreHost.mm`), and its browser process removes
+    (`http://localhost:<port>/json`, `Runtime.evaluate`, `Page.captureScreenshot`). A `MEDUSA_BACKGROUND` instance's windows answer NO to
+    `-[NSWindow isOccluded]` (`MedusaCoreHost.mm`), so a covered window shows a tab at once instead of after Chrome's 1 s
+    occlusion delay; set `MEDUSA_ALLOW_OCCLUSION=1` to test occlusion itself.
+  - CDP (`MEDUSA_REMOTE_DEBUGGING_PORT`), argv and `MEDUSA_CHROMIUM_SWITCHES` only reach Chrome where it runs on its mock
+    keychain: a scratch `MEDUSA_DATA_DIR`, or a build without a team signature (ad hoc copies such as carryover.sh's). A
+    team-signed build on its real data dir forwards none of them (`MedusaCoreHost.mm`), and its browser process removes
     every switch that opens the profile to outside control (remote debugging, unpacked extensions, automation, proxies,
     certificate overrides, net-log), also after chrome://flags have been applied, and unsets `SSLKEYLOGFILE`
     (`ac_main_delegate.cc`), so nothing drives or records the real profile, with its real Safe Storage key; Chrome 136
     did the same for its default profile.
   - Native UI: `screencapture -l <windowID> -o` (find the id with CGWindowList by owner PID; a test window's layer is negative). It captures the
     window's own content even while the owner's windows cover it, which a test window's always may. Wrap every capture in `timeout 20`: with the screen locked they can hang instead of failing.
-    For the New Tab intro, launch with `ARDIA_SHADERS_FORCE_KEY=1` (it only plays in a key window).
+    For the New Tab intro, launch with `MEDUSA_SHADERS_FORCE_KEY=1` (it only plays in a key window).
   - The user's screen may be locked: screen captures then fail or deliver no frames. Fall back to
     `ac.shell.devSnapshotWindow(windowId, path)` (`false` means it failed; the window's layers at 2x; Metal views
     render blank; text opacity is applied twice, so a label at α reads 1 − (1 − α)², don't match colours on it),
-    `globalThis.expo.modules.ArdiaAreaLight.debugSnapshot(dir)` (every Metal view, offscreen, with its frame),
+    `globalThis.expo.modules.MedusaAreaLight.debugSnapshot(dir)` (every Metal view, offscreen, with its frame),
     the accessibility tree and store state, and list "needs visual check" items in your report.
 - Code style: read the surrounding code first and match its naming and idioms. No comments (AGENTS.md).
   Keep files cohesive; new features go in new files where sensible.

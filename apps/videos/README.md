@@ -1,6 +1,6 @@
 # Videos
 
-Remotion videos for Ardia, a Remocn Studio project. Each folder in `src/videos` is a composition, named after the
+Remotion videos for Medusa, a Remocn Studio project. Each folder in `src/videos` is a composition, named after the
 folder. Render one with `pnpm -C apps/videos render <id>`, which writes `out/<id>.mp4` (gitignored).
 
 `render` runs `scripts/deliver.sh`. Remotion's own AAC carries 2048 samples of encoder priming with no edit list, so
@@ -25,10 +25,10 @@ Two caveats for delivery:
 | `teaser-9x16` | 1080 × 1920 | 14.9 s |
 
 Every other browser asks for something. Four brass stabs carry "SIGN IN. / TRY AI. / ACCEPT ALL. / UPGRADE.",
-each over a site interrupting you in a real Ardia window: a login wall sliding up, an AI copilot panel sliding
+each over a site interrupting you in a real Medusa window: a login wall sliding up, an AI copilot panel sliding
 in over an article, a cookie wall, an "upgrade to keep typing" modal, with a pointer heading for each button. Then
-the asks get stamped onto it on a snare roll. Ardia's painted hills (the logo) rise beside the pile, lean back
-and shove it off on the drop, and the sun rises over them as "ARDIA — THE SIDEBAR BROWSER FOR MAC" lands,
+the asks get stamped onto it on a snare roll. Medusa's painted hills (the logo) rise beside the pile, lean back
+and shove it off on the drop, and the sun rises over them as "MEDUSA — THE SIDEBAR BROWSER FOR MAC" lands,
 glinting as "ASKS FOR NOTHING." is stamped. (The sun has already peeked over the window to cheer the first NO.)
 
 The product follows, live:
@@ -46,8 +46,8 @@ paper taking each profile's colour. Then:
 - "ANY CHROME EXTENSION." with "NO THANKS." stamped on Chrome's own prompt;
 - "SEVEN APP ICONS. ONE DOCK." (the seven painted icon variants, from Settings › Appearance);
 - four "NO" cards;
-- ardia.dev typed into the address bar, the camera diving into the site's "Touch grass.";
-- "TOUCH GRASS." on the end hit, then the end card: the icon, the name, DOWNLOAD FOR MAC / ARDIA.DEV and the GitHub address, beside the painted mark:
+- medusa.dev typed into the address bar, the camera diving into the site's "Touch grass.";
+- "TOUCH GRASS." on the end hit, then the end card: the icon, the name, DOWNLOAD FOR MAC / MEDUSA.DEV and the GitHub address, beside the painted mark:
   the sun rises over the hills on the hit, hops on the three march taps and leaps on the last brass button, glowing.
 
 The film uses about 80 words on screen. The type is the site's poster system on warm stock: Archivo, Newsreader and
@@ -65,7 +65,7 @@ Martian Mono, with the tie's blue and the stamp's red.
 - `kit.tsx` has the window (real footage, the macOS corner and shadow, a camera that can aim a window's corner at
   the frame, and motion blur used only on the dive), the pointer, the trackpad glyph, the type styles, the springs
   and the paper.
-- `Mark.tsx` draws the logo (docs/brand/ardia): the hills and the sun as two layers cut from the same painting, so
+- `Mark.tsx` draws the logo (docs/brand/medusa): the hills and the sun as two layers cut from the same painting, so
   the sun can rise from behind the hills, hop and glow while the hills rise, lean and shove. Pure in time.
 - `Film.tsx` places the shots on the beat grid and plays the score. `footage.json` indexes the captured frames;
   `scripts/capture/composite.py` writes it.
@@ -94,13 +94,13 @@ scripts/music/fetch-samples.sh     # the CC0 samples (public/music/samples)
 python3 scripts/music/score.py     # public/music/launch.wav, teaser.wav (numpy + scipy)
 # footage: a DEV build, captured hidden (needs Metro on :8081, like any DEV instance)
 ../../scripts/agent/build-app --as videos
-scripts/capture/run-all.sh ../browser/build-videos/Build/Products/Debug/Ardia.app <scratch dir> [scene…]
+scripts/capture/run-all.sh ../browser/build-videos/Build/Products/Debug/Medusa.app <scratch dir> [scene…]
 ```
 
 ### How the footage is made
 
-Every UI pixel comes from Ardia itself, never a mock-up. `run-all.sh` launches a hidden DEV instance
-(`ARDIA_BACKGROUND=1`, a scratch `ARDIA_DATA_DIR`, `--session` from `scripts/capture/session.mjs`). That
+Every UI pixel comes from Medusa itself, never a mock-up. `run-all.sh` launches a hidden DEV instance
+(`MEDUSA_BACKGROUND=1`, a scratch `MEDUSA_DATA_DIR`, `--session` from `scripts/capture/session.mjs`). That
 session has five profiles, each with real sites, in light appearance with the address in the toolbar, so each
 profile's name sits next to the traffic lights in its colour:
 - Personal (plum)
@@ -131,7 +131,7 @@ is captured in-process, frame by frame:
 - **Live motion**, one real state per film frame:
   - **Profile swipes:** fed step by step through the real gesture tracker (`acSwipe.sidebar(W).devSimulate`).
     Profiles always change through the swipe, because a programmatic switch leaves the pager mid-move.
-  - **Typing:** ardia.dev typed a key at a time through the window's key path (DEV `type:`), with the
+  - **Typing:** medusa.dev typed a key at a time through the window's key path (DEV `type:`), with the
     field's inline completion, then Return.
   - **Scrolling:** the page scrolled step by step with a picture each step.
   - **The split divider:** the panes' sizes set step by step as the divider's drag sets them, both panes
@@ -145,7 +145,7 @@ is captured in-process, frame by frame:
     repainted) are skipped.
   - The traffic lights are AppKit's own buttons, drawn offscreen as an active window (`lights.swift`). The
     pointer is AppKit's `NSCursor` artwork (`cursor.swift`).
-- **The ardia.dev frames** were captured (2026-10-03) while the site still showed the old mascot and copy. The
+- **The medusa.dev frames** were captured (2026-10-03) while the site still showed the old mascot and copy. The
   film brings them up to date in place (`SiteLogo` in `shots.tsx`), laid out as `apps/site` lays the page out at
   that width: the hero figure becomes the painted logo with its "NO ACCOUNT" stamp and caption, the headline and
   lede become "Touch grass." and today's lede, and the header's wordmark, icon and section links and the tab's title

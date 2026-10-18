@@ -73,7 +73,18 @@ export const binaryOf = (app) => join(app, "Contents/MacOS",
   execFileSync("plutil", ["-extract", "CFBundleExecutable", "raw", join(app, "Contents/Info.plist")]).toString().trim());
 export const appEnv = (app, env) => {
   if (basename(binaryOf(app)) !== "Netnyahoo") return env;
-  const legacy = Object.fromEntries(Object.entries(env).filter(([k]) => k.startsWith("ARDIA_")).map(([k, v]) => [`NETNYAHOO_${k.slice("ARDIA_".length)}`, v]));
+  const legacy = Object.fromEntries(
+    Object.entries(env)
+      .filter(([k]) => k.startsWith("MEDUSA_") || k.startsWith("MEDUSA_"))
+      .flatMap(([k, v]) => {
+        const suffix = k.startsWith("MEDUSA_") ? k.slice(7) : k.slice(6);
+        return [
+          [`MEDUSA_${suffix}`, v],
+          [`MEDUSA_${suffix}`, v],
+          [`NETNYAHOO_${suffix}`, v],
+        ];
+      })
+  );
   return { ...env, ...legacy };
 };
 export const onScreenWindows = (pid) => JSON.parse(execFileSync("osascript", ["-l", "JavaScript", "-e",
@@ -327,9 +338,11 @@ export async function launch(app, opts = {}) {
   const location = jsMode === "pinned" ? `localhost:${js.port}` : jsMode === "live" ? `localhost:${metroPort}` : jsMode === "none" ? null : jsMode;
   const switches = [opts.switches].flat().filter(Boolean).join(" ");
   const env = appEnv(app, {
-    ARDIA_BACKGROUND: "1", ARDIA_DATA_DIR: data, ARDIA_REMOTE_DEBUGGING_PORT: String(port),
-    ...(location ? { ARDIA_JS_LOCATION: location } : {}),
-    ...(switches ? { ARDIA_CHROMIUM_SWITCHES: switches } : {}),
+    MEDUSA_BACKGROUND: "1", MEDUSA_BACKGROUND: "1",
+    MEDUSA_DATA_DIR: data, MEDUSA_DATA_DIR: data,
+    MEDUSA_REMOTE_DEBUGGING_PORT: String(port), MEDUSA_REMOTE_DEBUGGING_PORT: String(port),
+    ...(location ? { MEDUSA_JS_LOCATION: location, MEDUSA_JS_LOCATION: location } : {}),
+    ...(switches ? { MEDUSA_CHROMIUM_SWITCHES: switches, MEDUSA_CHROMIUM_SWITCHES: switches } : {}),
     ...opts.env,
   });
   const log = resolve(opts.log ?? join(data, "app.out.log"));
@@ -442,7 +455,7 @@ if (process.argv[1] === here) {
   const args = process.argv.slice(2);
   if (args[0] === "--metro-proxy") await metroProxyMain(args[1], Number(args[2]));
   else if (args[0] === "--self-test") {
-    const bin = "/tmp/Ardia.app/Contents/MacOS/Ardia";
+    const bin = "/tmp/Medusa.app/Contents/MacOS/Medusa";
     const cmd = (map) => (pid) => map[pid];
     assert.equal(parsePort("9474"), 9474);
     for (const bad of ["0", "65536", "94.5", "-1", "", "9474x", "1e3"]) assert.throws(() => parsePort(bad), /1\.\.65535/, bad);
@@ -451,7 +464,7 @@ if (process.argv[1] === here) {
     assert.ok(commandIsBinary(bin, bin));
     assert.ok(commandIsBinary(`${bin} --flag`, bin));
     assert.ok(!commandIsBinary(`${bin}2`, bin));
-    assert.ok(!commandIsBinary(`/tmp/Ardia.app/Contents/Frameworks/Ardia Helper.app/Contents/MacOS/Ardia Helper`, bin));
+    assert.ok(!commandIsBinary(`/tmp/Medusa.app/Contents/Frameworks/Medusa Helper.app/Contents/MacOS/Medusa Helper`, bin));
     assert.deepEqual(parseProcessLine(`Wed Sep 30 18:44:18 2026     ${bin} --x\n`), { started: "Wed Sep 30 18:44:18 2026", command: `${bin} --x` });
     assert.equal(parseProcessLine(""), null);
     assert.equal(ownedCandidate([], new Set(), cmd({}), bin), null);

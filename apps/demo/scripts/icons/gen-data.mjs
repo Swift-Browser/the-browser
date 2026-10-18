@@ -30,7 +30,7 @@ export function writeData(fits, nudges) {
     nudgeRows.push(`  ${JSON.stringify(name)}: "${NUDGE_WEIGHTS.map((w) => nudges[name][w].map(([x, y]) => DIGITS[x + 12] + DIGITS[y + 12]).join("")).join("")}",`);
   }
 
-  const header = `/*! Ardia demo symbol artwork. Drawn from open icon sets, not SF Symbols: Lucide (ISC), Tabler Icons (MIT), Iconoir (MIT), Phosphor Icons (MIT), Material Design Icons by Pictogrammers (Apache-2.0), plus original geometry. Notices: THIRD_PARTY_NOTICES.txt */`;
+  const header = `/*! Medusa demo symbol artwork. Drawn from open icon sets, not SF Symbols: Lucide (ISC), Tabler Icons (MIT), Iconoir (MIT), Phosphor Icons (MIT), Material Design Icons by Pictogrammers (Apache-2.0), plus original geometry. Notices: THIRD_PARTY_NOTICES.txt */`;
   const ts = `${header}
 import type { SymbolLayer, SymbolWeight } from "./render";
 
@@ -92,7 +92,7 @@ export function symbolNudge(name: string, weight: SymbolWeight, pointSize: numbe
 
 function writeNotices(used) {
   const seen = new Set();
-  let out = "Third-party notices for the Ardia demo symbol artwork (apps/demo/src/shims/web/symbols/data.ts)\n\nThe demo draws its icons from the open icon sets below, rescaled and repositioned, and from original geometry drawn for Ardia. It contains no SF Symbols artwork.\n";
+  let out = "Third-party notices for the Medusa demo symbol artwork (apps/demo/src/shims/web/symbols/data.ts)\n\nThe demo draws its icons from the open icon sets below, rescaled and repositioned, and from original geometry drawn for Medusa. It contains no SF Symbols artwork.\n";
   for (const { pkg, title, url } of ICON_SETS) {
     if (seen.has(pkg)) continue;
     seen.add(pkg);

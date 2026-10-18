@@ -3,7 +3,7 @@ import QuartzCore
 
 public class SwipeModule: Module {
   public func definition() -> ModuleDefinition {
-    Name("ArdiaSwipe")
+    Name("MedusaSwipe")
 
     Function("haptic") { (pattern: String) in
       DispatchQueue.main.async { ACSwipe.performHaptic(pattern) }
@@ -121,7 +121,7 @@ final class SwipeArea: ExpoView, ACSwipeTarget {
   }
 }
 
-private let pagerActivity = Notification.Name("ArdiaPagerActivity")
+private let pagerActivity = Notification.Name("MedusaPagerActivity")
 
 private func number(_ value: Any?) -> Double? {
   switch value {

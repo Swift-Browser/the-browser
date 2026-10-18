@@ -105,7 +105,7 @@ export function ShortcutsPane() {
   return (
     <View>
       <Text style={{ marginTop: 20, fontSize: 12.5, lineHeight: 17, color: theme.textSecondary }}>
-        Perform common actions in Ardia faster and from anywhere. Select an action to customize its keyboard shortcut.
+        Perform common actions in Medusa faster and from anywhere. Select an action to customize its keyboard shortcut.
       </Text>
       <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginTop: 14 }}>
         <SearchField value={query} onChangeText={setQuery} placeholder="Search actions" style={{ flex: 1 }} />

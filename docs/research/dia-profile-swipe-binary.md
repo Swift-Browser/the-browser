@@ -38,7 +38,7 @@ At `0x100597ba0` it reads `scrollingDeltaX`, multiplies by **−0.5** at
 `0x100597ba4`, adds it to the current native position, and publishes that position
 without a JavaScript bridge.
 
-Ardia 0.2.17 still sends each event through `ACSwipe.mm` →
+Medusa 0.2.17 still sends each event through `ACSwipe.mm` →
 `SwipeArea.swipeEvent` / Expo `EventDispatcher` → `ProfileSwipeArea.onSwipe` →
 `ProfilePager.track` → `Animated.Value.setValue` → native animation graph.
 Only the settle animation was moved fully native. Native-driven `Animated.Value`
@@ -55,7 +55,7 @@ and `0x100597fbc` enters the selection/settle function `0x100598c30`.
 That function invokes `pageSelectionHandler` synchronously at `0x100598eb0`,
 then starts the settle through `0x100596e30` at `0x100598ec4`.
 
-Ardia commits a swipe's target in `ProfilePager.settled()` after the native
+Medusa commits a swipe's target in `ProfilePager.settled()` after the native
 spring's completion callback. Its response parameter **0.25 s is a spring
 parameter, not a fixed duration**. With zero release velocity, the current
 rest thresholds finish a 0.3 / 0.6 / 1-page displacement at approximately
@@ -72,7 +72,7 @@ advance selection during motion. The callback body is not decoded here; its
 early invocation is verified, not the timing of all downstream state changes.
 Ours continues to identify the old profile until completion, so reversal may
 be based on a different selected page.
-Ardia moves its React root between separate Chrome profile windows, so simply
+Medusa moves its React root between separate Chrome profile windows, so simply
 moving `finish()` earlier needs verification of window ownership and visual
 continuity; Dia's callback ordering alone does not prove that change safe.
 

@@ -1,4 +1,4 @@
-import { clearBrowsingData, type BrowsingDataType } from "@medusa/ardiacore";
+import { clearBrowsingData, type BrowsingDataType } from "@medusa/medusacore";
 import { Surface } from "@medusa/shell";
 import { useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";

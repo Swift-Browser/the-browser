@@ -1,8 +1,8 @@
 import AppKit
 import Expo
 import React
-import ArdiaShell
-import ArdiaSync
+import MedusaShell
+import MedusaSync
 import ReactAppDependencyProvider
 
 final class AppDelegate: ExpoAppDelegate {
@@ -83,7 +83,7 @@ final class ReactNativeDelegate: ExpoReactNativeFactoryDelegate {
 
   override func bundleURL() -> URL? {
     #if DEBUG
-    if let location = ProcessInfo.processInfo.environment["ARDIA_JS_LOCATION"], !location.isEmpty {
+    if let location = ProcessInfo.processInfo.environment["MEDUSA_JS_LOCATION"] ?? ProcessInfo.processInfo.environment["MEDUSA_JS_LOCATION"], !location.isEmpty {
       var arguments = UserDefaults.standard.volatileDomain(forName: UserDefaults.argumentDomain)
       arguments["RCT_jsLocation"] = location
       UserDefaults.standard.setVolatileDomain(arguments, forName: UserDefaults.argumentDomain)

@@ -1,13 +1,13 @@
 ---
 name: release
-description: Cut and ship an Ardia release end to end, stable or nightly — write the Dia-style release notes from git log, bump the version, build/sign/package with scripts/release.sh, smoke-test the build in a hidden instance, publish the GitHub release (a prerelease for a nightly) + Sparkle appcast, and deploy ardia.dev with the release-notes entry, the new download link and the landing page's claims and screenshots brought up to date. Use this whenever the user asks to ship, release, cut/push a new version, a nightly or an update, publish a build, "ship it as a nightly", "get this to me", bump the version, or write release notes for Ardia — even if they only say "ship it", "nightly" or "new release" after a batch of fixes.
+description: Cut and ship an Medusa release end to end, stable or nightly — write the Dia-style release notes from git log, bump the version, build/sign/package with scripts/release.sh, smoke-test the build in a hidden instance, publish the GitHub release (a prerelease for a nightly) + Sparkle appcast, and deploy medusa.dev with the release-notes entry, the new download link and the landing page's claims and screenshots brought up to date. Use this whenever the user asks to ship, release, cut/push a new version, a nightly or an update, publish a build, "ship it as a nightly", "get this to me", bump the version, or write release notes for Medusa — even if they only say "ship it", "nightly" or "new release" after a batch of fixes.
 ---
 
-# Releasing Ardia
+# Releasing Medusa
 
 A release is: notes → version bump → `scripts/release.sh` → smoke test → GitHub release → site deploy.
-Users get it through Sparkle (Ardia › Check for Updates…), and the first launch of the new version
-opens `https://ardia.dev/release-notes#<version>`. So the release isn't done until the site is
+Users get it through Sparkle (Medusa › Check for Updates…), and the first launch of the new version
+opens `https://medusa.dev/release-notes#<version>`. So the release isn't done until the site is
 deployed with the new entry — otherwise that tab opens on a page that doesn't mention the update.
 
 There are two channels (`docs/releasing.md` › Channels):
@@ -44,7 +44,7 @@ For each fix:
      All of it must pass, as for stable.
    - Publish: `git tag v<version> && git push origin main v<version>`, then
      `.claude/skills/release/scripts/publish-nightly.sh <version>` (a prerelease with the DMG, zip and appcast; the
-     merged feed onto the latest stable release; `Ardia-Nightly.dmg` behind https://ardia.dev/nightly; it checks all
+     merged feed onto the latest stable release; `Medusa-Nightly.dmg` behind https://medusa.dev/nightly; it checks all
      three). With a new engine, commit `prebuilt-engine.tsv`'s line as in step 5.
    - Site: deploy so the after-update tab finds the nightly's entry (step 6's deploy only: no `release.ts` change, no
      claims or screenshots). The nightly download link never changes.
@@ -59,13 +59,13 @@ everything since the previous stable, nightlies included.
 ## Ground rules (why they exist)
 
 - **Never touch the Chromium build cache.** release.sh only reads the engine framework from
-  `~/chromium-build/chromium_git/chromium/src/out/Release_GN_arm64` (and refuses one older than the tree's ArdiaCore
+  `~/chromium-build/chromium_git/chromium/src/out/Release_GN_arm64` (and refuses one older than the tree's MedusaCore
   sources: rebuilding it is an incremental `chrome_framework` build under the chromium lock). Never delete or clean
   `~/chromium-build/chromium_git/chromium/src/out`, run `gclient sync` or `gn clean`: a full Chromium
   rebuild costs ~5 hours and the user has been emphatic about it.
-- **Never launch or touch `/Applications/Ardia.app`** (`Netnyahoo.app` until the owner updates past the rename) —
+- **Never launch or touch `/Applications/Medusa.app`** (`Netnyahoo.app` until the owner updates past the rename) —
   the user is using it. Test only the exported
-  build in `dist/`, only hidden (`ARDIA_BACKGROUND=1`, throwaway `ARDIA_DATA_DIR`), never with
+  build in `dist/`, only hidden (`MEDUSA_BACKGROUND=1`, throwaway `MEDUSA_DATA_DIR`), never with
   plain `open`. The smoke script does this for you.
 - **Build from a clean tree.** release.sh archives the working tree, so another agent's half-finished
   edit would ship. Check `git status` first (below).
@@ -114,21 +114,21 @@ update themselves from the network, as uBO's do everywhere):
 
 ```bash
 scripts/update-ubo.sh     # "uBO <x> is the latest release", or "uBO <old> -> <new> (sha256 …)"
-git add packages/ardiacore/scripts/ubo.sh && git commit -m "Content blocker: uBlock Origin <new>"   # only if it moved
+git add packages/medusacore/scripts/ubo.sh && git commit -m "Content blocker: uBlock Origin <new>"   # only if it moved
 ```
 
 It checks the zip against GitHub's SHA-256 digest and the manifest's version, rewrites the pin in
-`packages/ardiacore/scripts/ubo.sh` and installs it into `packages/ardiacore/vendor/ubo`. Verify after release.sh
+`packages/medusacore/scripts/ubo.sh` and installs it into `packages/medusacore/vendor/ubo`. Verify after release.sh
 that the export carries it: `python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["version"])'
-dist/<version>/export/Ardia.app/Contents/Resources/Extensions/ublock/manifest.json` prints the
+dist/<version>/export/Medusa.app/Contents/Resources/Extensions/ublock/manifest.json` prints the
 pinned `UBO_VERSION` followed by ubo.sh's patch level as a fourth part (`1.75.0.8`: uBO refreshes its cached
 scriptlets when that version changes, so our patches reach existing profiles), and the smoke test's "uBlock blocks an ad script" check passes. An error means
 the release is odd (no digest, a version mismatch): keep the old pin and say so in the report.
 
 ```bash
 sed -i '' 's/MARKETING_VERSION = <previous>;/MARKETING_VERSION = <version>;/; s/CURRENT_PROJECT_VERSION = <n>;/CURRENT_PROJECT_VERSION = <n+1>;/' \
-  apps/browser/macos/Ardia.xcodeproj/project.pbxproj
-git add docs/release-notes/<version>.md apps/browser/macos/Ardia.xcodeproj/project.pbxproj
+  apps/browser/macos/Medusa.xcodeproj/project.pbxproj
+git add docs/release-notes/<version>.md apps/browser/macos/Medusa.xcodeproj/project.pbxproj
 git commit -m "Release <version>"
 scripts/release.sh <version>     # ~15–25 min with notarization; run it in the background and wait
 ```
@@ -140,9 +140,9 @@ and run `scripts/release.sh <version> --channel nightly`.
 (release.sh refuses one that isn't above every build in the published feed; read the current value with `grep CURRENT_PROJECT_VERSION …project.pbxproj | sort -u`). release.sh refuses to run
 if `MARKETING_VERSION` doesn't match, the notes file is missing, the tree has uncommitted app or engine
 changes, or the engine framework is stale (`docs/releasing.md` lists what it checks). It notarizes the app and the DMG with the
-`ardia` notarytool profile (an App Store Connect API key in the login keychain, set up 2026-09-26) and
+`medusa` notarytool profile (an App Store Connect API key in the login keychain, set up 2026-09-26) and
 ends with "Notarized and stapled." If it says "NOT notarized.", the profile is gone or invalid
-(`xcrun notarytool history --keychain-profile ardia` shows why): stop and tell the user rather than
+(`xcrun notarytool history --keychain-profile medusa` shows why): stop and tell the user rather than
 shipping an unnotarized build. Never store or re-create the credential yourself; that's the user's step.
 Notarization adds a few minutes per submission.
 
@@ -154,7 +154,7 @@ Notarization adds a few minutes per submission.
 
 First it checks the update from `<previous>` (its export in `dist/<previous>/export`):
 
-- the engine is ArdiaCore (Chrome's framework, no CEF);
+- the engine is MedusaCore (Chrome's framework, no CEF);
 - the identity Sparkle, the keychain and TCC compare: same bundle id, executable, feed and EdDSA key, the build
   satisfies `<previous>`'s designated requirement, and its build number is higher;
 - the appcast's EdDSA signature of the zip verifies with the app's key, and the zip holds this very app, sealed and
@@ -163,9 +163,9 @@ First it checks the update from `<previous>` (its export in `dist/<previous>/exp
   the appcast's item (test bundle id and key; no relaunch, no UI);
 - `carryover.sh`: `<previous>`'s data, made where an installed copy keeps it (two profiles: tabs, cookies including
   session ones, localStorage, passwords, bookmarks, history, an address, a site permission, zoom, an extension),
-  opens in this build started without `ARDIA_DATA_DIR` (test copies in a fake home; never the real data).
+  opens in this build started without `MEDUSA_DATA_DIR` (test copies in a fake home; never the real data).
 
-Then it launches `dist/<version>/export/Ardia.app` hidden with a data dir that says `<previous>` ran last,
+Then it launches `dist/<version>/export/Medusa.app` hidden with a data dir that says `<previous>` ran last,
 and a session whose window was left on its second profile, and checks, over CDP and the window list:
 
 - engine is Chromium 154, the after-update release-notes tab opened exactly once;
@@ -184,10 +184,10 @@ and a session whose window was left on its second profile, and checks, over CDP 
   every tab it showed, and Chrome ignores hangs while one is attached);
 - quitting the way ⌘Q and Sparkle's update do (the quit Apple event, sent to this instance's pid only) exits
   within 15 s with status 0 and no crash report (0.2.6 and 0.2.7 crashed on every quit, so every update
-  ended in "Ardia quit unexpectedly");
+  ended in "Medusa quit unexpectedly");
 - the bundle's signature is still valid after running (0.1.0 wrote into its own bundle);
-- the feed in the build's Info.plist (`SUFeedURL`, `https://ardia.dev/appcast.xml` since the rename) answers
-  with an appcast (`.claude/skills/release/scripts/feed.sh --before-publish`). A 404 means ardia.dev is running a deploy without
+- the feed in the build's Info.plist (`SUFeedURL`, `https://medusa.dev/appcast.xml` since the rename) answers
+  with an appcast (`.claude/skills/release/scripts/feed.sh --before-publish`). A 404 means medusa.dev is running a deploy without
   the feed endpoint (`infra/site/nginx.conf`): deploy the site first, or copies of this build never update.
   0.2.14 to 0.2.32 poll `https://netnyahoo.com/appcast.xml`, which the same site serves: across the rename smoke.sh
   checks that both lead to the same appcast.
@@ -209,7 +209,7 @@ Check the candidate's counts against the ceilings before publishing (about two m
 are counts, not timings):
 
 ```bash
-node apps/browser/scripts/perf/ratchet.mjs run --own --app dist/<version>-rc/export/Ardia.app   # dist/<version>/export without an rc
+node apps/browser/scripts/perf/ratchet.mjs run --own --app dist/<version>-rc/export/Medusa.app   # dist/<version>/export without an rc
 ```
 
 `--own` runs the app's own `main.jsbundle`, so it checks what ships. It must print `ratchet: ok`. It runs the launch,
@@ -223,8 +223,8 @@ the lowered ceilings, and say which counts dropped. The wall-clock gate is a sep
 ### 4c. Perf gate: the RC against the previous stable release (stable only)
 
 Every stable release is timed against the previous stable one before it publishes (never against a nightly: the
-control is `dist/<previous stable>/export/Ardia.app`), and ships only when every row is the same or
-better (`docs/perf/README.md` › Gating a release: native-bench with `--control dist/<previous>/export/Ardia.app`,
+control is `dist/<previous stable>/export/Medusa.app`), and ships only when every row is the same or
+better (`docs/perf/README.md` › Gating a release: native-bench with `--control dist/<previous>/export/Medusa.app`,
 interleaved, launch x6+ and session x2, then js-bench alternating the two apps). It runs alone on a quiet Mac, holding
 the perflab lock, after the smoke test and the ratchet. Call a row a regression only when the ranges separate.
 Afterwards read `scripts/agent/cpu-cap`'s log (`cpu-cap.log`): a pause of the bench or its instances during the run
@@ -242,35 +242,35 @@ A nightly publishes with `publish-nightly.sh` (the nightly loop above). A stable
 ```bash
 git tag v<version> && git push origin main v<version>
 .claude/skills/release/scripts/appcast-merge.sh <version>
-gh release create v<version> -R mantrakp04/ardia --title "Ardia <version>" \
+gh release create v<version> -R mantrakp04/medusa --title "Medusa <version>" \
   --notes-file dist/<version>/release-notes.md \
-  dist/<version>/Ardia-<version>.dmg dist/<version>/Ardia-<version>.zip dist/<version>/appcast.xml \
-  dist/<version>/ardia-cli-<version>-macos-arm64.tar.gz dist/<version>/ardia-cli-<version>-macos-arm64.tar.gz.sha256 \
-  $(ls dist/<version>/ArdiaCore-*.tar.xz 2>/dev/null)
-curl -fsL https://github.com/mantrakp04/ardia/releases/latest/download/appcast.xml | grep -o 'shortVersionString>[0-9.]*' | head -1
+  dist/<version>/Medusa-<version>.dmg dist/<version>/Medusa-<version>.zip dist/<version>/appcast.xml \
+  dist/<version>/medusa-cli-<version>-macos-arm64.tar.gz dist/<version>/medusa-cli-<version>-macos-arm64.tar.gz.sha256 \
+  $(ls dist/<version>/MedusaCore-*.tar.xz 2>/dev/null)
+curl -fsL https://github.com/mantrakp04/medusa/releases/latest/download/appcast.xml | grep -o 'shortVersionString>[0-9.]*' | head -1
 .claude/skills/release/scripts/feed.sh <version>
 ```
 
-When engine/ changed since the last prebuilt engine, release.sh also packed `ArdiaCore-<tree>.tar.xz` (the command
+When engine/ changed since the last prebuilt engine, release.sh also packed `MedusaCore-<tree>.tar.xz` (the command
 above uploads it) and wrote its table line. Once the release is up, commit that line, so builds without a Chromium tree
-find it (`packages/ardiacore/scripts/fetch-engine.sh`):
+find it (`packages/medusacore/scripts/fetch-engine.sh`):
 
 ```bash
 if [ -f dist/<version>/prebuilt-engine.tsv ]; then
-  cat dist/<version>/prebuilt-engine.tsv >> packages/ardiacore/prebuilt-engines.tsv
-  git add packages/ardiacore/prebuilt-engines.tsv && git commit -m "Prebuilt engine: <version>'s" && git push origin main
+  cat dist/<version>/prebuilt-engine.tsv >> packages/medusacore/prebuilt-engines.tsv
+  git add packages/medusacore/prebuilt-engines.tsv && git commit -m "Prebuilt engine: <version>'s" && git push origin main
 fi
 ```
 
 `appcast-merge.sh` puts this release's item onto the feed as it's published right now, so nightlies that shipped while
 this release was being tested stay listed (it rewrites `dist/<version>/appcast.xml`, keeping `appcast.built.xml`).
 Both must show the new version. Copies from 0.2.13 and earlier poll GitHub's URL directly; 0.2.14 to 0.2.32 poll
-netnyahoo.com/appcast.xml and later ones ardia.dev/appcast.xml, both served by the site, which counts the check
+netnyahoo.com/appcast.xml and later ones medusa.dev/appcast.xml, both served by the site, which counts the check
 (version, day, first check or not) and redirects to the same GitHub file. feed.sh reads the URL from the built
 Info.plist, so it checks what this build will poll; the copies from before the rename poll the other host
 (`curl -sI https://netnyahoo.com/appcast.xml` must redirect to the same file).
 
-### 5b. Staged rollout (an ArdiaCore-sized or risky release)
+### 5b. Staged rollout (an MedusaCore-sized or risky release)
 
 Three steps, in this order. Nothing here publishes by itself; each needs the owner's go-ahead (the first is the standing
 rule that a release which changes the engine or something users would notice publishes only after the owner has tested
@@ -289,9 +289,9 @@ the final RC and said ship).
    publish a fixed build with a higher build number: copies that haven't updated yet go straight to it.
 3. **Everyone.** Remove the interval from the published appcast, so every copy sees the update:
    ```bash
-   gh release download v<version> -R mantrakp04/ardia -p appcast.xml -D /tmp/ac-appcast --clobber
+   gh release download v<version> -R mantrakp04/medusa -p appcast.xml -D /tmp/ac-appcast --clobber
    sed -i '' '/<sparkle:phasedRolloutInterval>/d' /tmp/ac-appcast/appcast.xml
-   gh release upload v<version> -R mantrakp04/ardia /tmp/ac-appcast/appcast.xml --clobber
+   gh release upload v<version> -R mantrakp04/medusa /tmp/ac-appcast/appcast.xml --clobber
    .claude/skills/release/scripts/feed.sh <version>
    ```
    (The appcast isn't signed as a whole, only its zip's `edSignature`, so editing the line keeps it valid.) The next
@@ -301,16 +301,16 @@ A release without `--phased` goes to everyone at once, as before.
 
 ## 6. Deploy the site
 
-The download button builds its URL from `VERSION` (`releases/latest/download/Ardia-<VERSION>.dmg`),
+The download button builds its URL from `VERSION` (`releases/latest/download/Medusa-<VERSION>.dmg`),
 so it 404s the moment a newer release is published until this is bumped:
 
 ```bash
-size=$(gh release view v<version> -R mantrakp04/ardia --json assets -q '.assets[] | select(.name|endswith(".dmg")) | .size' | awk '{printf "%.0f MB", $1/1000000}')
+size=$(gh release view v<version> -R mantrakp04/medusa --json assets -q '.assets[] | select(.name|endswith(".dmg")) | .size' | awk '{printf "%.0f MB", $1/1000000}')
 # set VERSION = "<version>" and DMG_SIZE = "$size" in apps/site/src/data/release.ts
 ```
 
 The root `README.md` is the landing page on GitHub and carries the same link: replace the old version and size there
-too (both download links, the "Download Ardia <version>" labels and the "<size> DMG" line), and commit it with
+too (both download links, the "Download Medusa <version>" labels and the "<size> DMG" line), and commit it with
 `release.ts`. If a release changes a claim on the landing page (below), change the README's matching line.
 
 **Bring the landing page's claims up to date.** The home page makes specific promises; a release can make
@@ -346,17 +346,17 @@ app (listed in `apps/site/README.md` › Screenshots):
 
 - **When:** if the release visibly changes something a shot shows (the sidebar, the tiles, the New Tab page,
   the logo or mark, the icon, a Settings pane, the window chrome), retake the affected shots from **this
-  release's export** (`dist/<version>/export/Ardia.app`). A new page or feature that earned a place
+  release's export** (`dist/<version>/export/Medusa.app`). A new page or feature that earned a place
   in `features` may also need a new shot.
-- **How:** use a hidden instance with the smoke test's rules (`ARDIA_BACKGROUND=1`, a throwaway
-  `ARDIA_DATA_DIR`, never plain `open`, never `/Applications`).
+- **How:** use a hidden instance with the smoke test's rules (`MEDUSA_BACKGROUND=1`, a throwaway
+  `MEDUSA_DATA_DIR`, never plain `open`, never `/Applications`).
   - Set up the same state as the old shot (the same sites, profiles, light or dark).
   - Take a real window capture at 2× with a transparent outside: `screencapture -l <windowID> -o`.
 - **Screen locked:** WindowServer captures fail. Leave the old shot, and tell the user which shots are stale.
   An in-process snapshot is not a substitute: it drops glass and Metal views.
 - **Replace in place:** save the new capture over the file with the same name, since Astro makes the sizes.
   Update the shot's `alt` text if what it shows changed, and check its phone crop (`focus` in `data/features.ts`).
-- **Don't touch the rest:** leave the painted logo (`ardia-mark.png`, from `docs/brand/ardia`) alone unless
+- **Don't touch the rest:** leave the painted logo (`medusa-mark.png`, from `docs/brand/medusa`) alone unless
   the brand changed.
 
 Keep to the site's bar: few words, witty over wordy (see the existing lines). Build with `pnpm -C apps/site build`
@@ -366,14 +366,14 @@ and check the changed sections and shots render, on a phone width too (the "site
 pnpm -C apps/site run deploy   # the upload can drop on a weak connection: rerun it until it succeeds
 ```
 
-Then verify live: `https://ardia.dev/release-notes/` contains the new headline, the home page links
-`Ardia-<version>.dmg`, that URL returns 200, and any claim you changed shows. Commit `release.ts`
+Then verify live: `https://medusa.dev/release-notes/` contains the new headline, the home page links
+`Medusa-<version>.dmg`, that URL returns 200, and any claim you changed shows. Commit `release.ts`
 and the claim changes ("Site: download <version>", plus what changed) and push.
 
 The SEO data follows `release.ts` and the notes by itself; check that it did:
 - The home page's JSON-LD `softwareVersion` is the new version.
-- `https://ardia.dev/sitemap.xml` has today's `lastmod`.
-- If the release changed what Ardia is (a new headline feature, a new platform), update the home page's
+- `https://medusa.dev/sitemap.xml` has today's `lastmod`.
+- If the release changed what Medusa is (a new headline feature, a new platform), update the home page's
   `description` in `src/pages/index.astro`: ~150 characters, and it is also the share text.
 - If `og.png` changes, its URL's `?v=` hash changes with it, so X and others fetch the new card.
 
@@ -382,8 +382,8 @@ part of a release; for site changes outside a release, ask first.
 
 ## 7. Tweet draft (stable only)
 
-Draft the announcement for the owner to post (never post it yourself): `Ardia <version>`, 4–5 short,
-witty, simple bullets from the notes, then ardia.dev, under 280
+Draft the announcement for the owner to post (never post it yourself): `Medusa <version>`, 4–5 short,
+witty, simple bullets from the notes, then medusa.dev, under 280
 characters. Make `output/tweets/<version>.png` (1600×1000, the site's paper background and fonts) from
 real captures of a hidden instance on neutral pages you control; see `output/tweets/0.2.12.png`. Send both
 to the owner.

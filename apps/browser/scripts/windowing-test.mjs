@@ -11,7 +11,7 @@ import { launch, reporter, session, sleep } from "../../../scripts/lib/instance.
 const args = process.argv.slice(2);
 const appArg = args.find((a) => !a.startsWith("--"));
 if (!appArg) {
-  console.error("usage: node windowing-test.mjs <Debug Ardia.app> [--port=<DevTools port>] [--keep-data]");
+  console.error("usage: node windowing-test.mjs <Debug Medusa.app> [--port=<DevTools port>] [--keep-data]");
   process.exit(2);
 }
 const appPath = resolve(appArg);
@@ -46,7 +46,7 @@ const fixture = () => session({
 
 let app = null;
 const HELPERS = `
-const C = globalThis.expo.modules.ArdiaCEF;
+const C = globalThis.expo.modules.MedusaCEF;
 const st = () => ac.store.getState();
 const win = (id) => C.chromeWindows().then((ws) => { const f = st().windows[id].frame; const w = ws.filter((w) => w.hasRoot).find((w) => { const r = w.frame.match(/[-\\d.]+/g).map(Number); return Math.abs(r[0] - f[0]) < 2 && Math.abs(r[2] - f[2]) < 2; }); return w && w.window; });
 const act = (id, a) => win(id).then((n) => C.devWindow(n, a));

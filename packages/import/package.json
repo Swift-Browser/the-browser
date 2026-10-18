@@ -8,7 +8,7 @@
   "type": "module",
   "scripts": {
     "typecheck": "tsc -p .",
-    "test": "swift test --scratch-path \"${TMPDIR:-/tmp}/ardia-import-swiftpm\"",
+    "test": "swift test --scratch-path \"${TMPDIR:-/tmp}/medusa-import-swiftpm\"",
     "fixtures": "python3 fixtures/generate.py"
   },
   "peerDependencies": {

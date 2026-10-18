@@ -34,7 +34,7 @@ export function setTrafficLightsCenter(_windowId: string, next: [number, number]
 
 function TrafficLight({ name, theme }: { name: Light; theme: keyof typeof ART }) {
   const { interior, rim } = ART[theme][name];
-  const id = `ardia-light-${theme}-${name}`;
+  const id = `medusa-light-${theme}-${name}`;
   const r = DIAMETER / 2;
   return (
     <svg width={DIAMETER} height={DIAMETER} viewBox={`0 0 ${DIAMETER} ${DIAMETER}`} style={{ display: "block" }}>

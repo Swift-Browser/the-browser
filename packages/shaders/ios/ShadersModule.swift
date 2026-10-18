@@ -2,7 +2,7 @@ import ExpoModulesCore
 
 public class AreaLightModule: Module {
   public func definition() -> ModuleDefinition {
-    Name("ArdiaAreaLight")
+    Name("MedusaAreaLight")
 
     AsyncFunction("debugSetWindowActive") { (value: Bool?) in WindowActivity.override = value }.runOnQueue(.main)
     AsyncFunction("debugSetReduceMotion") { (value: Bool?) in WindowActivity.reduceMotionOverride = value }.runOnQueue(.main)
@@ -26,7 +26,7 @@ public class AreaLightModule: Module {
 
 public class WindowBackdropModule: Module {
   public func definition() -> ModuleDefinition {
-    Name("ArdiaWindowBackdrop")
+    Name("MedusaWindowBackdrop")
 
     View(WindowBackdropView.self) {
       Prop("colors") { (view: WindowBackdropView, colors: [String]) in view.setColors(colors) }
@@ -47,7 +47,7 @@ public class WindowBackdropModule: Module {
 
 public class PowerUpModule: Module {
   public func definition() -> ModuleDefinition {
-    Name("ArdiaPowerUp")
+    Name("MedusaPowerUp")
 
     View(PowerUpView.self) {
       Prop("palette") { (view: PowerUpView, v: [String]) in view.setPalette(v) }

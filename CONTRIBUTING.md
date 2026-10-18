@@ -1,12 +1,12 @@
-# Contributing to Ardia
+# Contributing to Medusa
 
-Ardia is a macOS browser with Dia's polish and Arc's sidebar, running on Chrome's own framework (Chromium 154). One
+Medusa is a macOS browser with Dia's polish and Arc's sidebar, running on Chrome's own framework (Chromium 154). One
 person runs it, with a lot of help from coding agents, and ships nightlies most days. Pull requests are welcome. This
 page is what the owner keeps asking for, written down so you don't have to learn it from a review.
 
 ## What we will and won't take
 
-Ardia copies Dia's look and behaviour on purpose, and uses Arc's layout for the sidebar. A change that makes it
+Medusa copies Dia's look and behaviour on purpose, and uses Arc's layout for the sidebar. A change that makes it
 behave more like Dia is almost always welcome. A change that restyles it to taste is not, unless the owner asked.
 
 Out of scope:
@@ -31,17 +31,17 @@ pnpm macos    # builds the Debug app and opens it
 
 You don't need to build Chromium. When there's no Chromium tree at `~/chromium-build`, the app's build downloads the
 prebuilt engine that matches your checkout's `engine/` folder
-(`packages/ardiacore/scripts/fetch-engine.sh`). That only works while `engine/` is unchanged from a commit on `main`.
+(`packages/medusacore/scripts/fetch-engine.sh`). That only works while `engine/` is unchanged from a commit on `main`.
 If you change the engine you need your own Chromium build: `docs/engine-build.md` has the whole thing, and a first
 build takes about five hours.
 
-`pnpm macos` runs the app on its own data folder, `~/Library/Application Support/Ardia Dev`, so it never touches the
-Ardia you browse with. Keep it that way. A Debug build refuses to start without `ARDIA_DATA_DIR`, and every test
+`pnpm macos` runs the app on its own data folder, `~/Library/Application Support/Medusa Dev`, so it never touches the
+Medusa you browse with. Keep it that way. A Debug build refuses to start without `MEDUSA_DATA_DIR`, and every test
 instance should get a throwaway one. To run a build without it popping up over your work:
 
 ```sh
-open -g -n --env ARDIA_BACKGROUND=1 --env ARDIA_DATA_DIR=/tmp/ardia-test \
-  --env ARDIA_REMOTE_DEBUGGING_PORT=9333 apps/browser/build/Build/Products/Debug/Ardia.app
+open -g -n --env MEDUSA_BACKGROUND=1 --env MEDUSA_DATA_DIR=/tmp/medusa-test \
+  --env MEDUSA_REMOTE_DEBUGGING_PORT=9333 apps/browser/build/Build/Products/Debug/Medusa.app
 ```
 
 A JS-only change doesn't need a rebuild. Metro reloads it, though relaunch the instance before you judge the result.
@@ -51,12 +51,12 @@ Where things live:
 | Path | What |
 | --- | --- |
 | `apps/browser` | The React Native macOS app: UI, store, actions |
-| `packages/ardiacore` | The engine, ArdiaCore: Chrome's framework and the native modules the app calls |
+| `packages/medusacore` | The engine, MedusaCore: Chrome's framework and the native modules the app calls |
 | `packages/shell` | Menus, shortcuts, windows, native views |
 | `packages/core` | Omnibox parsing and suggestions, pure TypeScript with tests |
 | `packages/import`, `packages/sync`, `packages/shaders` | Importing from other browsers, iCloud sync, Metal views |
 | `engine/` | Our patches to Chromium and our Chrome-side code |
-| `apps/site` | ardia.dev (Astro) |
+| `apps/site` | medusa.dev (Astro) |
 | `infra/<service>` | Deploy setups, one folder per service |
 
 `docs/agent-brief.md` explains the architecture in depth. It's written for agents and is just as useful to people.
@@ -89,7 +89,7 @@ Parity covers behaviour too. Most bugs the owner reports are UX that any browser
 
 ### It lets Chrome do the work
 
-Ardia is real Chromium. Before writing our own version of something, check whether Chrome already does it and we're
+Medusa is real Chromium. Before writing our own version of something, check whether Chrome already does it and we're
 getting in the way. "Shouldn't Chrome's default behaviour just work here?" is the first question the owner asks about
 a bug, and the answer is often yes. When a fix needs a hook in Chrome's code, keep it the smallest hook that works.
 
@@ -139,14 +139,14 @@ The end-to-end checks (shortcuts, tab dragging, profile swipes, windowing, sync,
 need a built app and run hidden instances. `docs/testing.md` lists each one with what it guards. When you fix a
 regression, add its case to the matching check so it can't come back quietly.
 
-Never read a real browser profile in a test, Ardia's included. Build fixtures. Screenshots for the site, the README or
+Never read a real browser profile in a test, Medusa's included. Build fixtures. Screenshots for the site, the README or
 a PR use neutral pages, never someone's feed or personal data.
 
 ## Engine changes
 
 Chromium builds are incremental. Never run `gn clean` or `gclient sync` on a tree you care about, and don't delete
 `out/`: a full rebuild costs about five hours. Patches go in `engine/patches/` in the order `engine/patches/series`
-gives, and our Chrome-side code lives in `engine/chromium` and `engine/ardiacore`. `docs/engine-build.md` covers
+gives, and our Chrome-side code lives in `engine/chromium` and `engine/medusacore`. `docs/engine-build.md` covers
 both. A PR that changes `engine/` means the next release publishes a new prebuilt engine, so say so in the
 description.
 
@@ -189,7 +189,7 @@ follow `docs/release-notes/README.md`. The site has to look right on a phone.
 
 ## Working with a coding agent
 
-Plenty of Ardia was written by agents, so using one is fine. Point it at `AGENTS.md` and `docs/agent-brief.md`
+Plenty of Medusa was written by agents, so using one is fine. Point it at `AGENTS.md` and `docs/agent-brief.md`
 first. Those files hold the owner's standing rules (hidden test instances, no focus stealing, isolated builds, the
 no-comments rule), and they're why a change goes in without a long back-and-forth. For risky logic (races, object
 lifetimes, security, migrations, sync), get a second model to review the change before and after, and reproduce each
@@ -197,4 +197,4 @@ finding before acting on it. Check the agent's diff yourself before you open the
 
 ## License
 
-Ardia is Apache-2.0. By contributing you agree your work is released under it.
+Medusa is Apache-2.0. By contributing you agree your work is released under it.

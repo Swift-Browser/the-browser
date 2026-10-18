@@ -1,4 +1,4 @@
-import { searchEngineList } from "@medusa/ardiacore";
+import { searchEngineList } from "@medusa/medusacore";
 import { extensionEnginesFromChrome } from "@medusa/core";
 import { useBrowser } from "../../store/browser";
 import { useExtensions } from "./state";

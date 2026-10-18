@@ -1,4 +1,4 @@
-import { engineInfo, listComponents, WIDEVINE_COMPONENT_ID, type EngineComponent, type EngineInfo } from "@medusa/ardiacore";
+import { engineInfo, listComponents, WIDEVINE_COMPONENT_ID, type EngineComponent, type EngineInfo } from "@medusa/medusacore";
 import { useEffect, useState } from "react";
 import { Text, View } from "react-native";
 import { describeCliInstall, installCliInBackground, useCli } from "../../../lib/cliControl";
@@ -57,7 +57,7 @@ export function AdvancedPane() {
 
       <SectionHeader title="Web engine" />
       <Group>
-        <Row title="Chromium" description={info ? "ArdiaCore" : undefined}>
+        <Row title="Chromium" description={info ? "MedusaCore" : undefined}>
           <Text selectable style={{ fontSize: 13, color: theme.textSecondary }}>
             {info?.chromiumVersion ?? "…"}
           </Text>
@@ -98,11 +98,11 @@ function CommandLineSection() {
     <>
       <SectionHeader title="Command line" />
       <Group>
-        <Row title="Let the ardia command control Ardia" description={serverNote}>
+        <Row title="Let the medusa command control Medusa" description={serverNote}>
           <Toggle value={on} onChange={(v) => update({ cliControl: v })} />
         </Row>
         <Row
-          title="The ardia command"
+          title="The medusa command"
           description={
             <Text selectable style={{ fontSize: 11.5, marginTop: 2, lineHeight: 15, color: cli.error && !cli.installing ? colors.destructive : theme.textSecondary }}>
               {describeCliInstall(cli)}

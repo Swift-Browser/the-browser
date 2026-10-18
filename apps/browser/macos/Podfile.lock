@@ -1,16 +1,16 @@
 PODS:
-  - ArdiaCore (0.0.0):
+  - MedusaCore (0.0.0):
     - ExpoModulesCore
-  - ArdiaImport (0.0.0):
-    - ArdiaCore
+  - MedusaImport (0.0.0):
+    - MedusaCore
     - ExpoModulesCore
-  - ArdiaShaders (0.0.0):
+  - MedusaShaders (0.0.0):
     - ExpoModulesCore
-  - ArdiaShell (0.0.0):
+  - MedusaShell (0.0.0):
     - ExpoModulesCore
     - Sparkle (~> 2.9)
-  - ArdiaSync (0.0.0):
-    - ArdiaImport
+  - MedusaSync (0.0.0):
+    - MedusaImport
     - ExpoModulesCore
   - boost (1.84.0)
   - DoubleConversion (1.1.6)
@@ -2314,11 +2314,11 @@ PODS:
   - Yoga (0.0.0)
 
 DEPENDENCIES:
-  - ArdiaCore (from `../../../packages/ardiacore/ios`)
-  - ArdiaImport (from `../../../packages/import/ios`)
-  - ArdiaShaders (from `../../../packages/shaders/ios`)
-  - ArdiaShell (from `../../../packages/shell/ios`)
-  - ArdiaSync (from `../../../packages/sync/ios`)
+  - MedusaCore (from `../../../packages/medusacore/ios`)
+  - MedusaImport (from `../../../packages/import/ios`)
+  - MedusaShaders (from `../../../packages/shaders/ios`)
+  - MedusaShell (from `../../../packages/shell/ios`)
+  - MedusaSync (from `../../../packages/sync/ios`)
   - boost (from `../../../node_modules/react-native-macos/third-party-podspecs/boost.podspec`)
   - DoubleConversion (from `../../../node_modules/react-native-macos/third-party-podspecs/DoubleConversion.podspec`)
   - EXConstants (from `../../../node_modules/expo-constants/ios`)
@@ -2406,15 +2406,15 @@ SPEC REPOS:
     - Sparkle
 
 EXTERNAL SOURCES:
-  ArdiaCore:
-    :path: "../../../packages/ardiacore/ios"
-  ArdiaImport:
+  MedusaCore:
+    :path: "../../../packages/medusacore/ios"
+  MedusaImport:
     :path: "../../../packages/import/ios"
-  ArdiaShaders:
+  MedusaShaders:
     :path: "../../../packages/shaders/ios"
-  ArdiaShell:
+  MedusaShell:
     :path: "../../../packages/shell/ios"
-  ArdiaSync:
+  MedusaSync:
     :path: "../../../packages/sync/ios"
   boost:
     :podspec: "../../../node_modules/react-native-macos/third-party-podspecs/boost.podspec"
@@ -2575,11 +2575,11 @@ EXTERNAL SOURCES:
     :path: "../../../node_modules/react-native-macos/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  ArdiaCore: b551e3316357a028ec07afc3ff26e46d43e3225a
-  ArdiaImport: 535f03b8bdc5866eb05d6d177597e9583bfe7d47
-  ArdiaShaders: d8dc0512dec3ed9d4af792579b320249ef035924
-  ArdiaShell: 4de45ace9c0e11ff56d51c81cf9ec9a2fd6bac7c
-  ArdiaSync: e86ddfd6b42b62e7d592cd2487c62d136f6a0db1
+  MedusaCore: b551e3316357a028ec07afc3ff26e46d43e3225a
+  MedusaImport: 535f03b8bdc5866eb05d6d177597e9583bfe7d47
+  MedusaShaders: d8dc0512dec3ed9d4af792579b320249ef035924
+  MedusaShell: 4de45ace9c0e11ff56d51c81cf9ec9a2fd6bac7c
+  MedusaSync: e86ddfd6b42b62e7d592cd2487c62d136f6a0db1
   boost: cea1d4f90a3a59537f3deb03ff5656489d7133dd
   DoubleConversion: d31b1eb37f6d6f456530c4fd9124b857d6889cab
   EXConstants: 18ac927605517285307ea8f7ffe6fe7ca538eb5d

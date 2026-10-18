@@ -334,13 +334,13 @@ final class WindowManager: NSObject, NSWindowDelegate {
     window.delegate = self
     auxKinds[id] = kind
     windows[id] = window
-    if !window.setFrameUsingName("Ardia\(kind.capitalized)") { window.center() }
-    window.setFrameAutosaveName("Ardia\(kind.capitalized)")
+    if !window.setFrameUsingName("Medusa\(kind.capitalized)") { window.center() }
+    window.setFrameAutosaveName("Medusa\(kind.capitalized)")
     window.makeKeyAndOrderFront(nil)
   }
 
   private func configureSmall(_ window: NSWindow) {
-    window.identifier = NSUserInterfaceItemIdentifier("ardia.window.small")
+    window.identifier = NSUserInterfaceItemIdentifier("medusa.window.small")
     window.minSize = NSSize(width: 420, height: 300)
     window.tabbingMode = .disallowed
     window.collectionBehavior.insert(.moveToActiveSpace)
@@ -543,7 +543,7 @@ final class WindowManager: NSObject, NSWindowDelegate {
 
   private var saveWait: Timer?
   private var lateSaveAlert: NSAlert?
-  private let background = ProcessInfo.processInfo.environment["ARDIA_BACKGROUND"] == "1"
+  private let background = ProcessInfo.processInfo.environment["MEDUSA_BACKGROUND"] == "1" || ProcessInfo.processInfo.environment["MEDUSA_BACKGROUND"] == "1"
 
   private func waitForSave() {
     let timer = Timer(timeInterval: 5, repeats: false) { [weak self] _ in self?.saveIsLate() }
@@ -637,7 +637,7 @@ final class DragPreview {
   private var lastPoint = NSPoint.zero
   private var shownAt = 0.0
   private var generation = 0
-  private let background = ProcessInfo.processInfo.environment["ARDIA_BACKGROUND"] == "1"
+  private let background = ProcessInfo.processInfo.environment["MEDUSA_BACKGROUND"] == "1" || ProcessInfo.processInfo.environment["MEDUSA_BACKGROUND"] == "1"
   private var animation: Timer?
   private var desired = NSRect.zero
 
