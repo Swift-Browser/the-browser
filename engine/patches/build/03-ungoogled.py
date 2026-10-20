@@ -195,6 +195,7 @@ for base, rel in series():
     rows.append((rel, 'FAILED', ' | '.join(detail)[:500]))
 
 if not dry:
+    REPORT.parent.mkdir(parents=True, exist_ok=True)
     REPORT.write_text('patch\tstatus\tdetail\n' + ''.join('\t'.join(r) + '\n' for r in rows))
 
 if not dry:
